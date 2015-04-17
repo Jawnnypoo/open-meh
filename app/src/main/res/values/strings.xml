@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">bleh</string>
+
+
+    <string name="api_key">44onG25U6S-xp1F5gzWNqNEnk5zOxSP9</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+</resources>

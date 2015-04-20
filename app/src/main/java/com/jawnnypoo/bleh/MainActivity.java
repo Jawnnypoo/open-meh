@@ -43,6 +43,8 @@ import retrofit.client.Response;
 
 public class MainActivity extends ActionBarActivity {
 
+    NotificationDialog notificationDialog;
+
     @InjectView(R.id.toolbar)
     Toolbar toolbar;
     @InjectView(R.id.indicator)
@@ -67,6 +69,7 @@ public class MainActivity extends ActionBarActivity {
         setSupportActionBar(toolbar);
         imagePagerAdapter = new ImageAdapter(this);
         imageViewPager.setAdapter(imagePagerAdapter);
+        setupDialogs();
         MehClient.instance().getMeh(new Callback<MehResponse>() {
             @Override
             public void success(MehResponse mehResponse, Response response) {
@@ -78,6 +81,15 @@ public class MainActivity extends ActionBarActivity {
                 error.printStackTrace();
             }
         });
+    }
+
+    private void setupDialogs() {
+        notificationDialog = (NotificationDialog) getSupportFragmentManager()
+                .findFragmentByTag(NotificationDialog.TAG);
+        if (notificationDialog == null) {
+            notificationDialog = new NotificationDialog();
+        }
+        //Restore listeners if needed
     }
 
     private void bindDeal(final Deal deal) {
@@ -130,10 +142,10 @@ public class MainActivity extends ActionBarActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        if (id == R.id.action_settings) {
-            return true;
+        switch (item.getItemId()) {
+            case R.id.action_notifications:
+                notificationDialog.show(getSupportFragmentManager(), NotificationDialog.TAG);
+                return true;
         }
 
         return super.onOptionsItemSelected(item);

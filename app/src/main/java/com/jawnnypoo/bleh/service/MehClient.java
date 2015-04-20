@@ -14,7 +14,7 @@ import retrofit.http.GET;
 public class MehClient {
     //Replace with your API_KEY
     private static final String API_KEY_VALUE = BuildConfig.MEH_API_KEY;
-    private static final String API_URL = "https://api.meh.com/1/current.json?apikey=" + API_KEY_VALUE;
+    private static final String API_URL = "https://api.meh.com/1";
     private static final String PARAM_API_KEY = "apikey";
 
     private static Meh mMeh;

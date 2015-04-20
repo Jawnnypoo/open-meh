@@ -4,6 +4,10 @@ package com.jawnnypoo.bleh.data;
  * Created by John on 4/17/2015.
  */
 public class Theme {
+
+    public static final int FOREGROUND_DARK = 0;
+    public static final int FOREGROUND_LIGHT = 1;
+
     String accentColor;
     String foreground;
     String backgroundColor;
@@ -13,8 +17,9 @@ public class Theme {
         return accentColor;
     }
 
-    public String getForeground() {
-        return foreground;
+    public int getForeground() {
+        return foreground.equals("light") ? FOREGROUND_LIGHT :
+                FOREGROUND_DARK;
     }
 
     public String getBackgroundColor() {

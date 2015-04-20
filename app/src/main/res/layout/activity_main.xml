@@ -29,18 +29,26 @@
             android:id="@+id/deal_buy_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/buy_it" />
+            android:text="@string/buy_it"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:background="@drawable/button"/>
 
         <TextView
             android:id="@+id/deal_title"
             style="@style/Base.TextAppearance.AppCompat.Headline"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"/>
 
         <TextView
+            style="@style/Base.TextAppearance.AppCompat.Body1"
             android:id="@+id/deal_description"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"/>
 
     </LinearLayout>
 

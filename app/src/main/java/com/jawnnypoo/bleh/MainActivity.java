@@ -4,6 +4,7 @@ import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
@@ -115,8 +116,12 @@ public class MainActivity extends ActionBarActivity {
     private void bindTheme(Theme theme) {
         int accentColor = Color.parseColor(theme.getAccentColor());
         int backgroundColor = Color.parseColor(theme.getBackgroundColor());
+        int foreGround = theme.getForeground() == Theme.FOREGROUND_LIGHT ? Color.WHITE : Color.BLACK;
         title.setTextColor(accentColor);
+        description.setTextColor(foreGround);
         toolbar.setBackgroundColor(accentColor);
+        buy.setTextColor(backgroundColor);
+        buy.getBackground().setColorFilter(accentColor, PorterDuff.Mode.MULTIPLY);
         ColorUtil.setStatusBarAndNavBarColor(getWindow(), ColorUtil.getDarkerColor(accentColor));
         getWindow().getDecorView().setBackgroundColor(backgroundColor);
     }

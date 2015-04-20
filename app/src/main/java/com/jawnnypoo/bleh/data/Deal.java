@@ -1,18 +1,23 @@
 package com.jawnnypoo.bleh.data;
 
+import android.text.TextUtils;
+
+import java.util.Collections;
 import java.util.List;
 
 /**
  * Created by John on 4/17/2015.
  */
 public class Deal {
+    private static final String CURRENCY_SYMBOL = "$";
     String features;
     String id;
     List<Item> items;
     List<String> photos;
     String title;
-    String soldOutAt; //date
+    String soldOutAt; //null if not sold out
     String specifications;
+    Story story;
     Theme theme;
     String url;
 
@@ -36,60 +41,40 @@ public class Deal {
         return items;
     }
 
-    public void setItems(List<Item> items) {
-        this.items = items;
-    }
-
     public List<String> getPhotos() {
         return photos;
-    }
-
-    public void setPhotos(List<String> photos) {
-        this.photos = photos;
     }
 
     public String getTitle() {
         return title;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
     public String getSoldOutAt() {
         return soldOutAt;
-    }
-
-    public void setSoldOutAt(String soldOutAt) {
-        this.soldOutAt = soldOutAt;
     }
 
     public String getSpecifications() {
         return specifications;
     }
 
-    public void setSpecifications(String specifications) {
-        this.specifications = specifications;
-    }
-
     public Theme getTheme() {
         return theme;
-    }
-
-    public void setTheme(Theme theme) {
-        this.theme = theme;
     }
 
     public String getUrl() {
         return url;
     }
 
-    public void setUrl(String url) {
-        this.url = url;
-    }
 
+    //Our stuff
     public boolean isSoldOut() {
-        //TODO look at date and see if it is sold out
-        return false;
+        return !TextUtils.isEmpty(soldOutAt);
+    }
+    public String getPriceRange() {
+        if (items.size() == 1) {
+            return CURRENCY_SYMBOL + items.get(0).getPrice();
+        }
+        Collections.sort(items);
+        return CURRENCY_SYMBOL + items.get(0).getPrice() + "-" + items.get(items.size()-1).getPrice();
     }
 }

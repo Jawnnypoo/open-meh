@@ -5,6 +5,10 @@
     <string name="api_key">44onG25U6S-xp1F5gzWNqNEnk5zOxSP9</string>
 
     <string name="buy_it">Buy it.</string>
+    <string name="sold_out">Sold Out.</string>
     <string name="action_notifications">Notifications</string>
     <string name="action_settings">Settings</string>
+
+    <!--errors-->
+    <string name="error_no_browser">No browser found</string>
 </resources>

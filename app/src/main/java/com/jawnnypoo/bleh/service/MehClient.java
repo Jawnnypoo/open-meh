@@ -31,14 +31,14 @@ public class MehClient {
             RestAdapter restAdapter = new RestAdapter.Builder()
                     .setEndpoint(API_URL)
                     .setLogLevel(BuildConfig.DEBUG ? RestAdapter.LogLevel.FULL : RestAdapter.LogLevel.NONE)
-                    .setRequestInterceptor(new GiantbombRequestInterceptor())
+                    .setRequestInterceptor(new MehRequestInterceptor())
                     .build();
             mMeh = restAdapter.create(Meh.class);
         }
         return mMeh;
     }
 
-    public static class GiantbombRequestInterceptor implements RequestInterceptor {
+    public static class MehRequestInterceptor implements RequestInterceptor {
         @Override
         public void intercept(RequestFacade request) {
             request.addQueryParam(PARAM_API_KEY, API_KEY_VALUE);

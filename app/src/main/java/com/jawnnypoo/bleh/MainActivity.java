@@ -80,6 +80,9 @@ public class MainActivity extends ActionBarActivity {
             @Override
             public void failure(RetrofitError error) {
                 error.printStackTrace();
+                SnackbarManager.show(
+                        Snackbar.with(MainActivity.this)
+                                .text(R.string.error_with_server));
             }
         });
     }

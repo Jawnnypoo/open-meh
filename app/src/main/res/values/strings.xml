@@ -11,4 +11,5 @@
 
     <!--errors-->
     <string name="error_no_browser">No browser found</string>
+    <string name="error_with_server">Sorry, something went wrong :(</string>
 </resources>

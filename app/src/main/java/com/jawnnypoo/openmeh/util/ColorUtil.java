@@ -1,4 +1,4 @@
-package com.jawnnypoo.bleh.util;
+package com.jawnnypoo.openmeh.util;
 
 import android.graphics.Color;
 import android.graphics.PorterDuff;

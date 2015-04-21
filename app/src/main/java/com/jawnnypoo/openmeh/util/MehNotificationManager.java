@@ -1,4 +1,4 @@
-package com.jawnnypoo.bleh.util;
+package com.jawnnypoo.openmeh.util;
 
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -10,11 +10,11 @@ import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 
-import com.jawnnypoo.bleh.MainActivity;
-import com.jawnnypoo.bleh.R;
-import com.jawnnypoo.bleh.data.Deal;
-import com.jawnnypoo.bleh.data.Theme;
-import com.jawnnypoo.bleh.service.MehResponse;
+import com.jawnnypoo.openmeh.MainActivity;
+import com.jawnnypoo.openmeh.R;
+import com.jawnnypoo.openmeh.data.Deal;
+import com.jawnnypoo.openmeh.data.Theme;
+import com.jawnnypoo.openmeh.service.MehResponse;
 
 /**
  * Created by Jawn on 4/20/2015.

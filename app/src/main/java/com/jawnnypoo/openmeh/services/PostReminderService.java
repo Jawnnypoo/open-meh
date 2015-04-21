@@ -1,15 +1,15 @@
-package com.jawnnypoo.bleh.services;
+package com.jawnnypoo.openmeh.services;
 
 import android.app.IntentService;
 import android.content.Intent;
 import android.graphics.Bitmap;
 
 import com.bumptech.glide.Glide;
-import com.jawnnypoo.bleh.data.Deal;
-import com.jawnnypoo.bleh.service.MehClient;
-import com.jawnnypoo.bleh.service.MehResponse;
-import com.jawnnypoo.bleh.util.MehNotificationManager;
-import com.jawnnypoo.bleh.util.MehPreferencesManager;
+import com.jawnnypoo.openmeh.data.Deal;
+import com.jawnnypoo.openmeh.service.MehClient;
+import com.jawnnypoo.openmeh.service.MehResponse;
+import com.jawnnypoo.openmeh.util.MehNotificationManager;
+import com.jawnnypoo.openmeh.util.MehPreferencesManager;
 
 import java.util.concurrent.ExecutionException;
 

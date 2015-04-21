@@ -1,4 +1,4 @@
-package com.jawnnypoo.bleh.data;
+package com.jawnnypoo.openmeh.data;
 
 /**
  * Created by John on 4/17/2015.

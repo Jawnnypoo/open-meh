@@ -1,6 +1,6 @@
-package com.jawnnypoo.bleh.service;
+package com.jawnnypoo.openmeh.service;
 
-import com.jawnnypoo.bleh.BuildConfig;
+import com.jawnnypoo.openmeh.BuildConfig;
 
 import retrofit.Callback;
 import retrofit.RequestInterceptor;

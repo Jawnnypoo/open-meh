@@ -1,4 +1,4 @@
-package com.jawnnypoo.bleh;
+package com.jawnnypoo.openmeh;
 
 import android.app.Application;
 

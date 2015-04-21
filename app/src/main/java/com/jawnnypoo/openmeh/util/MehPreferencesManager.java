@@ -1,4 +1,4 @@
-package com.jawnnypoo.bleh.util;
+package com.jawnnypoo.openmeh.util;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
@@ -6,7 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 
-import com.jawnnypoo.bleh.services.PostReminderService;
+import com.jawnnypoo.openmeh.services.PostReminderService;
 
 import java.util.Calendar;
 

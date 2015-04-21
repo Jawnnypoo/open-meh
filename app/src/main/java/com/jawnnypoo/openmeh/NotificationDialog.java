@@ -1,4 +1,4 @@
-package com.jawnnypoo.bleh;
+package com.jawnnypoo.openmeh;
 
 import android.app.Dialog;
 import android.os.Bundle;
@@ -14,8 +14,8 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
 
-import com.jawnnypoo.bleh.data.Theme;
-import com.jawnnypoo.bleh.util.MehPreferencesManager;
+import com.jawnnypoo.openmeh.data.Theme;
+import com.jawnnypoo.openmeh.util.MehPreferencesManager;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;

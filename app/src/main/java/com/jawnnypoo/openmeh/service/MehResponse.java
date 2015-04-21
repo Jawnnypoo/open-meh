@@ -1,8 +1,8 @@
-package com.jawnnypoo.bleh.service;
+package com.jawnnypoo.openmeh.service;
 
-import com.jawnnypoo.bleh.data.Deal;
-import com.jawnnypoo.bleh.data.Poll;
-import com.jawnnypoo.bleh.data.Video;
+import com.jawnnypoo.openmeh.data.Deal;
+import com.jawnnypoo.openmeh.data.Poll;
+import com.jawnnypoo.openmeh.data.Video;
 
 /**
  * Created by John on 4/17/2015.

@@ -1,11 +1,11 @@
-package com.jawnnypoo.bleh.receivers;
+package com.jawnnypoo.openmeh.receivers;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
-import com.jawnnypoo.bleh.util.MehPreferencesManager;
-import com.jawnnypoo.bleh.util.MehReminderManager;
+import com.jawnnypoo.openmeh.util.MehPreferencesManager;
+import com.jawnnypoo.openmeh.util.MehReminderManager;
 
 /**
  * Boot receiver so that we can restore alarms when the phone boots.

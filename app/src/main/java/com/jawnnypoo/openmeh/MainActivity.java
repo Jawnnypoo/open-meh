@@ -1,4 +1,4 @@
-package com.jawnnypoo.bleh;
+package com.jawnnypoo.openmeh;
 
 import android.content.ActivityNotFoundException;
 import android.content.Context;
@@ -21,12 +21,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.jawnnypoo.bleh.data.Deal;
-import com.jawnnypoo.bleh.data.Theme;
-import com.jawnnypoo.bleh.service.MehClient;
-import com.jawnnypoo.bleh.service.MehResponse;
-import com.jawnnypoo.bleh.services.PostReminderService;
-import com.jawnnypoo.bleh.util.ColorUtil;
+import com.jawnnypoo.openmeh.data.Deal;
+import com.jawnnypoo.openmeh.data.Theme;
+import com.jawnnypoo.openmeh.service.MehClient;
+import com.jawnnypoo.openmeh.service.MehResponse;
+import com.jawnnypoo.openmeh.services.PostReminderService;
+import com.jawnnypoo.openmeh.util.ColorUtil;
 import com.nispok.snackbar.Snackbar;
 import com.nispok.snackbar.SnackbarManager;
 

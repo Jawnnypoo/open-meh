@@ -182,9 +182,26 @@ public class MainActivity extends ActionBarActivity {
             case R.id.action_notifications:
                 notificationDialog.show(getSupportFragmentManager(), NotificationDialog.TAG);
                 return true;
+            case R.id.action_share:
+                shareDeal();
+                return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void shareDeal() {
+        if (savedMehResponse == null || savedMehResponse.getDeal() == null) {
+            SnackbarManager.show(
+                    Snackbar.with(MainActivity.this)
+                            .text(R.string.error_nothing_to_share));
+            return;
+        }
+        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+        shareIntent.setType("text/plain");
+        shareIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.share_subject));
+        shareIntent.putExtra(Intent.EXTRA_TEXT, savedMehResponse.getDeal().getUrl());
+        startActivity(Intent.createChooser(shareIntent, getString(R.string.share_subject)));
     }
 
     private static class ImageAdapter extends PagerAdapter {

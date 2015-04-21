@@ -13,9 +13,9 @@ import java.util.Calendar;
 /**
  * Created by Jawn on 8/28/2014.
  */
-public class JournalReminderManager {
+public class MehReminderManager {
 
-    private static final String TAG = JournalReminderManager.class.getSimpleName();
+    private static final String TAG = MehReminderManager.class.getSimpleName();
 
     private static PendingIntent getReminderServicePendingIntent(Context context) {
         return PendingIntent.getService(context, 0, new Intent(context, PostReminderService.class), PendingIntent.FLAG_CANCEL_CURRENT);
@@ -51,8 +51,8 @@ public class JournalReminderManager {
      * @param context
      */
     public static void restoreReminderPreference(Context context) {
-        int hour = JournalPreferencesManager.getNotificationPreferenceHour(context);
-        int minute = JournalPreferencesManager.getNotificationPreferenceMinute(context);
+        int hour = MehPreferencesManager.getNotificationPreferenceHour(context);
+        int minute = MehPreferencesManager.getNotificationPreferenceMinute(context);
         scheduleDailyReminder(context, hour, minute);
     }
 

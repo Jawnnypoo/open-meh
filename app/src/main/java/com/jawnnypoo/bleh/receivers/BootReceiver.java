@@ -4,8 +4,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
-import com.jawnnypoo.bleh.util.JournalPreferencesManager;
-import com.jawnnypoo.bleh.util.JournalReminderManager;
+import com.jawnnypoo.bleh.util.MehPreferencesManager;
+import com.jawnnypoo.bleh.util.MehReminderManager;
 
 /**
  * Boot receiver so that we can restore alarms when the phone boots.
@@ -21,8 +21,8 @@ public class BootReceiver extends BroadcastReceiver {
     }
 
     private void restoreAlarms(Context context) {
-        if (JournalPreferencesManager.getNotificationsPreference(context)) {
-            JournalReminderManager.restoreReminderPreference(context);
+        if (MehPreferencesManager.getNotificationsPreference(context)) {
+            MehReminderManager.restoreReminderPreference(context);
         }
     }
 }

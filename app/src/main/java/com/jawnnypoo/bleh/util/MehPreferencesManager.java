@@ -14,7 +14,7 @@ import java.util.Calendar;
  * Manager to manage access to all of the preferences in the app
  * Created by Jawn on 8/28/2014.
  */
-public class JournalPreferencesManager {
+public class MehPreferencesManager {
 
     public static final String SHARED_PREFS = "meh_shared_prefs";
     private static final String SHARED_PREFS_NOTIFICATION_STATUS = "notification_status";

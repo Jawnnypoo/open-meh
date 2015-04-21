@@ -19,7 +19,7 @@ import com.jawnnypoo.bleh.service.MehResponse;
 /**
  * Created by Jawn on 4/20/2015.
  */
-public class JournalNotificationManager {
+public class MehNotificationManager {
 
     private static final int UNIQUE_ID = 42;
 
@@ -43,10 +43,10 @@ public class JournalNotificationManager {
             notificationBuilder.setLargeIcon(icon);
         }
 
-        if (JournalPreferencesManager.getNotificationSound(context)) {
+        if (MehPreferencesManager.getNotificationSound(context)) {
             notificationBuilder.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
         }
-        if (JournalPreferencesManager.getNotificationVibrate(context)) {
+        if (MehPreferencesManager.getNotificationVibrate(context)) {
             notificationBuilder.setVibrate(new long[]{100, 200, 100, 200});
         }
 

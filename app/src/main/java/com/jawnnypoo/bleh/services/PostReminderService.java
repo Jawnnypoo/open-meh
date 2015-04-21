@@ -8,8 +8,8 @@ import com.bumptech.glide.Glide;
 import com.jawnnypoo.bleh.data.Deal;
 import com.jawnnypoo.bleh.service.MehClient;
 import com.jawnnypoo.bleh.service.MehResponse;
-import com.jawnnypoo.bleh.util.JournalNotificationManager;
-import com.jawnnypoo.bleh.util.JournalPreferencesManager;
+import com.jawnnypoo.bleh.util.MehNotificationManager;
+import com.jawnnypoo.bleh.util.MehPreferencesManager;
 
 import java.util.concurrent.ExecutionException;
 
@@ -31,7 +31,7 @@ public class PostReminderService extends IntentService {
     }
 
     private void postNotification() {
-        if (!JournalPreferencesManager.getNotificationsPreference(getApplicationContext())) {
+        if (!MehPreferencesManager.getNotificationsPreference(getApplicationContext())) {
             //Notifications disabled, go away
             return;
         }
@@ -52,6 +52,6 @@ public class PostReminderService extends IntentService {
                     .into(192, 192)
                     .get();
         } catch (ExecutionException | InterruptedException e) { }
-        JournalNotificationManager.postDailyNotification(getApplicationContext(), response, icon);
+        MehNotificationManager.postDailyNotification(getApplicationContext(), response, icon);
     }
 }

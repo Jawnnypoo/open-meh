@@ -15,7 +15,7 @@ import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import com.jawnnypoo.bleh.data.Theme;
-import com.jawnnypoo.bleh.util.JournalPreferencesManager;
+import com.jawnnypoo.bleh.util.MehPreferencesManager;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -59,25 +59,25 @@ public class NotificationDialog extends DialogFragment {
     }
 
     private void setupUi() {
-        onOffSwitch.setChecked(JournalPreferencesManager.getNotificationsPreference(getActivity()));
-        soundCheck.setChecked(JournalPreferencesManager.getNotificationSound(getActivity()));
-        vibrateCheck.setChecked(JournalPreferencesManager.getNotificationVibrate(getActivity()));
+        onOffSwitch.setChecked(MehPreferencesManager.getNotificationsPreference(getActivity()));
+        soundCheck.setChecked(MehPreferencesManager.getNotificationSound(getActivity()));
+        vibrateCheck.setChecked(MehPreferencesManager.getNotificationVibrate(getActivity()));
         onOffSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                JournalPreferencesManager.setNotificationsPreference(getActivity(), isChecked);
+                MehPreferencesManager.setNotificationsPreference(getActivity(), isChecked);
             }
         });
         soundCheck.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                JournalPreferencesManager.setNotificationSound(getActivity(), isChecked);
+                MehPreferencesManager.setNotificationSound(getActivity(), isChecked);
             }
         });
         vibrateCheck.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                JournalPreferencesManager.setNotificationVibrate(getActivity(), isChecked);
+                MehPreferencesManager.setNotificationVibrate(getActivity(), isChecked);
             }
         });
     }

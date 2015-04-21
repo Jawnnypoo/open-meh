@@ -25,17 +25,17 @@ import com.jawnnypoo.bleh.data.Deal;
 import com.jawnnypoo.bleh.data.Theme;
 import com.jawnnypoo.bleh.service.MehClient;
 import com.jawnnypoo.bleh.service.MehResponse;
+import com.jawnnypoo.bleh.services.PostReminderService;
 import com.jawnnypoo.bleh.util.ColorUtil;
 import com.nispok.snackbar.Snackbar;
 import com.nispok.snackbar.SnackbarManager;
 
-import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Locale;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import butterknife.OnClick;
 import me.relex.circleindicator.CircleIndicator;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -59,8 +59,22 @@ public class MainActivity extends ActionBarActivity {
     TextView title;
     @InjectView(R.id.deal_description)
     TextView description;
+    @InjectView(R.id.deal_story)
+    ImageView story;
+    @InjectView(R.id.deal_video)
+    ImageView video;
 
-    NumberFormat priceFormatter = NumberFormat.getCurrencyInstance(Locale.US);
+    MehResponse savedMehResponse;
+
+    @OnClick(R.id.deal_video)
+    void onVideoClick(View view) {
+        openPage(savedMehResponse.getVideo().getUrl());
+    }
+
+    @OnClick(R.id.deal_story)
+    void onStoryClick(View view) {
+        //TODO show story
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,17 +88,17 @@ public class MainActivity extends ActionBarActivity {
         MehClient.instance().getMeh(new Callback<MehResponse>() {
             @Override
             public void success(MehResponse mehResponse, Response response) {
+                savedMehResponse = mehResponse;
                 bindDeal(mehResponse.getDeal());
             }
 
             @Override
             public void failure(RetrofitError error) {
                 error.printStackTrace();
-                SnackbarManager.show(
-                        Snackbar.with(MainActivity.this)
-                                .text(R.string.error_with_server));
+                showError();
             }
         });
+        testNotification();
     }
 
     private void setupDialogs() {
@@ -117,16 +131,20 @@ public class MainActivity extends ActionBarActivity {
     }
 
     private void bindTheme(Theme theme) {
-        int accentColor = Color.parseColor(theme.getAccentColor());
-        int backgroundColor = Color.parseColor(theme.getBackgroundColor());
+        int accentColor = theme.getAccentColor();
+        int darkerAccentColor = ColorUtil.getDarkerColor(accentColor);
+        int backgroundColor = theme.getBackgroundColor();
         int foreGround = theme.getForeground() == Theme.FOREGROUND_LIGHT ? Color.WHITE : Color.BLACK;
         title.setTextColor(accentColor);
         description.setTextColor(foreGround);
         toolbar.setBackgroundColor(accentColor);
         buy.setTextColor(backgroundColor);
         buy.getBackground().setColorFilter(accentColor, PorterDuff.Mode.MULTIPLY);
-        ColorUtil.setStatusBarAndNavBarColor(getWindow(), ColorUtil.getDarkerColor(accentColor));
+        video.getDrawable().setColorFilter(accentColor, PorterDuff.Mode.MULTIPLY);
+        story.getDrawable().setColorFilter(accentColor, PorterDuff.Mode.MULTIPLY);
+        ColorUtil.setStatusBarAndNavBarColor(getWindow(), darkerAccentColor);
         getWindow().getDecorView().setBackgroundColor(backgroundColor);
+        notificationDialog.setTheme(theme);
     }
 
     private void openPage(String url) {
@@ -139,6 +157,16 @@ public class MainActivity extends ActionBarActivity {
                     Snackbar.with(this)
                             .text(R.string.error_no_browser));
         }
+    }
+
+    private void showError() {
+        SnackbarManager.show(
+                Snackbar.with(MainActivity.this)
+                        .text(R.string.error_with_server));
+    }
+
+    private void testNotification() {
+        startService(new Intent(this, PostReminderService.class));
     }
 
     @Override

@@ -6,4 +6,12 @@ package com.jawnnypoo.bleh.data;
 public class Story {
     String title;
     String body;
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getBody() {
+        return body;
+    }
 }

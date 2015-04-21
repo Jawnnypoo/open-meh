@@ -2,14 +2,17 @@ package com.jawnnypoo.bleh.data;
 
 import android.text.TextUtils;
 
+import java.text.NumberFormat;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by John on 4/17/2015.
  */
 public class Deal {
     private static final String CURRENCY_SYMBOL = "$";
+    private NumberFormat PRICE_FORMATTER = NumberFormat.getCurrencyInstance(Locale.US);
     String features;
     String id;
     List<Item> items;
@@ -57,6 +60,10 @@ public class Deal {
         return specifications;
     }
 
+    public Story getStory() {
+        return story;
+    }
+
     public Theme getTheme() {
         return theme;
     }
@@ -72,9 +79,10 @@ public class Deal {
     }
     public String getPriceRange() {
         if (items.size() == 1) {
-            return CURRENCY_SYMBOL + items.get(0).getPrice();
+            return PRICE_FORMATTER.format(items.get(0).getPrice());
         }
         Collections.sort(items);
-        return CURRENCY_SYMBOL + items.get(0).getPrice() + "-" + items.get(items.size()-1).getPrice();
+        return PRICE_FORMATTER.format(items.get(0).getPrice()) + "-"
+                + PRICE_FORMATTER.format(items.get(items.size()-1).getPrice());
     }
 }

@@ -1,7 +1,11 @@
 package com.jawnnypoo.bleh.util;
 
 import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.StateListDrawable;
 import android.os.Build;
+import android.view.View;
 import android.view.Window;
 
 /**
@@ -21,6 +25,31 @@ public class ColorUtil {
         if (Build.VERSION.SDK_INT >= 21) {
             window.setStatusBarColor(color);
             window.setNavigationBarColor(color);
+        }
+    }
+
+    //TODO fix this, it does not work :(
+    public static void setBackgroundColorStates(View view, int colorNormal, int colorPressed) {
+        StateListDrawable states = new StateListDrawable();
+        Drawable pressed = view.getBackground().mutate();
+        pressed.setColorFilter(colorPressed, PorterDuff.Mode.MULTIPLY);
+        Drawable normal = view.getBackground().mutate();
+        normal.setColorFilter(colorNormal, PorterDuff.Mode.MULTIPLY);
+        states.addState(new int[] {android.R.attr.state_pressed},
+                pressed);
+        //disabled state
+        states.addState(new int[] {-android.R.attr.state_enabled},
+                pressed);
+        states.addState(new int[] { },
+                normal);
+        setBackgroundDrawable(view, states);
+    }
+
+    public static void setBackgroundDrawable(View view, Drawable drawable) {
+        if (Build.VERSION.SDK_INT >= 16) {
+            view.setBackground(drawable);
+        } else {
+            view.setBackgroundDrawable(drawable);
         }
     }
 }

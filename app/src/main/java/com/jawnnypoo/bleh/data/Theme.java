@@ -1,5 +1,7 @@
 package com.jawnnypoo.bleh.data;
 
+import android.graphics.Color;
+
 /**
  * Created by John on 4/17/2015.
  */
@@ -13,8 +15,8 @@ public class Theme {
     String backgroundColor;
     String backgroundImage;
 
-    public String getAccentColor() {
-        return accentColor;
+    public int getAccentColor() {
+        return Color.parseColor(accentColor);
     }
 
     public int getForeground() {
@@ -22,8 +24,8 @@ public class Theme {
                 FOREGROUND_DARK;
     }
 
-    public String getBackgroundColor() {
-        return backgroundColor;
+    public int getBackgroundColor() {
+        return Color.parseColor(backgroundColor);
     }
 
     public String getBackgroundImage() {

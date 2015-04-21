@@ -24,6 +24,9 @@ public class MehClient {
         void getMeh(
                 Callback<MehResponse> responseCallback
         );
+
+        @GET("/current.json")
+        MehResponse getMeh();
     }
 
     public static Meh instance() {

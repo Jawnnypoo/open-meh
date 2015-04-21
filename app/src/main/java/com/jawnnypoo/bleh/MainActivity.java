@@ -85,9 +85,27 @@ public class MainActivity extends ActionBarActivity {
         imagePagerAdapter = new ImageAdapter(this);
         imageViewPager.setAdapter(imagePagerAdapter);
         setupDialogs();
+        loadMeh();
+        //testNotification();
+    }
+
+    private void setupDialogs() {
+        notificationDialog = (NotificationDialog) getSupportFragmentManager()
+                .findFragmentByTag(NotificationDialog.TAG);
+        if (notificationDialog == null) {
+            notificationDialog = new NotificationDialog();
+        }
+        //Restore listeners if needed
+    }
+
+    private void loadMeh() {
         MehClient.instance().getMeh(new Callback<MehResponse>() {
             @Override
             public void success(MehResponse mehResponse, Response response) {
+                if (mehResponse == null || mehResponse.getDeal() == null) {
+                    showError();
+                    return;
+                }
                 savedMehResponse = mehResponse;
                 bindDeal(mehResponse.getDeal());
             }
@@ -98,16 +116,6 @@ public class MainActivity extends ActionBarActivity {
                 showError();
             }
         });
-        testNotification();
-    }
-
-    private void setupDialogs() {
-        notificationDialog = (NotificationDialog) getSupportFragmentManager()
-                .findFragmentByTag(NotificationDialog.TAG);
-        if (notificationDialog == null) {
-            notificationDialog = new NotificationDialog();
-        }
-        //Restore listeners if needed
     }
 
     private void bindDeal(final Deal deal) {

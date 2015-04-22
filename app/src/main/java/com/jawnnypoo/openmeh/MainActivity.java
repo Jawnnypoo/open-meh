@@ -9,8 +9,10 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,12 +23,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.google.gson.Gson;
 import com.jawnnypoo.openmeh.data.Deal;
 import com.jawnnypoo.openmeh.data.Theme;
 import com.jawnnypoo.openmeh.service.MehClient;
 import com.jawnnypoo.openmeh.service.MehResponse;
 import com.jawnnypoo.openmeh.services.PostReminderService;
 import com.jawnnypoo.openmeh.util.ColorUtil;
+import com.jawnnypoo.openmeh.util.ViewUtil;
 import com.nispok.snackbar.Snackbar;
 import com.nispok.snackbar.SnackbarManager;
 
@@ -40,14 +44,18 @@ import me.relex.circleindicator.CircleIndicator;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
+import timber.log.Timber;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends AppCompatActivity {
 
+    private static final String KEY_MEH_RESPONSE = "KEY_MEH_RESPONSE";
     NotificationDialog notificationDialog;
 
     @InjectView(R.id.toolbar)
     Toolbar toolbar;
+    @InjectView(R.id.swipe_refresh_layout)
+    SwipeRefreshLayout swipeRefreshLayout;
     @InjectView(R.id.indicator)
     CircleIndicator indicator;
     @InjectView(R.id.deal_image_view_pager)
@@ -65,6 +73,7 @@ public class MainActivity extends ActionBarActivity {
     ImageView video;
 
     MehResponse savedMehResponse;
+    Gson gson = new Gson();
 
     @OnClick(R.id.deal_video)
     void onVideoClick(View view) {
@@ -84,8 +93,32 @@ public class MainActivity extends ActionBarActivity {
         setSupportActionBar(toolbar);
         imagePagerAdapter = new ImageAdapter(this);
         imageViewPager.setAdapter(imagePagerAdapter);
+        ViewUtil.onPreDraw(toolbar, new Runnable() {
+            @Override
+            public void run() {
+                swipeRefreshLayout.setProgressViewOffset(false, toolbar.getBottom(),
+                        toolbar.getBottom() + getResources().getDimensionPixelSize(R.dimen.refresh_pull_amount));
+            }
+        });
+
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                loadMeh();
+            }
+        });
         setupDialogs();
-        loadMeh();
+        if (savedInstanceState != null) {
+            String mehResponseJson = savedInstanceState.getString(KEY_MEH_RESPONSE);
+            if (!TextUtils.isEmpty(mehResponseJson)) {
+                savedMehResponse = gson.fromJson(mehResponseJson, MehResponse.class);
+                Timber.d("Restored from savedInstanceState");
+                bindDeal(savedMehResponse.getDeal());
+            }
+        }
+        if (savedMehResponse == null) {
+            loadMeh();
+        }
         //testNotification();
     }
 
@@ -99,9 +132,11 @@ public class MainActivity extends ActionBarActivity {
     }
 
     private void loadMeh() {
+        swipeRefreshLayout.setRefreshing(true);
         MehClient.instance().getMeh(new Callback<MehResponse>() {
             @Override
             public void success(MehResponse mehResponse, Response response) {
+                swipeRefreshLayout.setRefreshing(false);
                 if (mehResponse == null || mehResponse.getDeal() == null) {
                     showError();
                     return;
@@ -112,6 +147,7 @@ public class MainActivity extends ActionBarActivity {
 
             @Override
             public void failure(RetrofitError error) {
+                swipeRefreshLayout.setRefreshing(false);
                 error.printStackTrace();
                 showError();
             }
@@ -152,7 +188,16 @@ public class MainActivity extends ActionBarActivity {
         story.getDrawable().setColorFilter(accentColor, PorterDuff.Mode.MULTIPLY);
         ColorUtil.setStatusBarAndNavBarColor(getWindow(), darkerAccentColor);
         getWindow().getDecorView().setBackgroundColor(backgroundColor);
+        swipeRefreshLayout.setColorSchemeColors(theme.getForeground() == Theme.FOREGROUND_LIGHT ? backgroundColor : accentColor);
         notificationDialog.setTheme(theme);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if (savedMehResponse != null) {
+            outState.putString(KEY_MEH_RESPONSE, gson.toJson(savedMehResponse));
+        }
     }
 
     private void openPage(String url) {

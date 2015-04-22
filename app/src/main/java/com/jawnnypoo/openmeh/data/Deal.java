@@ -12,7 +12,7 @@ import java.util.Locale;
  */
 public class Deal {
     private static final String CURRENCY_SYMBOL = "$";
-    private NumberFormat PRICE_FORMATTER = NumberFormat.getCurrencyInstance(Locale.US);
+    private static NumberFormat PRICE_FORMATTER = NumberFormat.getCurrencyInstance(Locale.US);
     String features;
     String id;
     List<Item> items;

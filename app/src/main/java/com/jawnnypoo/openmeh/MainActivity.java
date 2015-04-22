@@ -11,6 +11,7 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -18,7 +19,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
     ViewPager imageViewPager;
     ImageAdapter imagePagerAdapter;
     @InjectView(R.id.deal_buy_button)
-    Button buy;
+    AppCompatButton buy;
     @InjectView(R.id.deal_title)
     TextView title;
     @InjectView(R.id.deal_description)
@@ -182,8 +182,8 @@ public class MainActivity extends AppCompatActivity {
         title.setTextColor(accentColor);
         description.setTextColor(foreGround);
         toolbar.setBackgroundColor(accentColor);
+        buy.setSupportBackgroundTintList(ColorUtil.createColorStateList(accentColor, ColorUtil.getDarkerColor(accentColor)));
         buy.setTextColor(backgroundColor);
-        buy.getBackground().setColorFilter(accentColor, PorterDuff.Mode.MULTIPLY);
         video.getDrawable().setColorFilter(accentColor, PorterDuff.Mode.MULTIPLY);
         story.getDrawable().setColorFilter(accentColor, PorterDuff.Mode.MULTIPLY);
         ColorUtil.setStatusBarAndNavBarColor(getWindow(), darkerAccentColor);

@@ -1,5 +1,6 @@
 package com.jawnnypoo.openmeh.util;
 
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
@@ -43,6 +44,20 @@ public class ColorUtil {
         states.addState(new int[] { },
                 normal);
         setBackgroundDrawable(view, states);
+    }
+
+    public static ColorStateList createColorStateList(int color) {
+        return ColorStateList.valueOf(color);
+    }
+
+    public static ColorStateList createColorStateList(int color, int pressed) {
+        return new ColorStateList(new int[][]{
+                new int[]{android.R.attr.state_pressed},
+                new int[]{}
+        }, new int[]{
+                pressed,
+                color
+        });
     }
 
     public static void setBackgroundDrawable(View view, Drawable drawable) {

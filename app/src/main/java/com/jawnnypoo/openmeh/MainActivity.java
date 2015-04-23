@@ -9,7 +9,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.Toolbar;
@@ -30,7 +29,7 @@ import com.jawnnypoo.openmeh.service.MehClient;
 import com.jawnnypoo.openmeh.service.MehResponse;
 import com.jawnnypoo.openmeh.services.PostReminderService;
 import com.jawnnypoo.openmeh.util.ColorUtil;
-import com.jawnnypoo.openmeh.util.ViewUtil;
+import com.jawnnypoo.openmeh.util.LoadUtil;
 import com.nispok.snackbar.Snackbar;
 import com.nispok.snackbar.SnackbarManager;
 
@@ -50,12 +49,17 @@ import timber.log.Timber;
 public class MainActivity extends AppCompatActivity {
 
     private static final String KEY_MEH_RESPONSE = "KEY_MEH_RESPONSE";
+    private static final int ANIMATION_TIME = 800;
     NotificationDialog notificationDialog;
 
     @InjectView(R.id.toolbar)
     Toolbar toolbar;
-    @InjectView(R.id.swipe_refresh_layout)
-    SwipeRefreshLayout swipeRefreshLayout;
+    @InjectView(R.id.activity_root)
+    View root;
+    @InjectView(R.id.progress)
+    View progress;
+    @InjectView(R.id.failed)
+    View failedView;
     @InjectView(R.id.indicator)
     CircleIndicator indicator;
     @InjectView(R.id.deal_image_view_pager)
@@ -93,21 +97,13 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         imagePagerAdapter = new ImageAdapter(this);
         imageViewPager.setAdapter(imagePagerAdapter);
-        ViewUtil.onPreDraw(toolbar, new Runnable() {
+        setupDialogs();
+        failedView.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void run() {
-                swipeRefreshLayout.setProgressViewOffset(false, toolbar.getBottom(),
-                        toolbar.getBottom() + getResources().getDimensionPixelSize(R.dimen.refresh_pull_amount));
-            }
-        });
-
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
+            public void onClick(View v) {
                 loadMeh();
             }
         });
-        setupDialogs();
         if (savedInstanceState != null) {
             String mehResponseJson = savedInstanceState.getString(KEY_MEH_RESPONSE);
             if (!TextUtils.isEmpty(mehResponseJson)) {
@@ -116,6 +112,7 @@ public class MainActivity extends AppCompatActivity {
                 bindDeal(savedMehResponse.getDeal());
             }
         }
+        //testMeh();
         if (savedMehResponse == null) {
             loadMeh();
         }
@@ -130,11 +127,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void loadMeh() {
-        swipeRefreshLayout.setRefreshing(true);
+        progress.setVisibility(View.VISIBLE);
+        root.setVisibility(View.GONE);
         MehClient.instance().getMeh(new Callback<MehResponse>() {
             @Override
             public void success(MehResponse mehResponse, Response response) {
-                swipeRefreshLayout.setRefreshing(false);
+                progress.setVisibility(View.GONE);
+                root.setVisibility(View.VISIBLE);
                 if (mehResponse == null || mehResponse.getDeal() == null) {
                     showError();
                     return;
@@ -145,7 +144,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void failure(RetrofitError error) {
-                swipeRefreshLayout.setRefreshing(false);
+                progress.setVisibility(View.GONE);
                 error.printStackTrace();
                 showError();
             }
@@ -165,6 +164,8 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
         }
+        root.setAlpha(0f);
+        root.animate().alpha(1.0f).setDuration(ANIMATION_TIME);
         title.setText(deal.getTitle());
         description.setText(deal.getFeatures());
         imagePagerAdapter.setData(deal.getPhotos());
@@ -179,7 +180,7 @@ public class MainActivity extends AppCompatActivity {
         int foreGround = theme.getForeground() == Theme.FOREGROUND_LIGHT ? Color.WHITE : Color.BLACK;
         title.setTextColor(accentColor);
         description.setTextColor(foreGround);
-        toolbar.setBackgroundColor(accentColor);
+        ColorUtil.backgroundColor(toolbar, accentColor, ANIMATION_TIME);
         buy.setSupportBackgroundTintList(ColorUtil.createColorStateList(accentColor, ColorUtil.getDarkerColor(accentColor)));
         buy.setTextColor(backgroundColor);
         video.getDrawable().setColorFilter(accentColor, PorterDuff.Mode.MULTIPLY);
@@ -187,6 +188,9 @@ public class MainActivity extends AppCompatActivity {
         ColorUtil.setStatusBarAndNavBarColor(getWindow(), darkerAccentColor);
         getWindow().getDecorView().setBackgroundColor(backgroundColor);
         swipeRefreshLayout.setColorSchemeColors(theme.getForeground() == Theme.FOREGROUND_LIGHT ? backgroundColor : accentColor);
+        ColorUtil.animateStatusBarAndNavBarColors(getWindow(), darkerAccentColor, ANIMATION_TIME);
+        View decorView = getWindow().getDecorView();
+        ColorUtil.backgroundColor(decorView, backgroundColor, ANIMATION_TIME);
     }
 
     @Override
@@ -210,6 +214,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void showError() {
+        failedView.setVisibility(View.VISIBLE);
         SnackbarManager.show(
                 Snackbar.with(MainActivity.this)
                         .text(R.string.error_with_server));
@@ -217,6 +222,13 @@ public class MainActivity extends AppCompatActivity {
 
     private void testNotification() {
         startService(new Intent(this, PostReminderService.class));
+    }
+
+    private void testMeh() {
+        savedMehResponse = gson.fromJson(
+                LoadUtil.loadJSONFromAsset(this, "4-20-2015.json"), MehResponse.class);
+        Timber.d(savedMehResponse.toString());
+        bindDeal(savedMehResponse.getDeal());
     }
 
     @Override

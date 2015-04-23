@@ -24,4 +24,8 @@ public class MehResponse {
         return video;
     }
 
+    @Override
+    public String toString() {
+        return deal.toString();
+    }
 }

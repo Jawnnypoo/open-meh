@@ -29,6 +29,7 @@ import com.jawnnypoo.openmeh.service.MehClient;
 import com.jawnnypoo.openmeh.service.MehResponse;
 import com.jawnnypoo.openmeh.services.PostReminderService;
 import com.jawnnypoo.openmeh.util.ColorUtil;
+import com.jawnnypoo.openmeh.util.LoadUtil;
 import com.nispok.snackbar.Snackbar;
 import com.nispok.snackbar.SnackbarManager;
 
@@ -111,6 +112,7 @@ public class MainActivity extends AppCompatActivity {
                 bindDeal(savedMehResponse.getDeal());
             }
         }
+        //testMeh();
         if (savedMehResponse == null) {
             loadMeh();
         }
@@ -220,6 +222,13 @@ public class MainActivity extends AppCompatActivity {
 
     private void testNotification() {
         startService(new Intent(this, PostReminderService.class));
+    }
+
+    private void testMeh() {
+        savedMehResponse = gson.fromJson(
+                LoadUtil.loadJSONFromAsset(this, "4-20-2015.json"), MehResponse.class);
+        Timber.d(savedMehResponse.toString());
+        bindDeal(savedMehResponse.getDeal());
     }
 
     @Override

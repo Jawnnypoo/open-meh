@@ -90,4 +90,9 @@ public class Deal {
         return PRICE_FORMATTER.format(items.get(0).getPrice()) + "-"
                 + PRICE_FORMATTER.format(items.get(items.size()-1).getPrice());
     }
+
+    @Override
+    public String toString() {
+        return id + ":" + title;
+    }
 }

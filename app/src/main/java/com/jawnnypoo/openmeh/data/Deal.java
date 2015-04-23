@@ -11,7 +11,6 @@ import java.util.Locale;
  * Created by John on 4/17/2015.
  */
 public class Deal {
-    private static final String CURRENCY_SYMBOL = "$";
     private static NumberFormat PRICE_FORMATTER = NumberFormat.getCurrencyInstance(Locale.US);
     String features;
     String id;
@@ -82,6 +81,12 @@ public class Deal {
             return PRICE_FORMATTER.format(items.get(0).getPrice());
         }
         Collections.sort(items);
+        Float lowestPrice = items.get(0).getPrice();
+        Float highestPrice = items.get(items.size()-1).getPrice();
+        //Same price between highest and lowest, just show the one price
+        if (lowestPrice.equals(highestPrice)) {
+            return PRICE_FORMATTER.format(items.get(0).getPrice());
+        }
         return PRICE_FORMATTER.format(items.get(0).getPrice()) + "-"
                 + PRICE_FORMATTER.format(items.get(items.size()-1).getPrice());
     }

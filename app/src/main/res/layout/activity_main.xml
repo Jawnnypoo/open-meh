@@ -5,11 +5,9 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/swipe_refresh_layout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+
     <ScrollView
+        android:id="@+id/activity_root"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -86,7 +84,14 @@
     </LinearLayout>
 
     </ScrollView>
-    </android.support.v4.widget.SwipeRefreshLayout>
+
+    <ProgressBar
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/progress"
+        android:layout_gravity="center" />
+
 
     <include layout="@layout/toolbar" />
 </merge>

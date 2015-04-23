@@ -9,7 +9,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.Toolbar;
@@ -30,7 +29,6 @@ import com.jawnnypoo.openmeh.service.MehClient;
 import com.jawnnypoo.openmeh.service.MehResponse;
 import com.jawnnypoo.openmeh.services.PostReminderService;
 import com.jawnnypoo.openmeh.util.ColorUtil;
-import com.jawnnypoo.openmeh.util.ViewUtil;
 import com.nispok.snackbar.Snackbar;
 import com.nispok.snackbar.SnackbarManager;
 
@@ -54,8 +52,10 @@ public class MainActivity extends AppCompatActivity {
 
     @InjectView(R.id.toolbar)
     Toolbar toolbar;
-    @InjectView(R.id.swipe_refresh_layout)
-    SwipeRefreshLayout swipeRefreshLayout;
+    @InjectView(R.id.activity_root)
+    View root;
+    @InjectView(R.id.progress)
+    View progress;
     @InjectView(R.id.indicator)
     CircleIndicator indicator;
     @InjectView(R.id.deal_image_view_pager)
@@ -93,20 +93,6 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         imagePagerAdapter = new ImageAdapter(this);
         imageViewPager.setAdapter(imagePagerAdapter);
-        ViewUtil.onPreDraw(toolbar, new Runnable() {
-            @Override
-            public void run() {
-                swipeRefreshLayout.setProgressViewOffset(false, toolbar.getBottom(),
-                        toolbar.getBottom() + getResources().getDimensionPixelSize(R.dimen.refresh_pull_amount));
-            }
-        });
-
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                loadMeh();
-            }
-        });
         setupDialogs();
         if (savedInstanceState != null) {
             String mehResponseJson = savedInstanceState.getString(KEY_MEH_RESPONSE);
@@ -132,11 +118,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void loadMeh() {
-        swipeRefreshLayout.setRefreshing(true);
+        progress.setVisibility(View.VISIBLE);
+        root.setVisibility(View.GONE);
         MehClient.instance().getMeh(new Callback<MehResponse>() {
             @Override
             public void success(MehResponse mehResponse, Response response) {
-                swipeRefreshLayout.setRefreshing(false);
+                progress.setVisibility(View.GONE);
+                root.setVisibility(View.VISIBLE);
                 if (mehResponse == null || mehResponse.getDeal() == null) {
                     showError();
                     return;
@@ -147,7 +135,8 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void failure(RetrofitError error) {
-                swipeRefreshLayout.setRefreshing(false);
+                progress.setVisibility(View.GONE);
+                root.setVisibility(View.VISIBLE);
                 error.printStackTrace();
                 showError();
             }
@@ -188,7 +177,6 @@ public class MainActivity extends AppCompatActivity {
         story.getDrawable().setColorFilter(accentColor, PorterDuff.Mode.MULTIPLY);
         ColorUtil.setStatusBarAndNavBarColor(getWindow(), darkerAccentColor);
         getWindow().getDecorView().setBackgroundColor(backgroundColor);
-        swipeRefreshLayout.setColorSchemeColors(theme.getForeground() == Theme.FOREGROUND_LIGHT ? backgroundColor : accentColor);
         notificationDialog.setTheme(theme);
     }
 

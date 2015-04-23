@@ -123,10 +123,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupDialogs() {
-        notificationDialog = (NotificationDialog) getSupportFragmentManager()
-                .findFragmentByTag(NotificationDialog.TAG);
         if (notificationDialog == null) {
-            notificationDialog = new NotificationDialog();
+            notificationDialog = new NotificationDialog(this);
         }
         //Restore listeners if needed
     }
@@ -189,7 +187,6 @@ public class MainActivity extends AppCompatActivity {
         ColorUtil.setStatusBarAndNavBarColor(getWindow(), darkerAccentColor);
         getWindow().getDecorView().setBackgroundColor(backgroundColor);
         swipeRefreshLayout.setColorSchemeColors(theme.getForeground() == Theme.FOREGROUND_LIGHT ? backgroundColor : accentColor);
-        notificationDialog.setTheme(theme);
     }
 
     @Override
@@ -233,7 +230,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_notifications:
-                notificationDialog.show(getSupportFragmentManager(), NotificationDialog.TAG);
+                notificationDialog.show();
                 return true;
             case R.id.action_share:
                 shareDeal();

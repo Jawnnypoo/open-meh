@@ -1,20 +1,14 @@
 package com.jawnnypoo.openmeh;
 
-import android.app.Dialog;
+import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.DialogFragment;
+import android.support.v7.app.AppCompatDialog;
 import android.support.v7.widget.SwitchCompat;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
 
-import com.jawnnypoo.openmeh.data.Theme;
 import com.jawnnypoo.openmeh.util.MehPreferencesManager;
 
 import butterknife.ButterKnife;
@@ -22,9 +16,7 @@ import butterknife.InjectView;
 import butterknife.OnClick;
 
 
-public class NotificationDialog extends DialogFragment {
-
-    public static String TAG = "NotificationDialog";
+public class NotificationDialog extends AppCompatDialog {
 
     @InjectView(R.id.notification_root)
     View root;
@@ -39,55 +31,48 @@ public class NotificationDialog extends DialogFragment {
     @InjectView(R.id.notification_vibrate)
     CheckBox vibrateCheck;
 
-    Theme theme;
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        final View v = inflater.inflate(R.layout.dialog_notifications, container, false);
-        ButterKnife.inject(this, v);
-        setupUi();
-        applyTheme();
-        return v;
+    public NotificationDialog(Context context) {
+        super(context);
     }
 
-    @NonNull
+    public NotificationDialog(Context context, int theme) {
+        super(context, theme);
+    }
+
+    public NotificationDialog(Context context, boolean cancelable, OnCancelListener cancelListener) {
+        super(context, cancelable, cancelListener);
+    }
+
     @Override
-    public Dialog onCreateDialog(Bundle savedInstanceState) {
-        Dialog dialog = super.onCreateDialog(savedInstanceState);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        return dialog;
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.dialog_notifications);
+        ButterKnife.inject(this);
+        setupUi();
     }
 
     private void setupUi() {
-        onOffSwitch.setChecked(MehPreferencesManager.getNotificationsPreference(getActivity()));
-        soundCheck.setChecked(MehPreferencesManager.getNotificationSound(getActivity()));
-        vibrateCheck.setChecked(MehPreferencesManager.getNotificationVibrate(getActivity()));
+        onOffSwitch.setChecked(MehPreferencesManager.getNotificationsPreference(getContext()));
+        soundCheck.setChecked(MehPreferencesManager.getNotificationSound(getContext()));
+        vibrateCheck.setChecked(MehPreferencesManager.getNotificationVibrate(getContext()));
         onOffSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                MehPreferencesManager.setNotificationsPreference(getActivity(), isChecked);
+                MehPreferencesManager.setNotificationsPreference(getContext(), isChecked);
             }
         });
         soundCheck.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                MehPreferencesManager.setNotificationSound(getActivity(), isChecked);
+                MehPreferencesManager.setNotificationSound(getContext(), isChecked);
             }
         });
         vibrateCheck.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                MehPreferencesManager.setNotificationVibrate(getActivity(), isChecked);
+                MehPreferencesManager.setNotificationVibrate(getContext(), isChecked);
             }
         });
-    }
-
-    public void setTheme(Theme theme) {
-        this.theme = theme;
-    }
-
-    public void applyTheme() {
-        //TODO apply style
     }
 
     @OnClick(R.id.notification_switch_root)

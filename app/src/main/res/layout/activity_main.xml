@@ -92,6 +92,15 @@
         android:id="@+id/progress"
         android:layout_gravity="center" />
 
+    <ImageView
+        android:id="@+id/failed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_meh"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        android:contentDescription="@null"/>
+
 
     <include layout="@layout/toolbar" />
 </merge>

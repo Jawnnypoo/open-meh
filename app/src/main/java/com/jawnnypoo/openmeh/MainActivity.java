@@ -56,6 +56,8 @@ public class MainActivity extends AppCompatActivity {
     View root;
     @InjectView(R.id.progress)
     View progress;
+    @InjectView(R.id.failed)
+    View failedView;
     @InjectView(R.id.indicator)
     CircleIndicator indicator;
     @InjectView(R.id.deal_image_view_pager)
@@ -94,6 +96,12 @@ public class MainActivity extends AppCompatActivity {
         imagePagerAdapter = new ImageAdapter(this);
         imageViewPager.setAdapter(imagePagerAdapter);
         setupDialogs();
+        failedView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                loadMeh();
+            }
+        });
         if (savedInstanceState != null) {
             String mehResponseJson = savedInstanceState.getString(KEY_MEH_RESPONSE);
             if (!TextUtils.isEmpty(mehResponseJson)) {
@@ -136,7 +144,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void failure(RetrofitError error) {
                 progress.setVisibility(View.GONE);
-                root.setVisibility(View.VISIBLE);
                 error.printStackTrace();
                 showError();
             }
@@ -201,6 +208,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void showError() {
+        failedView.setVisibility(View.VISIBLE);
         SnackbarManager.show(
                 Snackbar.with(MainActivity.this)
                         .text(R.string.error_with_server));

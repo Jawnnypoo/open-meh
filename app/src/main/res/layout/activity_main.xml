@@ -11,95 +11,109 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingTop="?attr/actionBarSize"
-        android:layout_marginTop="@dimen/padding_medium"
-        tools:context=".MainActivity">
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/padding_medium"
+            android:orientation="vertical"
+            android:paddingTop="?attr/actionBarSize"
+            tools:context=".MainActivity">
 
             <android.support.v4.view.ViewPager
                 android:id="@+id/deal_image_view_pager"
                 android:layout_width="match_parent"
                 android:layout_height="300dp" />
 
-        <me.relex.circleindicator.CircleIndicator
-            android:id="@+id/indicator"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"/>
+            <me.relex.circleindicator.CircleIndicator
+                android:id="@+id/indicator"
+                android:layout_width="match_parent"
+                android:layout_height="40dp" />
 
-        <android.support.v7.widget.AppCompatButton
-            android:id="@+id/deal_buy_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/buy_it"
-            android:layout_marginLeft="@dimen/activity_horizontal_margin"
-            android:layout_marginRight="@dimen/activity_horizontal_margin"
-            android:background="@drawable/button"/>
-
-        <TextView
-            android:id="@+id/deal_title"
-            style="@style/Base.TextAppearance.AppCompat.Headline"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingLeft="@dimen/activity_horizontal_margin"
-            android:paddingRight="@dimen/activity_horizontal_margin"/>
-
-        <TextView
-            style="?android:attr/textAppearanceMedium"
-            android:id="@+id/deal_description"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingLeft="@dimen/activity_horizontal_margin"
-            android:paddingRight="@dimen/activity_horizontal_margin"/>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="@dimen/activity_vertical_margin"
-            android:paddingBottom="@dimen/activity_vertical_margin"
-            android:paddingLeft="@dimen/activity_horizontal_margin"
-            android:paddingRight="@dimen/activity_horizontal_margin"
-            android:orientation="horizontal">
-
-        <ImageView
-            android:id="@+id/deal_video"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:src="@drawable/ic_video"
-            android:background="@drawable/selector_cool"/>
-
-            <ImageView
-                android:id="@+id/deal_story"
-                android:layout_width="0dp"
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/deal_buy_button"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:src="@drawable/ic_story"
-                android:background="@drawable/selector_cool"/>
-        </LinearLayout>
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:background="@drawable/button"
+                android:text="@string/buy_it" />
 
-    </LinearLayout>
+            <TextView
+                android:id="@+id/deal_title"
+                style="@style/Base.TextAppearance.AppCompat.Headline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin" />
+
+            <TextView
+                android:id="@+id/deal_description"
+                style="?android:attr/textAppearanceMedium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingBottom="@dimen/activity_vertical_margin"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin"
+                android:paddingTop="@dimen/activity_vertical_margin">
+
+                <ImageView
+                    android:id="@+id/deal_video"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/selector_cool"
+                    android:src="@drawable/ic_video" />
+
+                <ImageView
+                    android:id="@+id/deal_story"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/selector_cool"
+                    android:src="@drawable/ic_story" />
+            </LinearLayout>
+
+        </LinearLayout>
 
     </ScrollView>
 
     <ProgressBar
+        android:id="@+id/progress"
         style="?android:attr/progressBarStyleLarge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/progress"
         android:layout_gravity="center" />
 
-    <ImageView
+    <LinearLayout
         android:id="@+id/failed"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_meh"
         android:layout_gravity="center"
-        android:visibility="gone"
-        android:contentDescription="@null"/>
+        android:orientation="vertical"
+        android:background="@drawable/selector_cool"
+        android:visibility="gone" >
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@null"
+            android:src="@drawable/ic_meh"/>
+
+        <TextView
+            style="@style/Base.TextAppearance.AppCompat.Headline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/tap_to_load_again" />
+    </LinearLayout>
 
 
     <include layout="@layout/toolbar" />

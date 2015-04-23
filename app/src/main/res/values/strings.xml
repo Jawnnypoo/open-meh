@@ -7,6 +7,7 @@
     <string name="action_settings">settings</string>
     <string name="action_share">share</string>
     <string name="share_subject">today\'s meh deal</string>
+    <string name="tap_to_load_again">tap to load again</string>
 
     <!--errors-->
     <string name="error_no_browser">no browser found. how...</string>

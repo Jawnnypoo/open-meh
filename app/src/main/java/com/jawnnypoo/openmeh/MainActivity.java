@@ -48,6 +48,7 @@ import timber.log.Timber;
 public class MainActivity extends AppCompatActivity {
 
     private static final String KEY_MEH_RESPONSE = "KEY_MEH_RESPONSE";
+    private static final int ANIMATION_TIME = 800;
     NotificationDialog notificationDialog;
 
     @InjectView(R.id.toolbar)
@@ -163,6 +164,8 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
         }
+        root.setAlpha(0f);
+        root.animate().alpha(1.0f).setDuration(ANIMATION_TIME);
         title.setText(deal.getTitle());
         description.setText(deal.getFeatures());
         imagePagerAdapter.setData(deal.getPhotos());
@@ -177,13 +180,14 @@ public class MainActivity extends AppCompatActivity {
         int foreGround = theme.getForeground() == Theme.FOREGROUND_LIGHT ? Color.WHITE : Color.BLACK;
         title.setTextColor(accentColor);
         description.setTextColor(foreGround);
-        toolbar.setBackgroundColor(accentColor);
+        ColorUtil.backgroundColor(toolbar, accentColor, ANIMATION_TIME);
         buy.setSupportBackgroundTintList(ColorUtil.createColorStateList(accentColor, ColorUtil.getDarkerColor(accentColor)));
         buy.setTextColor(backgroundColor);
         video.getDrawable().setColorFilter(accentColor, PorterDuff.Mode.MULTIPLY);
         story.getDrawable().setColorFilter(accentColor, PorterDuff.Mode.MULTIPLY);
-        ColorUtil.setStatusBarAndNavBarColor(getWindow(), darkerAccentColor);
-        getWindow().getDecorView().setBackgroundColor(backgroundColor);
+        ColorUtil.animateStatusBarAndNavBarColors(getWindow(), darkerAccentColor, ANIMATION_TIME);
+        View decorView = getWindow().getDecorView();
+        ColorUtil.backgroundColor(decorView, backgroundColor, ANIMATION_TIME);
         notificationDialog.setTheme(theme);
     }
 

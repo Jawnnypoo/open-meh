@@ -14,7 +14,7 @@ import com.jawnnypoo.openmeh.MainActivity;
 import com.jawnnypoo.openmeh.R;
 import com.jawnnypoo.openmeh.data.Deal;
 import com.jawnnypoo.openmeh.data.Theme;
-import com.jawnnypoo.openmeh.service.MehResponse;
+import com.jawnnypoo.openmeh.api.MehResponse;
 
 /**
  * Created by Jawn on 4/20/2015.

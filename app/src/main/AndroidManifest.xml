@@ -15,14 +15,15 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="com.jawnnypoo.openmeh.MainActivity"
-            android:label="@string/app_name" >
+            android:name="com.jawnnypoo.openmeh.MainActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".NotificationActivity"/>
 
         <service android:name="com.jawnnypoo.openmeh.services.PostReminderService"/>
         

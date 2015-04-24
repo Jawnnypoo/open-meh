@@ -1,15 +1,13 @@
 package com.jawnnypoo.openmeh;
 
-import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
-import android.net.Uri;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -22,14 +20,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.google.gson.Gson;
+import com.jawnnypoo.openmeh.api.MehClient;
+import com.jawnnypoo.openmeh.api.MehResponse;
 import com.jawnnypoo.openmeh.data.Deal;
 import com.jawnnypoo.openmeh.data.Theme;
-import com.jawnnypoo.openmeh.service.MehClient;
-import com.jawnnypoo.openmeh.service.MehResponse;
 import com.jawnnypoo.openmeh.services.PostReminderService;
 import com.jawnnypoo.openmeh.util.ColorUtil;
-import com.jawnnypoo.openmeh.util.LoadUtil;
+import com.jawnnypoo.openmeh.util.MehUtil;
 import com.nispok.snackbar.Snackbar;
 import com.nispok.snackbar.SnackbarManager;
 
@@ -46,14 +43,15 @@ import retrofit.client.Response;
 import timber.log.Timber;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
     private static final String KEY_MEH_RESPONSE = "KEY_MEH_RESPONSE";
     private static final int ANIMATION_TIME = 800;
-    NotificationDialog notificationDialog;
 
     @InjectView(R.id.toolbar)
     Toolbar toolbar;
+    @InjectView(R.id.toolbar_title)
+    TextView toolbarTitle;
     @InjectView(R.id.activity_root)
     View root;
     @InjectView(R.id.progress)
@@ -76,12 +74,12 @@ public class MainActivity extends AppCompatActivity {
     @InjectView(R.id.deal_video)
     ImageView video;
 
+    Menu menu;
     MehResponse savedMehResponse;
-    Gson gson = new Gson();
 
     @OnClick(R.id.deal_video)
     void onVideoClick(View view) {
-        openPage(savedMehResponse.getVideo().getUrl());
+        MehUtil.openPage(MainActivity.this, savedMehResponse.getVideo().getUrl());
     }
 
     @OnClick(R.id.deal_story)
@@ -94,10 +92,17 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.inject(this);
+        toolbarTitle.setText(R.string.app_name);
+        toolbarTitle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new AboutDialog(MainActivity.this).show();
+            }
+        });
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
         imagePagerAdapter = new ImageAdapter(this);
         imageViewPager.setAdapter(imagePagerAdapter);
-        setupDialogs();
         failedView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -109,7 +114,7 @@ public class MainActivity extends AppCompatActivity {
             if (!TextUtils.isEmpty(mehResponseJson)) {
                 savedMehResponse = gson.fromJson(mehResponseJson, MehResponse.class);
                 Timber.d("Restored from savedInstanceState");
-                bindDeal(savedMehResponse.getDeal());
+                bindDeal(savedMehResponse.getDeal(), false);
             }
         }
         //testMeh();
@@ -117,13 +122,6 @@ public class MainActivity extends AppCompatActivity {
             loadMeh();
         }
         //testNotification();
-    }
-
-    private void setupDialogs() {
-        if (notificationDialog == null) {
-            notificationDialog = new NotificationDialog(this);
-        }
-        //Restore listeners if needed
     }
 
     private void loadMeh() {
@@ -139,7 +137,7 @@ public class MainActivity extends AppCompatActivity {
                     return;
                 }
                 savedMehResponse = mehResponse;
-                bindDeal(mehResponse.getDeal());
+                bindDeal(mehResponse.getDeal(), true);
             }
 
             @Override
@@ -151,7 +149,9 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void bindDeal(final Deal deal) {
+    private void bindDeal(final Deal deal, boolean animate) {
+        progress.setVisibility(View.GONE);
+        failedView.setVisibility(View.GONE);
         if (deal.isSoldOut()) {
             buy.setEnabled(false);
             buy.setText(R.string.sold_out);
@@ -160,37 +160,58 @@ public class MainActivity extends AppCompatActivity {
             buy.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    openPage(deal.getUrl());
+                    MehUtil.openPage(MainActivity.this, deal.getUrl());
                 }
             });
         }
-        root.setAlpha(0f);
-        root.animate().alpha(1.0f).setDuration(ANIMATION_TIME);
+        root.setVisibility(View.VISIBLE);
+        if (animate) {
+            root.setAlpha(0f);
+            root.animate().alpha(1.0f).setDuration(ANIMATION_TIME).setStartDelay(ANIMATION_TIME);
+        }
         title.setText(deal.getTitle());
         description.setText(deal.getFeatures());
         imagePagerAdapter.setData(deal.getPhotos());
         indicator.setViewPager(imageViewPager);
-        bindTheme(deal.getTheme());
+        bindTheme(deal.getTheme(), animate);
     }
 
-    private void bindTheme(Theme theme) {
+    private void bindTheme(Theme theme, boolean animate) {
         int accentColor = theme.getAccentColor();
         int darkerAccentColor = ColorUtil.getDarkerColor(accentColor);
         int backgroundColor = theme.getBackgroundColor();
         int foreGround = theme.getForeground() == Theme.FOREGROUND_LIGHT ? Color.WHITE : Color.BLACK;
         title.setTextColor(accentColor);
         description.setTextColor(foreGround);
-        ColorUtil.backgroundColor(toolbar, accentColor, ANIMATION_TIME);
         buy.setSupportBackgroundTintList(ColorUtil.createColorStateList(accentColor, ColorUtil.getDarkerColor(accentColor)));
         buy.setTextColor(backgroundColor);
         video.getDrawable().setColorFilter(accentColor, PorterDuff.Mode.MULTIPLY);
         story.getDrawable().setColorFilter(accentColor, PorterDuff.Mode.MULTIPLY);
-        ColorUtil.setStatusBarAndNavBarColor(getWindow(), darkerAccentColor);
-        getWindow().getDecorView().setBackgroundColor(backgroundColor);
-        swipeRefreshLayout.setColorSchemeColors(theme.getForeground() == Theme.FOREGROUND_LIGHT ? backgroundColor : accentColor);
-        ColorUtil.animateStatusBarAndNavBarColors(getWindow(), darkerAccentColor, ANIMATION_TIME);
+        toolbarTitle.setTextColor(backgroundColor);
+
         View decorView = getWindow().getDecorView();
-        ColorUtil.backgroundColor(decorView, backgroundColor, ANIMATION_TIME);
+        if (animate) {
+            ColorUtil.backgroundColor(toolbar, accentColor, ANIMATION_TIME);
+            ColorUtil.animateStatusBarAndNavBarColors(getWindow(), darkerAccentColor, ANIMATION_TIME);
+            ColorUtil.backgroundColor(decorView, backgroundColor, ANIMATION_TIME);
+        } else {
+            toolbar.setBackgroundColor(accentColor);
+            ColorUtil.setStatusBarAndNavBarColor(getWindow(), darkerAccentColor);
+            decorView.setBackgroundColor(backgroundColor);
+        }
+
+        if (menu != null) {
+            colorMenuIcons(backgroundColor);
+        }
+    }
+
+    private void colorMenuIcons(int color) {
+        for (int i=0; i<menu.size(); i++) {
+            Drawable icon = menu.getItem(i).getIcon();
+            if (icon != null) {
+                icon.setColorFilter(color, PorterDuff.Mode.MULTIPLY);
+            }
+        }
     }
 
     @Override
@@ -198,18 +219,6 @@ public class MainActivity extends AppCompatActivity {
         super.onSaveInstanceState(outState);
         if (savedMehResponse != null) {
             outState.putString(KEY_MEH_RESPONSE, gson.toJson(savedMehResponse));
-        }
-    }
-
-    private void openPage(String url) {
-        Intent i = new Intent(Intent.ACTION_VIEW);
-        i.setData(Uri.parse(url));
-        try {
-            startActivity(i);
-        } catch (ActivityNotFoundException e) {
-            SnackbarManager.show(
-                    Snackbar.with(this)
-                            .text(R.string.error_no_browser));
         }
     }
 
@@ -226,15 +235,19 @@ public class MainActivity extends AppCompatActivity {
 
     private void testMeh() {
         savedMehResponse = gson.fromJson(
-                LoadUtil.loadJSONFromAsset(this, "4-20-2015.json"), MehResponse.class);
+                MehUtil.loadJSONFromAsset(this, "4-20-2015.json"), MehResponse.class);
         Timber.d(savedMehResponse.toString());
-        bindDeal(savedMehResponse.getDeal());
+        bindDeal(savedMehResponse.getDeal(), true);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
+        this.menu = menu;
+        if (savedMehResponse != null && savedMehResponse.getDeal() != null) {
+            colorMenuIcons(savedMehResponse.getDeal().getTheme().getBackgroundColor());
+        }
         return true;
     }
 
@@ -242,7 +255,11 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_notifications:
-                notificationDialog.show();
+                Intent intent = savedMehResponse == null ?
+                        NotificationActivity.newInstance(this) :
+                        NotificationActivity.newInstance(this, savedMehResponse.getDeal().getTheme());
+                startActivity(intent);
+                overridePendingTransition(R.anim.fade_in, R.anim.do_nothing);
                 return true;
             case R.id.action_share:
                 shareDeal();

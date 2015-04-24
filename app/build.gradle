@@ -30,4 +30,6 @@ dependencies {
     compile 'com.nispok:snackbar:2.9.1'
     compile 'me.relex:circleindicator:1.1.3@aar'
     compile 'com.google.code.gson:gson:2.3.0'
+    compile 'com.github.flavienlaurent.datetimepicker:library:0.0.2'
+    compile 'com.pnikosis:materialish-progress:1.5'
 }

@@ -9,6 +9,34 @@
     <string name="share_subject">today\'s meh deal</string>
     <string name="tap_to_load_again">tap to load again</string>
 
+    <!--Notification-->
+    <string name="notifications">notifications</string>
+    <string name="time_to_notify">time to notify</string>
+    <string name="sound">sound</string>
+    <string name="vibrate">vibrate</string>
+
+    <!-- About -->
+    <string name="john_credit"><b>Programming</b>\n<u>John Carlson</u></string>
+    <string name="kyrsten_credit"><b>UX/UI</b>\n<u>Kyrsten Carlson</u></string>
+    <string name="libraries_used"><b>We &lt;3 Open Source</b></string>
+    <string name="jawn_url">http://bit.ly/jawnnypoo</string>
+    <string name="kyrsten_url">http://bit.ly/kykabu</string>
+    <string name="libraries">
+        \n
+        Retrofit - Square\n
+        DateTimePicker - flavienlaurent\n
+        ButterKnife - Jake Wharton\n
+        Timber - Jake Wharton\n
+        Snackbar - nispok\n
+        Gson - Google\n
+        Glide - Bumptech\n
+        CircleIndicator - ongakuer
+    </string>
+    <string name="meh_thanks">Thanks to meh.com for the cool API</string>
+    <string name="apache_url">http://www.apache.org/licenses/LICENSE-2.0.html</string>
+    <string name="sauce">see the sauce</string>
+    <string name="source_url">https://github.com/Jawnnypoo/open-meh</string>
+
     <!--errors-->
     <string name="error_no_browser">no browser found. how...</string>
     <string name="error_with_server">sorry, something went wrong :(. Blame meh, not me.</string>

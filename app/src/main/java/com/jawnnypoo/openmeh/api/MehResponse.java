@@ -1,4 +1,4 @@
-package com.jawnnypoo.openmeh.service;
+package com.jawnnypoo.openmeh.api;
 
 import com.jawnnypoo.openmeh.data.Deal;
 import com.jawnnypoo.openmeh.data.Poll;

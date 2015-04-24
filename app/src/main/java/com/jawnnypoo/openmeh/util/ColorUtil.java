@@ -8,10 +8,16 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.graphics.drawable.DrawableCompat;
+import android.support.v7.widget.SwitchCompat;
 import android.view.View;
 import android.view.Window;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.LinearInterpolator;
+import android.widget.CheckBox;
+
+import com.jawnnypoo.openmeh.R;
 
 /**
  * Created by John on 4/20/2015.
@@ -99,5 +105,33 @@ public class ColorUtil {
         oa.setInterpolator(linearInterpolator);
         oa.start();
         return oa;
+    }
+
+    public static void setTint(CheckBox box, int color, int unpressedColor) {
+        ColorStateList sl = new ColorStateList(new int[][]{
+                new int[]{-android.R.attr.state_checked},
+                new int[]{android.R.attr.state_checked}
+        }, new int[]{
+                unpressedColor,
+                color
+        });
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            box.setButtonTintList(sl);
+        } else {
+            Drawable drawable = DrawableCompat.wrap(ContextCompat.getDrawable(box.getContext(), R.drawable.abc_btn_check_material));
+            DrawableCompat.setTintList(drawable, sl);
+            box.setButtonDrawable(drawable);
+        }
+    }
+
+    public static void setTint(SwitchCompat switchCompat, int color, int unpressedColor) {
+        ColorStateList sl = new ColorStateList(new int[][]{
+                new int[]{-android.R.attr.state_checked},
+                new int[]{android.R.attr.state_checked}
+        }, new int[]{
+                unpressedColor,
+                color
+        });
+        DrawableCompat.setTintList(switchCompat.getThumbDrawable(), sl);
     }
 }

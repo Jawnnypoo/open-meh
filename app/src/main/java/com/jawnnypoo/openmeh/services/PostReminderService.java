@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.Target;
 import com.jawnnypoo.openmeh.data.Deal;
 import com.jawnnypoo.openmeh.api.MehClient;
 import com.jawnnypoo.openmeh.api.MehResponse;
@@ -49,7 +50,7 @@ public class PostReminderService extends IntentService {
                     .load(deal.getPhotos().get(0))
                     .asBitmap()
                     .centerCrop()
-                    .into(256, 256)
+                    .into(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
                     .get();
         } catch (ExecutionException | InterruptedException e) { }
         MehNotificationManager.postDailyNotification(getApplicationContext(), response, icon);

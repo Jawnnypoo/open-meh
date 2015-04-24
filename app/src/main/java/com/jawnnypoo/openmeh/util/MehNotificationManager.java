@@ -12,9 +12,9 @@ import android.support.v4.app.TaskStackBuilder;
 
 import com.jawnnypoo.openmeh.MainActivity;
 import com.jawnnypoo.openmeh.R;
+import com.jawnnypoo.openmeh.api.MehResponse;
 import com.jawnnypoo.openmeh.data.Deal;
 import com.jawnnypoo.openmeh.data.Theme;
-import com.jawnnypoo.openmeh.api.MehResponse;
 
 /**
  * Created by Jawn on 4/20/2015.
@@ -31,16 +31,22 @@ public class MehNotificationManager {
     private static void postIt(Context context, MehResponse response, Bitmap icon) {
         Deal deal = response.getDeal();
         Theme theme = deal.getTheme();
-        
+        String priceString = deal.isSoldOut() ? context.getString(R.string.sold_out)
+                : deal.getPriceRange();
         NotificationCompat.Builder notificationBuilder =
                 new NotificationCompat.Builder(context)
                         .setContentTitle(deal.getTitle())
                         .setTicker(deal.getPriceRange())
-                        .setContentText(deal.getPriceRange())
+                        .setContentText(priceString)
                         .setColor(theme.getBackgroundColor())
                         .setAutoCancel(true);
         if (icon != null) {
             notificationBuilder.setLargeIcon(icon);
+            notificationBuilder.setStyle(new NotificationCompat.BigPictureStyle()
+                    .bigPicture(icon)
+                    .bigPicture(icon)
+                    .setBigContentTitle(deal.getTitle())
+                    .setSummaryText(priceString));
         }
 
         if (MehPreferencesManager.getNotificationSound(context)) {

@@ -75,7 +75,7 @@ public class MehPreferencesManager {
     }
 
     public static boolean getNotificationsPreference(Context context) {
-        return getSharedPreferences(context).getBoolean(SHARED_PREFS_NOTIFICATION_STATUS, true);
+        return getSharedPreferences(context).getBoolean(SHARED_PREFS_NOTIFICATION_STATUS, false);
     }
 
     public static void setNotificationsPreference(Context context, boolean value) {

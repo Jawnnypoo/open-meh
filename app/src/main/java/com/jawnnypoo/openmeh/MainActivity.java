@@ -173,18 +173,25 @@ public class MainActivity extends BaseActivity {
         description.setText(deal.getFeatures());
         imagePagerAdapter.setData(deal.getPhotos());
         indicator.setViewPager(imageViewPager);
-        bindTheme(deal.getTheme(), animate);
+        bindTheme(deal, animate);
     }
 
-    private void bindTheme(Theme theme, boolean animate) {
+    private void bindTheme(Deal deal, boolean animate) {
+        Theme theme = deal.getTheme();
         int accentColor = theme.getAccentColor();
         int darkerAccentColor = ColorUtil.getDarkerColor(accentColor);
         int backgroundColor = theme.getBackgroundColor();
         int foreGround = theme.getForeground() == Theme.FOREGROUND_LIGHT ? Color.WHITE : Color.BLACK;
+        int foreGroundInverse = theme.getForeground() == Theme.FOREGROUND_LIGHT ? Color.BLACK : Color.WHITE;
         title.setTextColor(accentColor);
         description.setTextColor(foreGround);
-        buy.setSupportBackgroundTintList(ColorUtil.createColorStateList(accentColor, ColorUtil.getDarkerColor(accentColor)));
-        buy.setTextColor(backgroundColor);
+        if (deal.isSoldOut()) {
+            buy.getBackground().setColorFilter(foreGround, PorterDuff.Mode.MULTIPLY);
+            buy.setTextColor(foreGroundInverse);
+        } else {
+            buy.setSupportBackgroundTintList(ColorUtil.createColorStateList(accentColor, ColorUtil.getDarkerColor(accentColor)));
+            buy.setTextColor(theme.getBackgroundColor());
+        }
         video.getDrawable().setColorFilter(accentColor, PorterDuff.Mode.MULTIPLY);
         story.getDrawable().setColorFilter(accentColor, PorterDuff.Mode.MULTIPLY);
         toolbarTitle.setTextColor(backgroundColor);

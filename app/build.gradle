@@ -11,6 +11,7 @@ android {
         versionCode 1
         versionName "1.0"
         buildConfigField "String", "MEH_API_KEY", project.MEH_API_KEY
+        buildConfigField "String", "YOUTUBE_API_KEY", project.YOUTUBE_API_KEY
     }
     buildTypes {
         release {

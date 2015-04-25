@@ -24,6 +24,10 @@ public class Theme {
                 FOREGROUND_DARK;
     }
 
+    public int getForegroundColor() {
+        return getForeground() == FOREGROUND_LIGHT ? Color.WHITE : Color.BLACK;
+    }
+
     public int getBackgroundColor() {
         return Color.parseColor(backgroundColor);
     }

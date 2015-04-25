@@ -7,4 +7,7 @@
     <dimen name="elevation_large">8dp</dimen>
 
     <dimen name="refresh_pull_amount">32dp</dimen>
+
+    <dimen name="text_size_large">32sp</dimen>
+    <dimen name="text_size_huge">42sp</dimen>
 </resources>

@@ -10,4 +10,28 @@ public class Topic {
     Integer replyCount;
     String url;
     Integer voteCount;
+
+    public Integer getCommentCount() {
+        return commentCount;
+    }
+
+    public String getCreatedAt() {
+        return createdAt;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public Integer getReplyCount() {
+        return replyCount;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public Integer getVoteCount() {
+        return voteCount;
+    }
 }

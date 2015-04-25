@@ -20,10 +20,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.google.android.youtube.player.YouTubeInitializationResult;
+import com.google.android.youtube.player.YouTubePlayer;
+import com.google.android.youtube.player.YouTubePlayerSupportFragment;
 import com.jawnnypoo.openmeh.api.MehClient;
 import com.jawnnypoo.openmeh.api.MehResponse;
 import com.jawnnypoo.openmeh.data.Deal;
 import com.jawnnypoo.openmeh.data.Theme;
+import com.jawnnypoo.openmeh.data.Topic;
+import com.jawnnypoo.openmeh.data.Video;
 import com.jawnnypoo.openmeh.services.PostReminderService;
 import com.jawnnypoo.openmeh.util.ColorUtil;
 import com.jawnnypoo.openmeh.util.MehUtil;
@@ -46,6 +51,7 @@ import timber.log.Timber;
 public class MainActivity extends BaseActivity {
 
     private static final String KEY_MEH_RESPONSE = "KEY_MEH_RESPONSE";
+    private static final String YOUTUBE_FRAGMENT_TAG = "YOUTUBE_FRAGMENT_TAG";
     private static final int ANIMATION_TIME = 800;
 
     @InjectView(R.id.toolbar)
@@ -69,22 +75,28 @@ public class MainActivity extends BaseActivity {
     TextView title;
     @InjectView(R.id.deal_description)
     TextView description;
-    @InjectView(R.id.deal_story)
-    ImageView story;
-    @InjectView(R.id.deal_video)
-    ImageView video;
+    @InjectView(R.id.deal_full_specs)
+    TextView fullSpecs;
+    @InjectView(R.id.story_title)
+    TextView storyTitle;
+    @InjectView(R.id.story_body)
+    TextView storyBody;
+    @InjectView(R.id.video_root)
+    ViewGroup videoRoot;
+
+    YouTubePlayerSupportFragment youTubeFragment;
 
     Menu menu;
     MehResponse savedMehResponse;
 
-    @OnClick(R.id.deal_video)
-    void onVideoClick(View view) {
-        MehUtil.openPage(MainActivity.this, savedMehResponse.getVideo().getUrl());
-    }
-
-    @OnClick(R.id.deal_story)
-    void onStoryClick(View view) {
-        //TODO show story
+    @OnClick(R.id.deal_full_specs)
+    void onFullSpecsClick(View view) {
+        if (savedMehResponse != null && savedMehResponse.getDeal() != null) {
+            Topic topic = savedMehResponse.getDeal().getTopic();
+            if (topic != null && !TextUtils.isEmpty(topic.getUrl())) {
+                MehUtil.openPage(this, topic.getUrl());
+            }
+        }
     }
 
     @Override
@@ -117,25 +129,25 @@ public class MainActivity extends BaseActivity {
                 bindDeal(savedMehResponse.getDeal(), false);
             }
         }
-        //testMeh();
+//        testMeh();
         if (savedMehResponse == null) {
             loadMeh();
         }
-        //testNotification();
     }
 
     private void loadMeh() {
         progress.setVisibility(View.VISIBLE);
+        failedView.setVisibility(View.GONE);
         root.setVisibility(View.GONE);
         MehClient.instance().getMeh(new Callback<MehResponse>() {
             @Override
             public void success(MehResponse mehResponse, Response response) {
-                progress.setVisibility(View.GONE);
-                root.setVisibility(View.VISIBLE);
                 if (mehResponse == null || mehResponse.getDeal() == null) {
                     showError();
                     return;
                 }
+                progress.setVisibility(View.GONE);
+                root.setVisibility(View.VISIBLE);
                 savedMehResponse = mehResponse;
                 bindDeal(mehResponse.getDeal(), true);
             }
@@ -152,6 +164,8 @@ public class MainActivity extends BaseActivity {
     private void bindDeal(final Deal deal, boolean animate) {
         progress.setVisibility(View.GONE);
         failedView.setVisibility(View.GONE);
+        imagePagerAdapter.setData(deal.getPhotos());
+        indicator.setViewPager(imageViewPager);
         if (deal.isSoldOut()) {
             buy.setEnabled(false);
             buy.setText(R.string.sold_out);
@@ -171,9 +185,58 @@ public class MainActivity extends BaseActivity {
         }
         title.setText(deal.getTitle());
         description.setText(deal.getFeatures());
-        imagePagerAdapter.setData(deal.getPhotos());
-        indicator.setViewPager(imageViewPager);
+        if (deal.getStory() != null) {
+            storyTitle.setText(deal.getStory().getTitle());
+            storyBody.setText(deal.getStory().getBody());
+        }
+        if (savedMehResponse.getVideo() != null) {
+            bindVideo(savedMehResponse.getVideo());
+        }
         bindTheme(deal, animate);
+
+    }
+
+    private void bindVideo(Video video) {
+        final String videoUrl = video.getUrl();
+        if (MehUtil.isYouTubeInstalled(this)) {
+            String videoId = MehUtil.getYouTubeIdFromUrl(videoUrl);
+            Timber.d("videoId: " + videoId);
+            if (!TextUtils.isEmpty(videoId)) {
+                bindYouTubeVideo(videoId);
+                return;
+            }
+        }
+        Timber.d("YouTube didn't work. Just link it");
+        getLayoutInflater().inflate(R.layout.view_link_vide, videoRoot);
+        videoRoot.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MehUtil.openPage(MainActivity.this, videoUrl);
+            }
+        });
+        ImageView playIcon = (ImageView) videoRoot.findViewById(R.id.video_play);
+        TextView title = (TextView) videoRoot.findViewById(R.id.video_title);
+        title.setText(video.getTitle());
+        playIcon.getDrawable().setColorFilter(savedMehResponse.getDeal().getTheme().getAccentColor(), PorterDuff.Mode.MULTIPLY);
+    }
+
+    private void bindYouTubeVideo(final String videoId) {
+        Timber.d("bindingYouTubeVideo");
+        youTubeFragment = YouTubePlayerSupportFragment.newInstance();
+        getSupportFragmentManager().beginTransaction().add(R.id.video_root, youTubeFragment).commit();
+        youTubeFragment.initialize(BuildConfig.YOUTUBE_API_KEY, new YouTubePlayer.OnInitializedListener() {
+            @Override
+            public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean wasRestored) {
+                if (!wasRestored) {
+                    youTubePlayer.cueVideo(videoId);
+                }
+            }
+
+            @Override
+            public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult youTubeInitializationResult) {
+
+            }
+        });
     }
 
     private void bindTheme(Deal deal, boolean animate) {
@@ -183,7 +246,7 @@ public class MainActivity extends BaseActivity {
         int backgroundColor = theme.getBackgroundColor();
         int foreGround = theme.getForeground() == Theme.FOREGROUND_LIGHT ? Color.WHITE : Color.BLACK;
         int foreGroundInverse = theme.getForeground() == Theme.FOREGROUND_LIGHT ? Color.BLACK : Color.WHITE;
-        title.setTextColor(accentColor);
+        title.setTextColor(foreGround);
         description.setTextColor(foreGround);
         if (deal.isSoldOut()) {
             buy.getBackground().setColorFilter(foreGround, PorterDuff.Mode.MULTIPLY);
@@ -192,8 +255,9 @@ public class MainActivity extends BaseActivity {
             buy.setSupportBackgroundTintList(ColorUtil.createColorStateList(accentColor, ColorUtil.getDarkerColor(accentColor)));
             buy.setTextColor(theme.getBackgroundColor());
         }
-        video.getDrawable().setColorFilter(accentColor, PorterDuff.Mode.MULTIPLY);
-        story.getDrawable().setColorFilter(accentColor, PorterDuff.Mode.MULTIPLY);
+        fullSpecs.setTextColor(foreGround);
+        storyTitle.setTextColor(accentColor);
+        storyBody.setTextColor(foreGround);
         toolbarTitle.setTextColor(backgroundColor);
 
         View decorView = getWindow().getDecorView();

@@ -2,12 +2,13 @@
     <string name="app_name">open meh</string>
 
     <string name="buy_it">Buy it.</string>
-    <string name="sold_out">Sold Out.</string>
+    <string name="sold_out">Sold Out.\nThere Are No More.</string>
     <string name="action_notifications">notifications</string>
     <string name="action_settings">settings</string>
     <string name="action_share">share</string>
     <string name="share_subject">today\'s meh deal</string>
     <string name="tap_to_load_again">tap to load again</string>
+    <string name="full_product_specs"><u>Full product specs ></u></string>
 
     <!--Notification-->
     <string name="notifications">notifications</string>

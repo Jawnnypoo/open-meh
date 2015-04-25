@@ -21,6 +21,7 @@ public class Deal {
     String specifications;
     Story story;
     Theme theme;
+    Topic topic;
     String url;
 
     public String getFeatures() {
@@ -66,6 +67,8 @@ public class Deal {
     public Theme getTheme() {
         return theme;
     }
+
+    public Topic getTopic() { return topic; }
 
     public String getUrl() {
         return url;

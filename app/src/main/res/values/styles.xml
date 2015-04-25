@@ -7,4 +7,12 @@
         <item name="colorAccent">@color/black</item>
     </style>
 
+
+    <style name="Text" parent="TextAppearance.AppCompat">
+    </style>
+
+    <style name="Text.Huge">
+        <item name="android:textSize">@dimen/text_size_huge</item>
+    </style>
+
 </resources>

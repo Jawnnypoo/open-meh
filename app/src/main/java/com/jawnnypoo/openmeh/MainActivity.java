@@ -206,27 +206,16 @@ public class MainActivity extends BaseActivity {
                 return;
             }
         }
-        Timber.d("YouTube didn't work. Just link it");
-        getLayoutInflater().inflate(R.layout.view_link_vide, videoRoot);
-        videoRoot.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                MehUtil.openPage(MainActivity.this, videoUrl);
-            }
-        });
-        ImageView playIcon = (ImageView) videoRoot.findViewById(R.id.video_play);
-        TextView title = (TextView) videoRoot.findViewById(R.id.video_title);
-        title.setText(video.getTitle());
-        playIcon.getDrawable().setColorFilter(savedMehResponse.getDeal().getTheme().getAccentColor(), PorterDuff.Mode.MULTIPLY);
+        bindVideoLink(video);
     }
 
     private void bindYouTubeVideo(final String videoId) {
         Timber.d("bindingYouTubeVideo");
         youTubeFragment = YouTubePlayerSupportFragment.newInstance();
-        getSupportFragmentManager().beginTransaction().add(R.id.video_root, youTubeFragment).commit();
         youTubeFragment.initialize(BuildConfig.YOUTUBE_API_KEY, new YouTubePlayer.OnInitializedListener() {
             @Override
             public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean wasRestored) {
+                getSupportFragmentManager().beginTransaction().add(R.id.video_root, youTubeFragment).commit();
                 if (!wasRestored) {
                     youTubePlayer.cueVideo(videoId);
                 }
@@ -234,9 +223,24 @@ public class MainActivity extends BaseActivity {
 
             @Override
             public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult youTubeInitializationResult) {
-
+                bindVideoLink(savedMehResponse.getVideo());
             }
         });
+    }
+
+    private void bindVideoLink(final Video video) {
+        Timber.d("YouTube didn't work. Just link it");
+        getLayoutInflater().inflate(R.layout.view_link_vide, videoRoot);
+        videoRoot.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MehUtil.openPage(MainActivity.this, video.getUrl());
+            }
+        });
+        ImageView playIcon = (ImageView) videoRoot.findViewById(R.id.video_play);
+        TextView title = (TextView) videoRoot.findViewById(R.id.video_title);
+        title.setText(video.getTitle());
+        playIcon.getDrawable().setColorFilter(savedMehResponse.getDeal().getTheme().getAccentColor(), PorterDuff.Mode.MULTIPLY);
     }
 
     private void bindTheme(Deal deal, boolean animate) {

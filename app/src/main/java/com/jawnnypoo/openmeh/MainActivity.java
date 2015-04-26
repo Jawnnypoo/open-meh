@@ -11,6 +11,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -41,6 +42,7 @@ import java.util.Collection;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
+import in.uncod.android.bypass.Bypass;
 import me.relex.circleindicator.CircleIndicator;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -51,7 +53,6 @@ import timber.log.Timber;
 public class MainActivity extends BaseActivity {
 
     private static final String KEY_MEH_RESPONSE = "KEY_MEH_RESPONSE";
-    private static final String YOUTUBE_FRAGMENT_TAG = "YOUTUBE_FRAGMENT_TAG";
     private static final int ANIMATION_TIME = 800;
 
     @InjectView(R.id.toolbar)
@@ -86,6 +87,7 @@ public class MainActivity extends BaseActivity {
 
     YouTubePlayerSupportFragment youTubeFragment;
 
+    Bypass bypass = new Bypass();
     Menu menu;
     MehResponse savedMehResponse;
 
@@ -184,10 +186,12 @@ public class MainActivity extends BaseActivity {
             root.animate().alpha(1.0f).setDuration(ANIMATION_TIME).setStartDelay(ANIMATION_TIME);
         }
         title.setText(deal.getTitle());
-        description.setText(deal.getFeatures());
+        description.setText(markdownToSpannable(deal.getFeatures()));
+        description.setMovementMethod(LinkMovementMethod.getInstance());
         if (deal.getStory() != null) {
             storyTitle.setText(deal.getStory().getTitle());
-            storyBody.setText(deal.getStory().getBody());
+            storyBody.setText(markdownToSpannable(deal.getStory().getBody()));
+            storyBody.setMovementMethod(LinkMovementMethod.getInstance());
         }
         if (savedMehResponse.getVideo() != null) {
             bindVideo(savedMehResponse.getVideo());
@@ -252,6 +256,8 @@ public class MainActivity extends BaseActivity {
         int foreGroundInverse = theme.getForeground() == Theme.FOREGROUND_LIGHT ? Color.BLACK : Color.WHITE;
         title.setTextColor(foreGround);
         description.setTextColor(foreGround);
+        description.setLinkTextColor(foreGround);
+
         if (deal.isSoldOut()) {
             buy.getBackground().setColorFilter(foreGround, PorterDuff.Mode.MULTIPLY);
             buy.setTextColor(foreGroundInverse);
@@ -262,6 +268,7 @@ public class MainActivity extends BaseActivity {
         fullSpecs.setTextColor(foreGround);
         storyTitle.setTextColor(accentColor);
         storyBody.setTextColor(foreGround);
+        storyBody.setLinkTextColor(foreGround);
         toolbarTitle.setTextColor(backgroundColor);
 
         View decorView = getWindow().getDecorView();
@@ -287,6 +294,10 @@ public class MainActivity extends BaseActivity {
                 icon.setColorFilter(color, PorterDuff.Mode.MULTIPLY);
             }
         }
+    }
+
+    private CharSequence markdownToSpannable(String markdownString) {
+        return bypass.markdownToSpannable(markdownString);
     }
 
     @Override

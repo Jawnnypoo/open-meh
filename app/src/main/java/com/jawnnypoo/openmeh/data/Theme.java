@@ -16,7 +16,7 @@ public class Theme {
     String backgroundImage;
 
     public int getAccentColor() {
-        return Color.parseColor(accentColor);
+        return safeParseColor(accentColor);
     }
 
     public int getForeground() {
@@ -29,10 +29,25 @@ public class Theme {
     }
 
     public int getBackgroundColor() {
-        return Color.parseColor(backgroundColor);
+        return safeParseColor(backgroundColor);
     }
 
     public String getBackgroundImage() {
         return backgroundImage;
+    }
+
+    private static final String EXPECTED_FORMAT = "#FFFFFF";
+
+    private static int safeParseColor(String color) {
+        if (color.length() == EXPECTED_FORMAT.length()) {
+            return Color.parseColor(color);
+        } else {
+            //This seems kinda terrible...
+            String rrggbb = "#";
+            for(int i=1;i<color.length();i++) {
+                rrggbb += (color.charAt(i) + "" + color.charAt(i));
+            }
+            return Color.parseColor(rrggbb);
+        }
     }
 }

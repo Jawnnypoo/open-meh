@@ -56,18 +56,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingLeft="@dimen/activity_horizontal_margin"
-                android:paddingRight="@dimen/activity_horizontal_margin" />
+                android:paddingRight="@dimen/activity_horizontal_margin"/>
 
             <TextView
                 android:id="@+id/deal_full_specs"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingTop="@dimen/activity_vertical_margin"
-                android:paddingLeft="@dimen/activity_horizontal_margin"
-                android:paddingRight="@dimen/activity_horizontal_margin"
-                android:paddingBottom="@dimen/activity_vertical_margin"
-                android:text="@string/full_product_specs"
-                android:background="@drawable/selector_cool"/>
+                android:layout_marginBottom="@dimen/activity_vertical_margin"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:text="@string/full_product_specs"/>
 
             <TextView
                 android:id="@+id/story_title"

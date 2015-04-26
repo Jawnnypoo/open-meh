@@ -31,7 +31,9 @@
         Snackbar - nispok\n
         Gson - Google\n
         Glide - Bumptech\n
-        CircleIndicator - ongakuer
+        CircleIndicator - ongakuer\n
+        Materialish-Progress - pnikosis\n
+        Bypass - Uncodin
     </string>
     <string name="meh_thanks">Thanks to meh.com for the cool API</string>
     <string name="apache_url">http://www.apache.org/licenses/LICENSE-2.0.html</string>

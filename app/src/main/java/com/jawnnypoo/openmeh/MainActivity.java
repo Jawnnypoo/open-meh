@@ -131,7 +131,8 @@ public class MainActivity extends BaseActivity {
                 bindDeal(savedMehResponse.getDeal(), false);
             }
         }
-//        testMeh();
+        //testMeh();
+        //testNotification();
         if (savedMehResponse == null) {
             loadMeh();
         }
@@ -167,6 +168,7 @@ public class MainActivity extends BaseActivity {
         progress.setVisibility(View.GONE);
         failedView.setVisibility(View.GONE);
         imagePagerAdapter.setData(deal.getPhotos());
+        indicator.setIndicatorColor(deal.getTheme().getForegroundColor());
         indicator.setViewPager(imageViewPager);
         if (deal.isSoldOut()) {
             buy.setEnabled(false);
@@ -325,7 +327,7 @@ public class MainActivity extends BaseActivity {
 
     private void testMeh() {
         savedMehResponse = gson.fromJson(
-                MehUtil.loadJSONFromAsset(this, "4-20-2015.json"), MehResponse.class);
+                MehUtil.loadJSONFromAsset(this, "4-23-2015.json"), MehResponse.class);
         Timber.d(savedMehResponse.toString());
         bindDeal(savedMehResponse.getDeal(), true);
     }

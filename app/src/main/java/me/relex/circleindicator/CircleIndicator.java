@@ -4,6 +4,8 @@ import android.animation.Animator;
 import android.animation.AnimatorInflater;
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.support.annotation.DrawableRes;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
@@ -27,6 +29,7 @@ public class CircleIndicator extends LinearLayout implements OnPageChangeListene
     private int mAnimatorResId = R.animator.scale_with_alpha;
     private int mAnimatorReverseResId = -1;
     private int mIndicatorBackground = R.drawable.white_radius;
+    private int mIndicatorColor = Color.WHITE;
     private int mIndicatorUnselectedBackground = R.drawable.white_radius;
     private int mCurrentPosition = 0;
     private Animator mAnimationOut;
@@ -83,6 +86,10 @@ public class CircleIndicator extends LinearLayout implements OnPageChangeListene
                 (mIndicatorHeight == -1) ? dip2px(DEFAULT_INDICATOR_WIDTH) : mIndicatorHeight;
         mIndicatorMargin =
                 (mIndicatorMargin == -1) ? dip2px(DEFAULT_INDICATOR_WIDTH) : mIndicatorMargin;
+    }
+
+    public void setIndicatorColor(int color) {
+        mIndicatorColor = color;
     }
 
     public void setViewPager(ViewPager viewPager) {
@@ -153,6 +160,7 @@ public class CircleIndicator extends LinearLayout implements OnPageChangeListene
 
         View Indicator = new View(getContext());
         Indicator.setBackgroundResource(backgroundDrawableId);
+        Indicator.getBackground().setColorFilter(mIndicatorColor, PorterDuff.Mode.MULTIPLY);
         addView(Indicator, mIndicatorWidth, mIndicatorHeight);
         LayoutParams lp = (LayoutParams) Indicator.getLayoutParams();
         lp.leftMargin = mIndicatorMargin;

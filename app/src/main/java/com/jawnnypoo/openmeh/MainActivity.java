@@ -216,10 +216,11 @@ public class MainActivity extends BaseActivity {
     private void bindYouTubeVideo(final String videoId) {
         Timber.d("bindingYouTubeVideo");
         youTubeFragment = YouTubePlayerSupportFragment.newInstance();
+        getSupportFragmentManager().beginTransaction().add(R.id.video_root, youTubeFragment).commit();
         youTubeFragment.initialize(BuildConfig.YOUTUBE_API_KEY, new YouTubePlayer.OnInitializedListener() {
             @Override
             public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean wasRestored) {
-                getSupportFragmentManager().beginTransaction().add(R.id.video_root, youTubeFragment).commit();
+                Timber.d("onInitializationSuccess");
                 if (!wasRestored) {
                     youTubePlayer.cueVideo(videoId);
                 }
@@ -227,6 +228,8 @@ public class MainActivity extends BaseActivity {
 
             @Override
             public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult youTubeInitializationResult) {
+                Timber.d("onInitializationFailure");
+                getSupportFragmentManager().beginTransaction().remove(youTubeFragment).commit();
                 bindVideoLink(savedMehResponse.getVideo());
             }
         });
@@ -254,6 +257,7 @@ public class MainActivity extends BaseActivity {
         int backgroundColor = theme.getBackgroundColor();
         int foreGround = theme.getForeground() == Theme.FOREGROUND_LIGHT ? Color.WHITE : Color.BLACK;
         int foreGroundInverse = theme.getForeground() == Theme.FOREGROUND_LIGHT ? Color.BLACK : Color.WHITE;
+
         title.setTextColor(foreGround);
         description.setTextColor(foreGround);
         description.setLinkTextColor(foreGround);

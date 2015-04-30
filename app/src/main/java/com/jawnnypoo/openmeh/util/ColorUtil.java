@@ -44,8 +44,8 @@ public class ColorUtil {
 
     public static void animateStatusBarAndNavBarColors(Window window, int endColor, int duration) {
         if (Build.VERSION.SDK_INT >= 21) {
-            statusBar(window, Color.BLACK, endColor, duration);
-            navigationBar(window, Color.BLACK, endColor, duration);
+            statusBar(window, window.getStatusBarColor(), endColor, duration);
+            navigationBar(window, window.getNavigationBarColor(), endColor, duration);
         }
     }
 

@@ -356,6 +356,9 @@ public class MainActivity extends BaseActivity {
             case R.id.action_share:
                 shareDeal();
                 return true;
+            case R.id.action_refresh:
+                loadMeh();
+                return true;
         }
 
         return super.onOptionsItemSelected(item);

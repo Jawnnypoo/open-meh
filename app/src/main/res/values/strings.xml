@@ -26,6 +26,7 @@
     <string name="libraries">
         \n
         Retrofit - Square\n
+        OkHttp - Square\n
         DateTimePicker - flavienlaurent\n
         ButterKnife - Jake Wharton\n
         Timber - Jake Wharton\n

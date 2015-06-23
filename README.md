@@ -9,7 +9,7 @@ Open source meh Android App
        src="https://developer.android.com/images/brand/en_generic_rgb_wo_60.png" />
 </a>
 
-[![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-Open%20Meh-green.svg?style=flat)](https://android-arsenal.com/details/3/1999)
+[![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-Open%20Meh-green.svg?style=flat)](https://android-arsenal.com/details/3/1999) [![Build Status](https://travis-ci.org/Jawnnypoo/open-meh.svg?branch=master)](https://travis-ci.org/Jawnnypoo/open-meh)
 #Building
 You will need to generate your own API key from [meh](https://meh.com/forum/topics/meh-api) and add it to your gradle.properties file (create one in your home directory, under .gradle). You will also need to create an API key for the [YouTube API](https://developers.google.com/youtube/android/player/) if you want videos to show up while you are building.
 

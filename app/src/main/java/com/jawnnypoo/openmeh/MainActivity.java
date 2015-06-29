@@ -39,8 +39,8 @@ import com.nispok.snackbar.SnackbarManager;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import butterknife.OnClick;
 import in.uncod.android.bypass.Bypass;
 import me.relex.circleindicator.CircleIndicator;
@@ -55,34 +55,36 @@ public class MainActivity extends BaseActivity {
     private static final String KEY_MEH_RESPONSE = "KEY_MEH_RESPONSE";
     private static final int ANIMATION_TIME = 800;
 
-    @InjectView(R.id.toolbar)
+    @Bind(R.id.toolbar)
     Toolbar toolbar;
-    @InjectView(R.id.toolbar_title)
+    @Bind(R.id.toolbar_title)
     TextView toolbarTitle;
-    @InjectView(R.id.activity_root)
+    @Bind(R.id.activity_root)
     View root;
-    @InjectView(R.id.progress)
+    @Bind(R.id.progress)
     View progress;
-    @InjectView(R.id.failed)
+    @Bind(R.id.failed)
     View failedView;
-    @InjectView(R.id.indicator)
+    @Bind(R.id.indicator)
     CircleIndicator indicator;
-    @InjectView(R.id.deal_image_view_pager)
+    @Bind(R.id.deal_image_background)
+    ImageView imageBackground;
+    @Bind(R.id.deal_image_view_pager)
     ViewPager imageViewPager;
     ImageAdapter imagePagerAdapter;
-    @InjectView(R.id.deal_buy_button)
+    @Bind(R.id.deal_buy_button)
     AppCompatButton buy;
-    @InjectView(R.id.deal_title)
+    @Bind(R.id.deal_title)
     TextView title;
-    @InjectView(R.id.deal_description)
+    @Bind(R.id.deal_description)
     TextView description;
-    @InjectView(R.id.deal_full_specs)
+    @Bind(R.id.deal_full_specs)
     TextView fullSpecs;
-    @InjectView(R.id.story_title)
+    @Bind(R.id.story_title)
     TextView storyTitle;
-    @InjectView(R.id.story_body)
+    @Bind(R.id.story_body)
     TextView storyBody;
-    @InjectView(R.id.video_root)
+    @Bind(R.id.video_root)
     ViewGroup videoRoot;
 
     YouTubePlayerSupportFragment youTubeFragment;
@@ -105,7 +107,7 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
         toolbarTitle.setText(R.string.app_name);
         toolbarTitle.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -287,10 +289,14 @@ public class MainActivity extends BaseActivity {
             ColorUtil.setStatusBarAndNavBarColor(getWindow(), darkerAccentColor);
             decorView.setBackgroundColor(backgroundColor);
         }
+        Glide.with(this)
+                .load(theme.getBackgroundImage())
+                .into(imageBackground);
 
         if (menu != null) {
             colorMenuIcons(backgroundColor);
         }
+
     }
 
     private void colorMenuIcons(int color) {

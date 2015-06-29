@@ -40,6 +40,6 @@ public class AboutDialog extends AppCompatDialog {
     public AboutDialog(Context context) {
         super(context);
         setContentView(R.layout.dialog_about);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
     }
 }

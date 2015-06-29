@@ -25,8 +25,8 @@ import com.sleepbot.datetimepicker.time.TimePickerDialog;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import butterknife.OnClick;
 
 /**
@@ -50,25 +50,25 @@ public class NotificationActivity extends BaseActivity {
         return intent;
     }
 
-    @InjectView(R.id.toolbar)
+    @Bind(R.id.toolbar)
     Toolbar toolbar;
-    @InjectView(R.id.toolbar_title)
+    @Bind(R.id.toolbar_title)
     TextView toolbarTitle;
-    @InjectView(R.id.notification_switch)
+    @Bind(R.id.notification_switch)
     SwitchCompat onOffSwitch;
-    @InjectView(R.id.notification_switch_label)
+    @Bind(R.id.notification_switch_label)
     TextView onOffSwitchLabel;
-    @InjectView(R.id.notification_time)
+    @Bind(R.id.notification_time)
     TextView notifyTime;
-    @InjectView(R.id.notification_time_label)
+    @Bind(R.id.notification_time_label)
     TextView notifyTimeLabel;
-    @InjectView(R.id.notification_sound)
+    @Bind(R.id.notification_sound)
     CheckBox soundCheck;
-    @InjectView(R.id.notification_sound_label)
+    @Bind(R.id.notification_sound_label)
     TextView soundCheckLabel;
-    @InjectView(R.id.notification_vibrate)
+    @Bind(R.id.notification_vibrate)
     CheckBox vibrateCheck;
-    @InjectView(R.id.notification_vibrate_label)
+    @Bind(R.id.notification_vibrate_label)
     TextView vibrateCheckLabel;
 
     Calendar timeToAlert = Calendar.getInstance();
@@ -93,7 +93,7 @@ public class NotificationActivity extends BaseActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notifications);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);

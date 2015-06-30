@@ -10,4 +10,6 @@
 
     <dimen name="text_size_large">32sp</dimen>
     <dimen name="text_size_huge">42sp</dimen>
+
+    <dimen name="image_size">300dp</dimen>
 </resources>

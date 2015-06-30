@@ -68,6 +68,34 @@
     </RelativeLayout>
 
     <RelativeLayout
+        android:id="@+id/notification_key_words_root"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:background="@drawable/selector_cool">
+
+        <TextView
+            style="?android:attr/textAppearanceMedium"
+            android:id="@+id/notification_key_word_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:text="@string/notify_if"/>
+
+        <TextView
+            android:id="@+id/notification_key_words"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
         android:id="@+id/notification_sound_root"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

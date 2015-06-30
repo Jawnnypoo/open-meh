@@ -185,9 +185,12 @@ public class MainActivity extends BaseActivity {
             });
         }
         root.setVisibility(View.VISIBLE);
+        imageBackground.setVisibility(View.VISIBLE);
         if (animate) {
             root.setAlpha(0f);
             root.animate().alpha(1.0f).setDuration(ANIMATION_TIME).setStartDelay(ANIMATION_TIME);
+            imageBackground.setAlpha(0f);
+            imageBackground.animate().alpha(1.0f).setStartDelay(ANIMATION_TIME).setDuration(ANIMATION_TIME).setStartDelay(ANIMATION_TIME);
         }
         title.setText(deal.getTitle());
         description.setText(markdownToSpannable(deal.getFeatures()));

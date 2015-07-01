@@ -13,6 +13,21 @@ Open source meh Android App
 #Building
 You will need to generate your own API key from [meh](https://meh.com/forum/topics/meh-api) and add it to your gradle.properties file (create one in your home directory, under .gradle). You will also need to create an API key for the [YouTube API](https://developers.google.com/youtube/android/player/) if you want videos to show up while you are building.
 
+#Libraries
+The following 3rd party libraries are the reason this app works. Rapid development is easily attainable thanks to these fine folks and the work they do:
+
+- AppCompat (https://developer.android.com/tools/support-library/features.html)
+- Design (https://developer.android.com/tools/support-library/features.html)
+- RecyclerView (https://developer.android.com/tools/support-library/features.html)
+- Retrofit (http://square.github.io/retrofit/)
+- OkHttp (http://square.github.io/okhttp/)
+- Glide (https://github.com/bumptech/glide)
+- Butter Knife (http://jakewharton.github.io/butterknife/)
+- Timber (https://github.com/JakeWharton/timber)
+- GSON (https://github.com/google/gson)
+- Material-ish Progress (https://github.com/pnikosis/materialish-progress)
+- PhysicsLayout (https://github.com/Jawnnypoo/PhysicsLayout)
+
 #Contribution
 Pull requests are welcomed and encouraged. If you experience any bugs, please [file an issue](https://github.com/Jawnnypoo/open-meh/issues/new)
 

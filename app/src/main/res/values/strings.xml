@@ -17,6 +17,7 @@
     <string name="notify_if">notify if...</string>
     <string name="sound">sound</string>
     <string name="vibrate">vibrate</string>
+    <string name="contains_words">contains words</string>
 
     <!-- About -->
     <string name="john_credit"><b>Programming</b>\n<u>John Carlson</u></string>

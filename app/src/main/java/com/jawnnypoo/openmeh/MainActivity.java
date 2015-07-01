@@ -144,14 +144,16 @@ public class MainActivity extends BaseActivity {
         progress.setVisibility(View.VISIBLE);
         failedView.setVisibility(View.GONE);
         root.setVisibility(View.GONE);
+        imageBackground.setVisibility(View.GONE);
         MehClient.instance().getMeh(new Callback<MehResponse>() {
             @Override
             public void success(MehResponse mehResponse, Response response) {
+                progress.setVisibility(View.GONE);
                 if (mehResponse == null || mehResponse.getDeal() == null) {
+                    Timber.e("There was a meh response, but it was null or the deal was null or something");
                     showError();
                     return;
                 }
-                progress.setVisibility(View.GONE);
                 root.setVisibility(View.VISIBLE);
                 savedMehResponse = mehResponse;
                 bindDeal(mehResponse.getDeal(), true);
@@ -160,7 +162,7 @@ public class MainActivity extends BaseActivity {
             @Override
             public void failure(RetrofitError error) {
                 progress.setVisibility(View.GONE);
-                error.printStackTrace();
+                Timber.e(error.toString());
                 showError();
             }
         });

@@ -74,6 +74,7 @@ public class NotificationActivity extends BaseActivity {
     Calendar timeToAlert = Calendar.getInstance();
     static SimpleDateFormat timeformat = new SimpleDateFormat("h:mm a");
     TimePickerDialog timePickerDialog;
+    NotifyIfDialog notifyIfDialog;
 
     private final TimePickerDialog.OnTimeSetListener onTimeSetListener = new TimePickerDialog.OnTimeSetListener() {
         @Override
@@ -106,6 +107,7 @@ public class NotificationActivity extends BaseActivity {
         timeToAlert.set(Calendar.HOUR_OF_DAY, MehPreferencesManager.getNotificationPreferenceHour(this));
         timeToAlert.set(Calendar.MINUTE, MehPreferencesManager.getNotificationPreferenceMinute(this));
         setupUi();
+        notifyIfDialog = new NotifyIfDialog(this);
         timePickerDialog = (TimePickerDialog) getSupportFragmentManager().findFragmentByTag(TIMEPICKER_TAG);
         if (timePickerDialog == null) {
             timePickerDialog = TimePickerDialog.newInstance(onTimeSetListener, timeToAlert.get(Calendar.HOUR_OF_DAY), timeToAlert.get(Calendar.MINUTE), false, false);
@@ -201,5 +203,10 @@ public class NotificationActivity extends BaseActivity {
     @OnClick(R.id.notification_vibrate_root)
     void onVibrateClick(View view) {
         vibrateCheck.setChecked(!vibrateCheck.isChecked());
+    }
+
+    @OnClick(R.id.notification_key_words_root)
+    void onKeyWordsClick() {
+        notifyIfDialog.show();
     }
 }

@@ -11,5 +11,7 @@
     <dimen name="text_size_large">32sp</dimen>
     <dimen name="text_size_huge">42sp</dimen>
 
+    <dimen name="border_size">2dp</dimen>
     <dimen name="image_size">300dp</dimen>
+    <dimen name="contributor_size">64dp</dimen>
 </resources>

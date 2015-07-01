@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.AppCompatButton;
@@ -33,8 +34,6 @@ import com.jawnnypoo.openmeh.data.Video;
 import com.jawnnypoo.openmeh.services.PostReminderService;
 import com.jawnnypoo.openmeh.util.ColorUtil;
 import com.jawnnypoo.openmeh.util.MehUtil;
-import com.nispok.snackbar.Snackbar;
-import com.nispok.snackbar.SnackbarManager;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -98,7 +97,7 @@ public class MainActivity extends BaseActivity {
         if (savedMehResponse != null && savedMehResponse.getDeal() != null) {
             Topic topic = savedMehResponse.getDeal().getTopic();
             if (topic != null && !TextUtils.isEmpty(topic.getUrl())) {
-                MehUtil.openPage(this, topic.getUrl());
+                MehUtil.openPage(root, topic.getUrl());
             }
         }
     }
@@ -182,7 +181,7 @@ public class MainActivity extends BaseActivity {
             buy.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    MehUtil.openPage(MainActivity.this, deal.getUrl());
+                    MehUtil.openPage(root, deal.getUrl());
                 }
             });
         }
@@ -250,7 +249,7 @@ public class MainActivity extends BaseActivity {
         videoRoot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MehUtil.openPage(MainActivity.this, video.getUrl());
+                MehUtil.openPage(root, video.getUrl());
             }
         });
         ImageView playIcon = (ImageView) videoRoot.findViewById(R.id.video_play);
@@ -327,9 +326,8 @@ public class MainActivity extends BaseActivity {
 
     private void showError() {
         failedView.setVisibility(View.VISIBLE);
-        SnackbarManager.show(
-                Snackbar.with(MainActivity.this)
-                        .text(R.string.error_with_server));
+        Snackbar.make(root, R.string.error_with_server, Snackbar.LENGTH_SHORT)
+            .show();
     }
 
     private void testNotification() {
@@ -377,9 +375,8 @@ public class MainActivity extends BaseActivity {
 
     private void shareDeal() {
         if (savedMehResponse == null || savedMehResponse.getDeal() == null) {
-            SnackbarManager.show(
-                    Snackbar.with(MainActivity.this)
-                            .text(R.string.error_nothing_to_share));
+            Snackbar.make(root, R.string.error_nothing_to_share, Snackbar.LENGTH_SHORT)
+                    .show();
             return;
         }
         Intent shareIntent = new Intent(Intent.ACTION_SEND);

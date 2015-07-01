@@ -5,10 +5,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.support.design.widget.Snackbar;
+import android.view.View;
 
 import com.jawnnypoo.openmeh.R;
-import com.nispok.snackbar.Snackbar;
-import com.nispok.snackbar.SnackbarManager;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -38,15 +38,14 @@ public class MehUtil {
 
     }
 
-    public static void openPage(Context context, String url) {
+    public static void openPage(View root, String url) {
         Intent i = new Intent(Intent.ACTION_VIEW);
         i.setData(Uri.parse(url));
         try {
-            context.startActivity(i);
+            root.getContext().startActivity(i);
         } catch (ActivityNotFoundException e) {
-            SnackbarManager.show(
-                    Snackbar.with(context)
-                            .text(R.string.error_no_browser));
+            Snackbar.make(root, R.string.error_no_browser, Snackbar.LENGTH_SHORT)
+                    .show();
         }
     }
 

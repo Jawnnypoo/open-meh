@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.PagerAdapter;
@@ -14,7 +13,6 @@ import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,6 +31,7 @@ import com.jawnnypoo.openmeh.data.Topic;
 import com.jawnnypoo.openmeh.data.Video;
 import com.jawnnypoo.openmeh.services.PostReminderService;
 import com.jawnnypoo.openmeh.util.ColorUtil;
+import com.jawnnypoo.openmeh.util.IntentUtil;
 import com.jawnnypoo.openmeh.util.MehUtil;
 
 import java.util.ArrayList;
@@ -89,7 +88,6 @@ public class MainActivity extends BaseActivity {
     YouTubePlayerSupportFragment youTubeFragment;
 
     Bypass bypass = new Bypass();
-    Menu menu;
     MehResponse savedMehResponse;
 
     @OnClick(R.id.deal_full_specs)
@@ -97,10 +95,33 @@ public class MainActivity extends BaseActivity {
         if (savedMehResponse != null && savedMehResponse.getDeal() != null) {
             Topic topic = savedMehResponse.getDeal().getTopic();
             if (topic != null && !TextUtils.isEmpty(topic.getUrl())) {
-                MehUtil.openPage(root, topic.getUrl());
+                IntentUtil.openPage(root, topic.getUrl());
             }
         }
     }
+
+    private final Toolbar.OnMenuItemClickListener menuItemClickListener = new Toolbar.OnMenuItemClickListener() {
+        @Override
+        public boolean onMenuItemClick(MenuItem item) {
+            switch (item.getItemId()) {
+                case R.id.action_notifications:
+                    Intent intent = savedMehResponse == null ?
+                            NotificationActivity.newInstance(MainActivity.this) :
+                            NotificationActivity.newInstance(MainActivity.this,
+                                    savedMehResponse.getDeal().getTheme());
+                    startActivity(intent);
+                    overridePendingTransition(R.anim.fade_in, R.anim.do_nothing);
+                    return true;
+                case R.id.action_share:
+                    IntentUtil.shareDeal(root, savedMehResponse);
+                    return true;
+                case R.id.action_refresh:
+                    loadMeh();
+                    return true;
+            }
+            return false;
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,8 +135,8 @@ public class MainActivity extends BaseActivity {
                 new AboutDialog(MainActivity.this).show();
             }
         });
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        toolbar.inflateMenu(R.menu.menu_main);
+        toolbar.setOnMenuItemClickListener(menuItemClickListener);
         imagePagerAdapter = new ImageAdapter(this);
         imageViewPager.setAdapter(imagePagerAdapter);
         failedView.setOnClickListener(new View.OnClickListener() {
@@ -181,7 +202,7 @@ public class MainActivity extends BaseActivity {
             buy.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    MehUtil.openPage(root, deal.getUrl());
+                    IntentUtil.openPage(root, deal.getUrl());
                 }
             });
         }
@@ -249,7 +270,7 @@ public class MainActivity extends BaseActivity {
         videoRoot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MehUtil.openPage(root, video.getUrl());
+                IntentUtil.openPage(root, video.getUrl());
             }
         });
         ImageView playIcon = (ImageView) videoRoot.findViewById(R.id.video_play);
@@ -293,23 +314,10 @@ public class MainActivity extends BaseActivity {
             ColorUtil.setStatusBarAndNavBarColor(getWindow(), darkerAccentColor);
             decorView.setBackgroundColor(backgroundColor);
         }
+        ColorUtil.setMenuItemsColor(toolbar.getMenu(), backgroundColor);
         Glide.with(this)
                 .load(theme.getBackgroundImage())
                 .into(imageBackground);
-
-        if (menu != null) {
-            colorMenuIcons(backgroundColor);
-        }
-
-    }
-
-    private void colorMenuIcons(int color) {
-        for (int i=0; i<menu.size(); i++) {
-            Drawable icon = menu.getItem(i).getIcon();
-            if (icon != null) {
-                icon.setColorFilter(color, PorterDuff.Mode.MULTIPLY);
-            }
-        }
     }
 
     private CharSequence markdownToSpannable(String markdownString) {
@@ -339,51 +347,6 @@ public class MainActivity extends BaseActivity {
                 MehUtil.loadJSONFromAsset(this, "4-23-2015.json"), MehResponse.class);
         Timber.d(savedMehResponse.toString());
         bindDeal(savedMehResponse.getDeal(), true);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        this.menu = menu;
-        if (savedMehResponse != null && savedMehResponse.getDeal() != null) {
-            colorMenuIcons(savedMehResponse.getDeal().getTheme().getBackgroundColor());
-        }
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_notifications:
-                Intent intent = savedMehResponse == null ?
-                        NotificationActivity.newInstance(this) :
-                        NotificationActivity.newInstance(this, savedMehResponse.getDeal().getTheme());
-                startActivity(intent);
-                overridePendingTransition(R.anim.fade_in, R.anim.do_nothing);
-                return true;
-            case R.id.action_share:
-                shareDeal();
-                return true;
-            case R.id.action_refresh:
-                loadMeh();
-                return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    private void shareDeal() {
-        if (savedMehResponse == null || savedMehResponse.getDeal() == null) {
-            Snackbar.make(root, R.string.error_nothing_to_share, Snackbar.LENGTH_SHORT)
-                    .show();
-            return;
-        }
-        Intent shareIntent = new Intent(Intent.ACTION_SEND);
-        shareIntent.setType("text/plain");
-        shareIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.share_subject));
-        shareIntent.putExtra(Intent.EXTRA_TEXT, savedMehResponse.getDeal().getUrl());
-        startActivity(Intent.createChooser(shareIntent, getString(R.string.share_subject)));
     }
 
     private static class ImageAdapter extends PagerAdapter {

@@ -1,14 +1,8 @@
 package com.jawnnypoo.openmeh.util;
 
-import android.content.ActivityNotFoundException;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.support.design.widget.Snackbar;
-import android.view.View;
-
-import com.jawnnypoo.openmeh.R;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -36,17 +30,6 @@ public class MehUtil {
         }
         return json;
 
-    }
-
-    public static void openPage(View root, String url) {
-        Intent i = new Intent(Intent.ACTION_VIEW);
-        i.setData(Uri.parse(url));
-        try {
-            root.getContext().startActivity(i);
-        } catch (ActivityNotFoundException e) {
-            Snackbar.make(root, R.string.error_no_browser, Snackbar.LENGTH_SHORT)
-                    .show();
-        }
     }
 
     public static boolean isYouTubeInstalled(Context context) {

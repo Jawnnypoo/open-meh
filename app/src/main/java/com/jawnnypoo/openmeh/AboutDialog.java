@@ -13,7 +13,7 @@ import android.widget.FrameLayout;
 import com.bumptech.glide.Glide;
 import com.jawnnypoo.openmeh.github.Contributor;
 import com.jawnnypoo.openmeh.github.GithubClient;
-import com.jawnnypoo.openmeh.util.MehUtil;
+import com.jawnnypoo.openmeh.util.IntentUtil;
 import com.jawnnypoo.physicslayout.Physics;
 import com.jawnnypoo.physicslayout.PhysicsConfig;
 import com.jawnnypoo.physicslayout.PhysicsFrameLayout;
@@ -61,23 +61,23 @@ public class AboutDialog extends AppCompatDialog {
 
     @OnClick(R.id.john_credit)
     void onJohnClick(View v) {
-        MehUtil.openPage(root, getContext().getString(R.string.jawn_url));
+        IntentUtil.openPage(root, getContext().getString(R.string.jawn_url));
     }
     @OnClick(R.id.kyrsten_credit)
     void onKyrstenClick(View v) {
-        MehUtil.openPage(root, getContext().getString(R.string.kyrsten_url));
+        IntentUtil.openPage(root, getContext().getString(R.string.kyrsten_url));
     }
     @OnClick(R.id.libraries_used)
     void onLibrariesUsedClicked(View v) {
-        MehUtil.openPage(root, getContext().getString(R.string.apache_url));
+        IntentUtil.openPage(root, getContext().getString(R.string.apache_url));
     }
     @OnClick(R.id.library)
     void onLibraryClicked(View v) {
-        MehUtil.openPage(root, getContext().getString(R.string.apache_url));
+        IntentUtil.openPage(root, getContext().getString(R.string.apache_url));
     }
     @OnClick(R.id.sauce)
     void onSourceClick(View v) {
-        MehUtil.openPage(root, getContext().getString(R.string.source_url));
+        IntentUtil.openPage(root, getContext().getString(R.string.source_url));
     }
 
     private final Callback<List<Contributor>> contributorResponseCallback = new Callback<List<Contributor>>() {

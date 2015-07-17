@@ -5,12 +5,14 @@ import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.widget.SwitchCompat;
+import android.view.Menu;
 import android.view.View;
 import android.view.Window;
 import android.view.animation.AccelerateDecelerateInterpolator;
@@ -134,4 +136,14 @@ public class ColorUtil {
         });
         DrawableCompat.setTintList(switchCompat.getThumbDrawable(), sl);
     }
+
+    public static void setMenuItemsColor(Menu menu, int color) {
+        for (int i = 0; i < menu.size(); i++) {
+            Drawable icon = menu.getItem(i).getIcon();
+            if (icon != null) {
+                icon.setColorFilter(color, PorterDuff.Mode.MULTIPLY);
+            }
+        }
+    }
+
 }

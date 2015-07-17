@@ -158,6 +158,8 @@ public class MehActivity extends BaseActivity {
         if (savedMehResponse == null) {
             loadMeh();
         }
+        youTubeFragment = YouTubePlayerSupportFragment.newInstance();
+        getSupportFragmentManager().beginTransaction().replace(R.id.video_root, youTubeFragment).commit();
     }
 
     private void loadMeh() {
@@ -174,7 +176,6 @@ public class MehActivity extends BaseActivity {
                     showError();
                     return;
                 }
-                root.setVisibility(View.VISIBLE);
                 savedMehResponse = mehResponse;
                 bindDeal(mehResponse.getDeal(), true);
             }
@@ -244,8 +245,7 @@ public class MehActivity extends BaseActivity {
 
     private void bindYouTubeVideo(final String videoId) {
         Timber.d("bindingYouTubeVideo");
-        youTubeFragment = YouTubePlayerSupportFragment.newInstance();
-        getSupportFragmentManager().beginTransaction().add(R.id.video_root, youTubeFragment).commit();
+
         youTubeFragment.initialize(BuildConfig.YOUTUBE_API_KEY, new YouTubePlayer.OnInitializedListener() {
             @Override
             public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean wasRestored) {
@@ -266,7 +266,8 @@ public class MehActivity extends BaseActivity {
 
     private void bindVideoLink(final Video video) {
         Timber.d("YouTube didn't work. Just link it");
-        getLayoutInflater().inflate(R.layout.view_link_vide, videoRoot);
+        getSupportFragmentManager().beginTransaction().remove(youTubeFragment).commit();
+        getLayoutInflater().inflate(R.layout.view_link_video, videoRoot);
         videoRoot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

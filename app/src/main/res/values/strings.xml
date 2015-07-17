@@ -9,7 +9,7 @@
     <string name="action_refresh">refresh</string>
     <string name="share_subject">today\'s meh deal</string>
     <string name="tap_to_load_again">tap to load again</string>
-    <string name="full_product_specs"><u>Full product specs ></u></string>
+    <string name="full_product_specs"><u>more specifications</u></string>
 
     <!--Notification-->
     <string name="notifications">notifications</string>
@@ -20,27 +20,8 @@
     <string name="contains_words">contains words</string>
 
     <!-- About -->
-    <string name="john_credit"><b>Programming</b>\n<u>John Carlson</u></string>
-    <string name="kyrsten_credit"><b>UX/UI</b>\n<u>Kyrsten Carlson</u></string>
-    <string name="libraries_used"><b>We &lt;3 Open Source</b></string>
-    <string name="jawn_url">http://bit.ly/jawnnypoo</string>
-    <string name="kyrsten_url">http://bit.ly/kykabu</string>
-    <string name="libraries">
-        \n
-        Retrofit - Square\n
-        OkHttp - Square\n
-        DateTimePicker - flavienlaurent\n
-        ButterKnife - Jake Wharton\n
-        Timber - Jake Wharton\n
-        Snackbar - nispok\n
-        Gson - Google\n
-        Glide - Bumptech\n
-        CircleIndicator - ongakuer\n
-        Materialish-Progress - pnikosis\n
-        Bypass - Uncodin
-    </string>
-    <string name="meh_thanks">Thanks to meh.com for the cool API</string>
-    <string name="apache_url">http://www.apache.org/licenses/LICENSE-2.0.html</string>
+    <string name="about">about</string>
+    <string name="contributors">contributors</string>
     <string name="sauce">see the sauce</string>
     <string name="source_url">https://github.com/Jawnnypoo/open-meh</string>
 

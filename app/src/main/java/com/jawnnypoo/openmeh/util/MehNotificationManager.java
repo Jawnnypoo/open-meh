@@ -10,7 +10,7 @@ import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 
-import com.jawnnypoo.openmeh.MainActivity;
+import com.jawnnypoo.openmeh.MehActivity;
 import com.jawnnypoo.openmeh.R;
 import com.jawnnypoo.openmeh.api.MehResponse;
 import com.jawnnypoo.openmeh.data.Deal;
@@ -64,7 +64,7 @@ public class MehNotificationManager {
         }
 
         // Creates an explicit intent for an Activity in your app
-        Intent resultIntent = new Intent(context, MainActivity.class);
+        Intent resultIntent = new Intent(context, MehActivity.class);
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
         // Adds the back stack
         //stackBuilder.addParentStack(JournalActivity.class);

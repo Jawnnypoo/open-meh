@@ -36,8 +36,6 @@ public class NotificationActivity extends BaseActivity {
 
     private static final String TIMEPICKER_TAG = "timepicker";
 
-    private static final String EXTRA_THEME = "EXTRA_THEME";
-
     public static Intent newInstance(Context context) {
         return newInstance(context, null);
     }
@@ -95,9 +93,13 @@ public class NotificationActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notifications);
         ButterKnife.bind(this);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        toolbar.setNavigationIcon(R.drawable.abc_ic_ab_back_mtrl_am_alpha);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
         toolbarTitle.setText(R.string.action_notifications);
         String themeJson = getIntent().getStringExtra(EXTRA_THEME);
         if (!TextUtils.isEmpty(themeJson)) {

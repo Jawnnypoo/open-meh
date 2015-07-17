@@ -1,18 +1,15 @@
 package com.jawnnypoo.openmeh;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
-import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +20,7 @@ import com.bumptech.glide.Glide;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerSupportFragment;
+import com.jawnnypoo.openmeh.adapters.ImageAdapter;
 import com.jawnnypoo.openmeh.api.MehClient;
 import com.jawnnypoo.openmeh.api.MehResponse;
 import com.jawnnypoo.openmeh.data.Deal;
@@ -33,9 +31,6 @@ import com.jawnnypoo.openmeh.services.PostReminderService;
 import com.jawnnypoo.openmeh.util.ColorUtil;
 import com.jawnnypoo.openmeh.util.IntentUtil;
 import com.jawnnypoo.openmeh.util.MehUtil;
-
-import java.util.ArrayList;
-import java.util.Collection;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -48,7 +43,7 @@ import retrofit.client.Response;
 import timber.log.Timber;
 
 
-public class MainActivity extends BaseActivity {
+public class MehActivity extends BaseActivity {
 
     private static final String KEY_MEH_RESPONSE = "KEY_MEH_RESPONSE";
     private static final int ANIMATION_TIME = 800;
@@ -106,8 +101,8 @@ public class MainActivity extends BaseActivity {
             switch (item.getItemId()) {
                 case R.id.action_notifications:
                     Intent intent = savedMehResponse == null ?
-                            NotificationActivity.newInstance(MainActivity.this) :
-                            NotificationActivity.newInstance(MainActivity.this,
+                            NotificationActivity.newInstance(MehActivity.this) :
+                            NotificationActivity.newInstance(MehActivity.this,
                                     savedMehResponse.getDeal().getTheme());
                     startActivity(intent);
                     overridePendingTransition(R.anim.fade_in, R.anim.do_nothing);
@@ -126,18 +121,23 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_meh);
         ButterKnife.bind(this);
         toolbarTitle.setText(R.string.app_name);
         toolbarTitle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new AboutDialog(MainActivity.this).show();
+                Intent intent = savedMehResponse == null ?
+                        AboutActivity.newInstance(MehActivity.this) :
+                        AboutActivity.newInstance(MehActivity.this,
+                                savedMehResponse.getDeal().getTheme());
+                startActivity(intent);
+                overridePendingTransition(R.anim.fade_in, R.anim.do_nothing);
             }
         });
         toolbar.inflateMenu(R.menu.menu_main);
         toolbar.setOnMenuItemClickListener(menuItemClickListener);
-        imagePagerAdapter = new ImageAdapter(this);
+        imagePagerAdapter = new ImageAdapter();
         imageViewPager.setAdapter(imagePagerAdapter);
         failedView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -215,11 +215,11 @@ public class MainActivity extends BaseActivity {
             imageBackground.animate().alpha(1.0f).setStartDelay(ANIMATION_TIME).setDuration(ANIMATION_TIME).setStartDelay(ANIMATION_TIME);
         }
         title.setText(deal.getTitle());
-        description.setText(markdownToSpannable(deal.getFeatures()));
+        description.setText(markdownToCharSequence(deal.getFeatures()));
         description.setMovementMethod(LinkMovementMethod.getInstance());
         if (deal.getStory() != null) {
             storyTitle.setText(deal.getStory().getTitle());
-            storyBody.setText(markdownToSpannable(deal.getStory().getBody()));
+            storyBody.setText(markdownToCharSequence(deal.getStory().getBody()));
             storyBody.setMovementMethod(LinkMovementMethod.getInstance());
         }
         if (savedMehResponse.getVideo() != null) {
@@ -320,7 +320,7 @@ public class MainActivity extends BaseActivity {
                 .into(imageBackground);
     }
 
-    private CharSequence markdownToSpannable(String markdownString) {
+    private CharSequence markdownToCharSequence(String markdownString) {
         return bypass.markdownToSpannable(markdownString);
     }
 
@@ -347,50 +347,5 @@ public class MainActivity extends BaseActivity {
                 MehUtil.loadJSONFromAsset(this, "4-23-2015.json"), MehResponse.class);
         Timber.d(savedMehResponse.toString());
         bindDeal(savedMehResponse.getDeal(), true);
-    }
-
-    private static class ImageAdapter extends PagerAdapter {
-
-        private Context mContext;
-        private ArrayList<String> mData = new ArrayList<>();
-
-        public ImageAdapter(Context context) {
-            mContext = context;
-        }
-
-        public void setData(Collection<String> data) {
-            if (data != null && !data.isEmpty()) {
-                mData.clear();
-                mData.addAll(data);
-                notifyDataSetChanged();
-            }
-        }
-
-        @Override
-        public Object instantiateItem(ViewGroup collection, int position) {
-            View v = LayoutInflater.from(mContext).inflate(R.layout.item_deal_image, collection, false);
-            ImageView imageView = (ImageView) v.findViewById(R.id.imageView);
-            Glide.with(mContext)
-                    .load(mData.get(position))
-                    .into(imageView);
-
-            collection.addView(v, 0);
-            return v;
-        }
-
-        @Override
-        public void destroyItem(ViewGroup collection, int position, Object view) {
-            collection.removeView((View) view);
-        }
-
-        @Override
-        public int getCount() {
-            return mData.size();
-        }
-
-        @Override
-        public boolean isViewFromObject(View view, Object object) {
-            return view == object;
-        }
     }
 }

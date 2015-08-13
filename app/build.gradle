@@ -8,8 +8,8 @@ android {
         applicationId "com.jawnnypoo.openmeh"
         minSdkVersion 15
         targetSdkVersion 22
-        versionCode 101
-        versionName "1.0.1"
+        versionCode 102
+        versionName "1.0.2"
         buildConfigField "String", "MEH_API_KEY", project.MEH_API_KEY
         buildConfigField "String", "YOUTUBE_API_KEY", project.YOUTUBE_API_KEY
     }

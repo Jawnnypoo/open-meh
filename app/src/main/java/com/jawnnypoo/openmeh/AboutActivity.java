@@ -82,8 +82,10 @@ public class AboutActivity extends BaseActivity {
         @Override
         public void onSensorChanged(SensorEvent event) {
             if (event.sensor.getType() == Sensor.TYPE_GRAVITY) {
-                WindowUtil.normalizeForOrientation(getWindow(), event);
-                physicsLayout.getPhysics().getWorld().setGravity(new Vec2(-event.values[0], event.values[1]));
+                if (physicsLayout.getPhysics().getWorld() != null) {
+                    WindowUtil.normalizeForOrientation(getWindow(), event);
+                    physicsLayout.getPhysics().getWorld().setGravity(new Vec2(-event.values[0], event.values[1]));
+                }
             }
         }
 

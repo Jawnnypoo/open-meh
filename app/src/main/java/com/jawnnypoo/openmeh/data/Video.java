@@ -1,14 +1,20 @@
 package com.jawnnypoo.openmeh.data;
 
+import org.parceler.Parcel;
+
 /**
+ * The video of the day
  * Created by John on 4/17/2015.
  */
+@Parcel
 public class Video {
     String id;
     String startDate;
     String title;
     String url;
     Topic topic;
+
+    public Video() {}
 
     public String getId() {
         return id;

@@ -2,14 +2,18 @@ package com.jawnnypoo.openmeh.data;
 
 import android.text.TextUtils;
 
+import org.parceler.Parcel;
+
 import java.text.NumberFormat;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
 /**
+ * The entire deal!
  * Created by John on 4/17/2015.
  */
+@Parcel
 public class Deal {
     private static NumberFormat PRICE_FORMATTER = NumberFormat.getCurrencyInstance(Locale.US);
     String features;
@@ -23,6 +27,8 @@ public class Deal {
     Theme theme;
     Topic topic;
     String url;
+
+    public Deal(){}
 
     public String getFeatures() {
         return features;

@@ -1,8 +1,12 @@
 package com.jawnnypoo.openmeh.data;
 
+import org.parceler.Parcel;
+
 /**
+ * Topic of discussion for the day
  * Created by John on 4/17/2015.
  */
+@Parcel
 public class Topic {
     Integer commentCount;
     String createdAt; //date
@@ -10,6 +14,8 @@ public class Topic {
     Integer replyCount;
     String url;
     Integer voteCount;
+
+    public Topic(){}
 
     public Integer getCommentCount() {
         return commentCount;

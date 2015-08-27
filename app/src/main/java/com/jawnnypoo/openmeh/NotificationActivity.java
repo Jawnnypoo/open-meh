@@ -7,7 +7,6 @@ import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.v7.widget.SwitchCompat;
 import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,6 +20,8 @@ import com.jawnnypoo.openmeh.util.MehPreferencesManager;
 import com.jawnnypoo.openmeh.util.MehReminderManager;
 import com.sleepbot.datetimepicker.time.RadialPickerLayout;
 import com.sleepbot.datetimepicker.time.TimePickerDialog;
+
+import org.parceler.Parcels;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -43,7 +44,7 @@ public class NotificationActivity extends BaseActivity {
     public static Intent newInstance(Context context, Theme theme) {
         Intent intent = new Intent(context, NotificationActivity.class);
         if (theme != null) {
-            intent.putExtra(EXTRA_THEME, gson.toJson(theme));
+            intent.putExtra(EXTRA_THEME, Parcels.wrap(theme));
         }
         return intent;
     }
@@ -101,9 +102,8 @@ public class NotificationActivity extends BaseActivity {
             }
         });
         toolbarTitle.setText(R.string.action_notifications);
-        String themeJson = getIntent().getStringExtra(EXTRA_THEME);
-        if (!TextUtils.isEmpty(themeJson)) {
-            Theme theme = gson.fromJson(themeJson, Theme.class);
+        Theme theme = Parcels.unwrap(getIntent().getParcelableExtra(EXTRA_THEME));
+        if (theme != null) {
             applyTheme(theme);
         }
         timeToAlert.set(Calendar.HOUR_OF_DAY, MehPreferencesManager.getNotificationPreferenceHour(this));

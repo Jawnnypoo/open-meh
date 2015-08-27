@@ -20,6 +20,7 @@ import com.bumptech.glide.Glide;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerSupportFragment;
+import com.google.gson.Gson;
 import com.jawnnypoo.openmeh.adapters.ImageAdapter;
 import com.jawnnypoo.openmeh.api.MehClient;
 import com.jawnnypoo.openmeh.api.MehResponse;
@@ -31,6 +32,8 @@ import com.jawnnypoo.openmeh.services.PostReminderService;
 import com.jawnnypoo.openmeh.util.ColorUtil;
 import com.jawnnypoo.openmeh.util.IntentUtil;
 import com.jawnnypoo.openmeh.util.MehUtil;
+
+import org.parceler.Parcels;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -48,37 +51,22 @@ public class MehActivity extends BaseActivity {
     private static final String KEY_MEH_RESPONSE = "KEY_MEH_RESPONSE";
     private static final int ANIMATION_TIME = 800;
 
-    @Bind(R.id.toolbar)
-    Toolbar toolbar;
-    @Bind(R.id.toolbar_title)
-    TextView toolbarTitle;
-    @Bind(R.id.activity_root)
-    View root;
-    @Bind(R.id.progress)
-    View progress;
-    @Bind(R.id.failed)
-    View failedView;
-    @Bind(R.id.indicator)
-    CircleIndicator indicator;
-    @Bind(R.id.deal_image_background)
-    ImageView imageBackground;
-    @Bind(R.id.deal_image_view_pager)
-    ViewPager imageViewPager;
+    @Bind(R.id.toolbar) Toolbar toolbar;
+    @Bind(R.id.toolbar_title) TextView toolbarTitle;
+    @Bind(R.id.activity_root) View root;
+    @Bind(R.id.progress) View progress;
+    @Bind(R.id.failed) View failedView;
+    @Bind(R.id.indicator) CircleIndicator indicator;
+    @Bind(R.id.deal_image_background) ImageView imageBackground;
+    @Bind(R.id.deal_image_view_pager) ViewPager imageViewPager;
     ImageAdapter imagePagerAdapter;
-    @Bind(R.id.deal_buy_button)
-    AppCompatButton buy;
-    @Bind(R.id.deal_title)
-    TextView title;
-    @Bind(R.id.deal_description)
-    TextView description;
-    @Bind(R.id.deal_full_specs)
-    TextView fullSpecs;
-    @Bind(R.id.story_title)
-    TextView storyTitle;
-    @Bind(R.id.story_body)
-    TextView storyBody;
-    @Bind(R.id.video_root)
-    ViewGroup videoRoot;
+    @Bind(R.id.deal_buy_button) AppCompatButton buy;
+    @Bind(R.id.deal_title) TextView title;
+    @Bind(R.id.deal_description) TextView description;
+    @Bind(R.id.deal_full_specs) TextView fullSpecs;
+    @Bind(R.id.story_title) TextView storyTitle;
+    @Bind(R.id.story_body) TextView storyBody;
+    @Bind(R.id.video_root) ViewGroup videoRoot;
 
     YouTubePlayerSupportFragment youTubeFragment;
 
@@ -86,13 +74,18 @@ public class MehActivity extends BaseActivity {
     MehResponse savedMehResponse;
 
     @OnClick(R.id.deal_full_specs)
-    void onFullSpecsClick(View view) {
+    void onFullSpecsClick() {
         if (savedMehResponse != null && savedMehResponse.getDeal() != null) {
             Topic topic = savedMehResponse.getDeal().getTopic();
             if (topic != null && !TextUtils.isEmpty(topic.getUrl())) {
                 IntentUtil.openPage(root, topic.getUrl());
             }
         }
+    }
+
+    @OnClick(R.id.failed)
+    void onErrorClick(){
+        loadMeh();
     }
 
     private final Toolbar.OnMenuItemClickListener menuItemClickListener = new Toolbar.OnMenuItemClickListener() {
@@ -139,16 +132,12 @@ public class MehActivity extends BaseActivity {
         toolbar.setOnMenuItemClickListener(menuItemClickListener);
         imagePagerAdapter = new ImageAdapter();
         imageViewPager.setAdapter(imagePagerAdapter);
-        failedView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                loadMeh();
-            }
-        });
+
+        youTubeFragment = YouTubePlayerSupportFragment.newInstance();
+        getSupportFragmentManager().beginTransaction().replace(R.id.video_root, youTubeFragment).commit();
         if (savedInstanceState != null) {
-            String mehResponseJson = savedInstanceState.getString(KEY_MEH_RESPONSE);
-            if (!TextUtils.isEmpty(mehResponseJson)) {
-                savedMehResponse = gson.fromJson(mehResponseJson, MehResponse.class);
+            savedMehResponse = Parcels.unwrap(savedInstanceState.getParcelable(KEY_MEH_RESPONSE));
+            if (savedMehResponse != null) {
                 Timber.d("Restored from savedInstanceState");
                 bindDeal(savedMehResponse.getDeal(), false);
             }
@@ -158,8 +147,6 @@ public class MehActivity extends BaseActivity {
         if (savedMehResponse == null) {
             loadMeh();
         }
-        youTubeFragment = YouTubePlayerSupportFragment.newInstance();
-        getSupportFragmentManager().beginTransaction().replace(R.id.video_root, youTubeFragment).commit();
     }
 
     private void loadMeh() {
@@ -329,7 +316,7 @@ public class MehActivity extends BaseActivity {
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         if (savedMehResponse != null) {
-            outState.putString(KEY_MEH_RESPONSE, gson.toJson(savedMehResponse));
+            outState.putParcelable(KEY_MEH_RESPONSE, Parcels.wrap(savedMehResponse));
         }
     }
 
@@ -343,8 +330,11 @@ public class MehActivity extends BaseActivity {
         startService(new Intent(this, PostReminderService.class));
     }
 
+    /**
+     * Parse a fake API response, for testing
+     */
     private void testMeh() {
-        savedMehResponse = gson.fromJson(
+        savedMehResponse = new Gson().fromJson(
                 MehUtil.loadJSONFromAsset(this, "4-23-2015.json"), MehResponse.class);
         Timber.d(savedMehResponse.toString());
         bindDeal(savedMehResponse.getDeal(), true);

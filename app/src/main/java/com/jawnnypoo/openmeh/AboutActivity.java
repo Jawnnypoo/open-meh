@@ -10,7 +10,6 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
@@ -27,6 +26,7 @@ import com.jawnnypoo.physicslayout.PhysicsConfig;
 import com.jawnnypoo.physicslayout.PhysicsFrameLayout;
 
 import org.jbox2d.common.Vec2;
+import org.parceler.Parcels;
 
 import java.util.List;
 
@@ -55,7 +55,7 @@ public class AboutActivity extends BaseActivity {
     public static Intent newInstance(Context context, Theme theme) {
         Intent intent = new Intent(context, AboutActivity.class);
         if (theme != null) {
-            intent.putExtra(EXTRA_THEME, gson.toJson(theme));
+            intent.putExtra(EXTRA_THEME, Parcels.wrap(theme));
         }
         return intent;
     }
@@ -123,9 +123,8 @@ public class AboutActivity extends BaseActivity {
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         gravitySensor = sensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY);
         GithubClient.instance().contributors(REPO_USER, REPO_NAME, contributorResponseCallback);
-        String themeJson = getIntent().getStringExtra(EXTRA_THEME);
-        if (!TextUtils.isEmpty(themeJson)) {
-            Theme theme = gson.fromJson(themeJson, Theme.class);
+        Theme theme = Parcels.unwrap(getIntent().getParcelableExtra(EXTRA_THEME));
+        if (theme != null) {
             applyTheme(theme);
         }
     }

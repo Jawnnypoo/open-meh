@@ -125,7 +125,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:orientation="vertical"
-        android:background="@drawable/selector_cool"
+        android:background="?attr/selectableItemBackground"
         android:visibility="gone" >
 
         <ImageView

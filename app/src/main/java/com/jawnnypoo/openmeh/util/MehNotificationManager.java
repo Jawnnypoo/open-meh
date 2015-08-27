@@ -60,7 +60,7 @@ public class MehNotificationManager {
             notificationBuilder.setSmallIcon(theme.getForeground() == Theme.FOREGROUND_DARK ?
                     R.drawable.ic_meh_black : R.drawable.ic_meh);
         } else {
-            notificationBuilder.setSmallIcon(R.drawable.ic_launcher);
+            notificationBuilder.setSmallIcon(R.mipmap.ic_launcher);
         }
 
         // Creates an explicit intent for an Activity in your app

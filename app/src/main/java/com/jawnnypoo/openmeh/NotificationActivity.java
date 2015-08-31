@@ -92,10 +92,7 @@ public class NotificationActivity extends BaseActivity {
             }
         });
         toolbarTitle.setText(R.string.action_notifications);
-        Theme theme = Parcels.unwrap(getIntent().getParcelableExtra(EXTRA_THEME));
-        if (theme != null) {
-            applyTheme(theme);
-        }
+
         timeToAlert.set(Calendar.HOUR_OF_DAY, MehPreferencesManager.getNotificationPreferenceHour(this));
         timeToAlert.set(Calendar.MINUTE, MehPreferencesManager.getNotificationPreferenceMinute(this));
         setupUi();
@@ -104,6 +101,10 @@ public class NotificationActivity extends BaseActivity {
         if (timePickerDialog == null) {
             timePickerDialog = TimePickerDialog.newInstance(onTimeSetListener, timeToAlert.get(Calendar.HOUR_OF_DAY), timeToAlert.get(Calendar.MINUTE), false);
             timePickerDialog.vibrate(false);
+        }
+        Theme theme = Parcels.unwrap(getIntent().getParcelableExtra(EXTRA_THEME));
+        if (theme != null) {
+            applyTheme(theme);
         }
     }
 
@@ -124,6 +125,7 @@ public class NotificationActivity extends BaseActivity {
         notifyTimeLabel.setTextColor(foreGround);
         soundCheckLabel.setTextColor(foreGround);
         vibrateCheckLabel.setTextColor(foreGround);
+        timePickerDialog.setAccentColor(theme.getAccentColor());
     }
 
     @Override

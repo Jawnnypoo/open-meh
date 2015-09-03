@@ -1,13 +1,16 @@
 package com.jawnnypoo.openmeh.util;
 
-import android.content.ActivityNotFoundException;
+import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
+import android.support.customtabs.CustomTabsIntent;
 import android.support.design.widget.Snackbar;
 import android.view.View;
 
 import com.jawnnypoo.openmeh.R;
 import com.jawnnypoo.openmeh.api.MehResponse;
+import com.jawnnypoo.openmeh.util.customtabs.BrowserFallback;
+import com.jawnnypoo.openmeh.util.customtabs.CustomTabsActivityHelper;
 
 /**
  * All the intents
@@ -28,14 +31,10 @@ public class IntentUtil {
         root.getContext().startActivity(Intent.createChooser(shareIntent, root.getContext().getString(R.string.share_subject)));
     }
 
-    public static void openPage(View root, String url) {
-        Intent i = new Intent(Intent.ACTION_VIEW);
-        i.setData(Uri.parse(url));
-        try {
-            root.getContext().startActivity(i);
-        } catch (ActivityNotFoundException e) {
-            Snackbar.make(root, R.string.error_no_browser, Snackbar.LENGTH_SHORT)
-                    .show();
-        }
+    public static void openUrl(Activity activity, String url, int toolbarColor) {
+        CustomTabsIntent.Builder intentBuilder = new CustomTabsIntent.Builder();
+        intentBuilder.setToolbarColor(toolbarColor);
+        CustomTabsActivityHelper.openCustomTab(activity, intentBuilder.build(), Uri.parse(url), new BrowserFallback());
     }
+
 }

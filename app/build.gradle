@@ -7,7 +7,7 @@ android {
 
     defaultConfig {
         applicationId "com.jawnnypoo.openmeh"
-        minSdkVersion 15
+        minSdkVersion 16
         targetSdkVersion 23
         versionCode 102
         versionName "1.0.2"
@@ -33,6 +33,7 @@ dependencies {
     compile 'com.android.support:appcompat-v7:23.0.0'
     compile 'com.android.support:design:23.0.0'
     compile 'com.android.support:recyclerview-v7:23.0.0'
+    compile 'com.android.support:customtabs:23.0.0'
     compile 'com.squareup.retrofit:retrofit:1.9.0'
     compile 'com.squareup.okhttp:okhttp:2.4.0'
     compile 'com.jakewharton:butterknife:7.0.1'

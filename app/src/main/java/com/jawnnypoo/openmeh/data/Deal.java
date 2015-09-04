@@ -16,6 +16,7 @@ import java.util.Locale;
 @Parcel
 public class Deal {
     private static NumberFormat PRICE_FORMATTER = NumberFormat.getCurrencyInstance(Locale.US);
+    private static final String PATH_CHECKOUT = "/checkout";
     String features;
     String id;
     List<Item> items;
@@ -103,5 +104,9 @@ public class Deal {
     @Override
     public String toString() {
         return id + ":" + title;
+    }
+
+    public String getCheckoutUrl() {
+        return url + PATH_CHECKOUT;
     }
 }

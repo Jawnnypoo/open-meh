@@ -190,7 +190,7 @@ public class MehActivity extends BaseActivity {
             buy.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    IntentUtil.openUrl(MehActivity.this, deal.getUrl(), deal.getTheme().getAccentColor());
+                    IntentUtil.openUrl(MehActivity.this, deal.getCheckoutUrl(), deal.getTheme().getAccentColor());
                 }
             });
         }

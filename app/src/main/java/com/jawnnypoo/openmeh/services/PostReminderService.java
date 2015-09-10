@@ -14,6 +14,9 @@ import com.jawnnypoo.openmeh.util.MehPreferencesManager;
 
 import java.util.concurrent.ExecutionException;
 
+import retrofit.RetrofitError;
+import timber.log.Timber;
+
 /**
  * Service that pretty much just posts a notification then goes away
  * Created by Jawn on 4/20/2015.
@@ -36,11 +39,18 @@ public class PostReminderService extends IntentService {
             //Notifications disabled, go away
             return;
         }
-        MehResponse response = MehClient.instance().getMeh();
+        MehResponse response = null;
+        try {
+            response = MehClient.instance().getMeh();
+        } catch (RetrofitError error) {
+            Timber.e(error.toString());
+        }
         if (response == null) {
-            //TODO alert user it failed? try again later?
+            Timber.e("Response was null. Will not notify");
             return;
         }
+
+
         Deal deal = response.getDeal();
         Bitmap icon = null;
         //Shoot for the highest resolution
@@ -52,7 +62,9 @@ public class PostReminderService extends IntentService {
                     .centerCrop()
                     .into(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
                     .get();
-        } catch (ExecutionException | InterruptedException e) { }
+        } catch (ExecutionException | InterruptedException e) {
+            Timber.e(e.toString());
+        }
         MehNotificationManager.postDailyNotification(getApplicationContext(), response, icon);
     }
 }

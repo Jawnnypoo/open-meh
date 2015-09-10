@@ -78,7 +78,7 @@ public class MehActivity extends BaseActivity {
         if (savedMehResponse != null && savedMehResponse.getDeal() != null) {
             Topic topic = savedMehResponse.getDeal().getTopic();
             if (topic != null && !TextUtils.isEmpty(topic.getUrl())) {
-                IntentUtil.openPage(root, topic.getUrl());
+                IntentUtil.openUrl(this, topic.getUrl(), savedMehResponse.getDeal().getTheme().getAccentColor());
             }
         }
     }
@@ -190,7 +190,7 @@ public class MehActivity extends BaseActivity {
             buy.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    IntentUtil.openPage(root, deal.getUrl());
+                    IntentUtil.openUrl(MehActivity.this, deal.getCheckoutUrl(), deal.getTheme().getAccentColor());
                 }
             });
         }
@@ -258,7 +258,7 @@ public class MehActivity extends BaseActivity {
         videoRoot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                IntentUtil.openPage(root, video.getUrl());
+                IntentUtil.openUrl(MehActivity.this, video.getUrl(), savedMehResponse.getDeal().getTheme().getAccentColor());
             }
         });
         ImageView playIcon = (ImageView) videoRoot.findViewById(R.id.video_play);

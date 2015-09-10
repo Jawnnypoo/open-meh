@@ -18,8 +18,8 @@ import com.jawnnypoo.openmeh.data.Theme;
 import com.jawnnypoo.openmeh.util.ColorUtil;
 import com.jawnnypoo.openmeh.util.MehPreferencesManager;
 import com.jawnnypoo.openmeh.util.MehReminderManager;
-import com.sleepbot.datetimepicker.time.RadialPickerLayout;
-import com.sleepbot.datetimepicker.time.TimePickerDialog;
+import com.wdullaer.materialdatetimepicker.time.RadialPickerLayout;
+import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
 
 import org.parceler.Parcels;
 
@@ -49,26 +49,16 @@ public class NotificationActivity extends BaseActivity {
         return intent;
     }
 
-    @Bind(R.id.toolbar)
-    Toolbar toolbar;
-    @Bind(R.id.toolbar_title)
-    TextView toolbarTitle;
-    @Bind(R.id.notification_switch)
-    SwitchCompat onOffSwitch;
-    @Bind(R.id.notification_switch_label)
-    TextView onOffSwitchLabel;
-    @Bind(R.id.notification_time)
-    TextView notifyTime;
-    @Bind(R.id.notification_time_label)
-    TextView notifyTimeLabel;
-    @Bind(R.id.notification_sound)
-    CheckBox soundCheck;
-    @Bind(R.id.notification_sound_label)
-    TextView soundCheckLabel;
-    @Bind(R.id.notification_vibrate)
-    CheckBox vibrateCheck;
-    @Bind(R.id.notification_vibrate_label)
-    TextView vibrateCheckLabel;
+    @Bind(R.id.toolbar) Toolbar toolbar;
+    @Bind(R.id.toolbar_title) TextView toolbarTitle;
+    @Bind(R.id.notification_switch) SwitchCompat onOffSwitch;
+    @Bind(R.id.notification_switch_label) TextView onOffSwitchLabel;
+    @Bind(R.id.notification_time) TextView notifyTime;
+    @Bind(R.id.notification_time_label) TextView notifyTimeLabel;
+    @Bind(R.id.notification_sound) CheckBox soundCheck;
+    @Bind(R.id.notification_sound_label) TextView soundCheckLabel;
+    @Bind(R.id.notification_vibrate) CheckBox vibrateCheck;
+    @Bind(R.id.notification_vibrate_label) TextView vibrateCheckLabel;
 
     Calendar timeToAlert = Calendar.getInstance();
     static SimpleDateFormat timeformat = new SimpleDateFormat("h:mm a");
@@ -77,7 +67,7 @@ public class NotificationActivity extends BaseActivity {
 
     private final TimePickerDialog.OnTimeSetListener onTimeSetListener = new TimePickerDialog.OnTimeSetListener() {
         @Override
-        public void onTimeSet(RadialPickerLayout view, int hourOfDay, int minute) {
+        public void onTimeSet(RadialPickerLayout radialPickerLayout, int hourOfDay, int minute) {
             timeToAlert.set(Calendar.HOUR_OF_DAY, hourOfDay);
             timeToAlert.set(Calendar.MINUTE, minute);
             notifyTime.setText(timeformat.format(timeToAlert.getTime()));
@@ -102,17 +92,19 @@ public class NotificationActivity extends BaseActivity {
             }
         });
         toolbarTitle.setText(R.string.action_notifications);
-        Theme theme = Parcels.unwrap(getIntent().getParcelableExtra(EXTRA_THEME));
-        if (theme != null) {
-            applyTheme(theme);
-        }
+
         timeToAlert.set(Calendar.HOUR_OF_DAY, MehPreferencesManager.getNotificationPreferenceHour(this));
         timeToAlert.set(Calendar.MINUTE, MehPreferencesManager.getNotificationPreferenceMinute(this));
         setupUi();
         notifyIfDialog = new NotifyIfDialog(this);
-        timePickerDialog = (TimePickerDialog) getSupportFragmentManager().findFragmentByTag(TIMEPICKER_TAG);
+        timePickerDialog = (TimePickerDialog) getFragmentManager().findFragmentByTag(TIMEPICKER_TAG);
         if (timePickerDialog == null) {
-            timePickerDialog = TimePickerDialog.newInstance(onTimeSetListener, timeToAlert.get(Calendar.HOUR_OF_DAY), timeToAlert.get(Calendar.MINUTE), false, false);
+            timePickerDialog = TimePickerDialog.newInstance(onTimeSetListener, timeToAlert.get(Calendar.HOUR_OF_DAY), timeToAlert.get(Calendar.MINUTE), false);
+            timePickerDialog.vibrate(false);
+        }
+        Theme theme = Parcels.unwrap(getIntent().getParcelableExtra(EXTRA_THEME));
+        if (theme != null) {
+            applyTheme(theme);
         }
     }
 
@@ -133,6 +125,7 @@ public class NotificationActivity extends BaseActivity {
         notifyTimeLabel.setTextColor(foreGround);
         soundCheckLabel.setTextColor(foreGround);
         vibrateCheckLabel.setTextColor(foreGround);
+        timePickerDialog.setAccentColor(theme.getAccentColor());
     }
 
     @Override
@@ -193,7 +186,7 @@ public class NotificationActivity extends BaseActivity {
 
     @OnClick(R.id.notification_time_root)
     void onTimeClick(View view) {
-        timePickerDialog.show(getSupportFragmentManager(), TIMEPICKER_TAG);
+        timePickerDialog.show(getFragmentManager(), TIMEPICKER_TAG);
 
     }
 

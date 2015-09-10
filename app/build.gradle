@@ -7,7 +7,7 @@ android {
 
     defaultConfig {
         applicationId "com.jawnnypoo.openmeh"
-        minSdkVersion 15
+        minSdkVersion 16
         targetSdkVersion 23
         versionCode 102
         versionName "1.0.2"
@@ -33,6 +33,7 @@ dependencies {
     compile 'com.android.support:appcompat-v7:23.0.0'
     compile 'com.android.support:design:23.0.0'
     compile 'com.android.support:recyclerview-v7:23.0.0'
+    compile 'com.android.support:customtabs:23.0.0'
     compile 'com.squareup.retrofit:retrofit:1.9.0'
     compile 'com.squareup.okhttp:okhttp:2.4.0'
     compile 'com.jakewharton:butterknife:7.0.1'
@@ -42,8 +43,9 @@ dependencies {
     compile 'com.google.code.gson:gson:2.3.1'
     compile "org.parceler:parceler-api:1.0.3"
     apt "org.parceler:parceler:1.0.3"
-    compile 'com.github.flavienlaurent.datetimepicker:library:0.0.2'
     compile 'com.pnikosis:materialish-progress:1.5'
     compile 'com.jawnnypoo:physicslayout:1.0.0'
     compile 'de.hdodenhof:circleimageview:1.3.0'
+    compile 'com.wdullaer:materialdatetimepicker:1.5.0'
+    compile 'com.github.Commit451:bypasses:1.0.0'
 }

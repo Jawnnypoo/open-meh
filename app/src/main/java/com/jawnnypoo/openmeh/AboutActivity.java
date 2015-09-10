@@ -72,11 +72,12 @@ public class AboutActivity extends BaseActivity {
     PhysicsFrameLayout physicsLayout;
     @OnClick(R.id.sauce)
     void onSauceClick() {
-        IntentUtil.openPage(root, getString(R.string.source_url));
+        IntentUtil.openUrl(this, getString(R.string.source_url), mTheme == null ? Color.WHITE : mTheme.getAccentColor());
     }
 
     SensorManager sensorManager;
     Sensor gravitySensor;
+    Theme mTheme;
 
     private final SensorEventListener sensorEventListener = new SensorEventListener() {
         @Override
@@ -123,9 +124,9 @@ public class AboutActivity extends BaseActivity {
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         gravitySensor = sensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY);
         GithubClient.instance().contributors(REPO_USER, REPO_NAME, contributorResponseCallback);
-        Theme theme = Parcels.unwrap(getIntent().getParcelableExtra(EXTRA_THEME));
-        if (theme != null) {
-            applyTheme(theme);
+        mTheme = Parcels.unwrap(getIntent().getParcelableExtra(EXTRA_THEME));
+        if (mTheme != null) {
+            applyTheme(mTheme);
         }
     }
 

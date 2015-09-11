@@ -36,7 +36,7 @@ The following 3rd party libraries are the reason this app works. Rapid developme
 - Material-ish Progress (https://github.com/pnikosis/materialish-progress)
 - PhysicsLayout (https://github.com/Jawnnypoo/PhysicsLayout)
 - CircleImageView (https://github.com/hdodenhof/CircleImageView)
-- DateTimePicker (https://github.com/flavienlaurent/datetimepicker)
+- MaterialDateTimePicker (https://github.com/wdullaer/MaterialDateTimePicker)
 
 #Contribution
 Pull requests are welcomed and encouraged. If you experience any bugs, please [file an issue](https://github.com/Jawnnypoo/open-meh/issues/new)

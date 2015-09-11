@@ -1,4 +1,4 @@
-package com.jawnnypoo.openmeh;
+package com.jawnnypoo.openmeh.dialogs;
 
 import android.content.Context;
 import android.support.v7.app.AppCompatDialog;
@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.jawnnypoo.openmeh.R;
 import com.jawnnypoo.openmeh.data.Filter;
 import com.jawnnypoo.openmeh.viewHolders.FilterViewHolder;
 

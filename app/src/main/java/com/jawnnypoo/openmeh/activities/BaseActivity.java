@@ -1,4 +1,4 @@
-package com.jawnnypoo.openmeh;
+package com.jawnnypoo.openmeh.activities;
 
 import android.support.v7.app.AppCompatActivity;
 

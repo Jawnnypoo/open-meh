@@ -10,7 +10,7 @@ import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 
-import com.jawnnypoo.openmeh.MehActivity;
+import com.jawnnypoo.openmeh.activities.MehActivity;
 import com.jawnnypoo.openmeh.R;
 import com.jawnnypoo.openmeh.api.MehResponse;
 import com.jawnnypoo.openmeh.data.Deal;

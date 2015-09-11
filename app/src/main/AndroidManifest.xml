@@ -11,11 +11,12 @@
     <application
         android:name="com.jawnnypoo.openmeh.MehApp"
         android:allowBackup="true"
+        android:fullBackupContent="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".MehActivity" >
+            android:name=".activities.MehActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -23,8 +24,8 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".NotificationActivity"/>
-        <activity android:name=".AboutActivity"/>
+        <activity android:name=".activities.NotificationActivity"/>
+        <activity android:name=".activities.AboutActivity"/>
 
         <service android:name="com.jawnnypoo.openmeh.services.PostReminderService"/>
         
@@ -35,6 +36,9 @@
             </intent-filter>
         </receiver>
 
+        <meta-data
+            android:name="com.crashlytics.ApiKey"
+            android:value="${fabric_key}" />
     </application>
 
 </manifest>

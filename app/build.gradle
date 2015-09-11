@@ -1,16 +1,31 @@
+buildscript {
+    repositories {
+        maven { url 'https://maven.fabric.io/public' }
+    }
+
+    dependencies {
+        classpath 'io.fabric.tools:gradle:1.+'
+    }
+}
 apply plugin: 'com.android.application'
+apply plugin: 'io.fabric'
+
+repositories {
+    maven { url 'https://maven.fabric.io/public' }
+}
+
 apply plugin: 'com.neenbedankt.android-apt'
 
 android {
     compileSdkVersion 23
-    buildToolsVersion "23.0.0"
+    buildToolsVersion "23.0.1"
 
     defaultConfig {
         applicationId "com.jawnnypoo.openmeh"
         minSdkVersion 16
         targetSdkVersion 23
-        versionCode 102
-        versionName "1.0.2"
+        versionCode 110
+        versionName "1.1.0"
         buildConfigField "String", "MEH_API_KEY", project.MEH_API_KEY
         buildConfigField "String", "YOUTUBE_API_KEY", project.YOUTUBE_API_KEY
     }
@@ -18,10 +33,15 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            ext.enableCrashlytics = true
+            manifestPlaceholders = [fabric_key: project.MEH_FABRIC_KEY]
         }
-    }
-    sourceSets.main {
-        jniLibs.srcDir 'libs'
+        debug {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            ext.enableCrashlytics = false
+            manifestPlaceholders = [fabric_key: ""]
+        }
     }
     lintOptions {
         abortOnError false
@@ -30,10 +50,10 @@ android {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.android.support:appcompat-v7:23.0.0'
-    compile 'com.android.support:design:23.0.0'
-    compile 'com.android.support:recyclerview-v7:23.0.0'
-    compile 'com.android.support:customtabs:23.0.0'
+    compile 'com.android.support:appcompat-v7:23.0.1'
+    compile 'com.android.support:design:23.0.1'
+    compile 'com.android.support:recyclerview-v7:23.0.1'
+    compile 'com.android.support:customtabs:23.0.1'
     compile 'com.squareup.retrofit:retrofit:1.9.0'
     compile 'com.squareup.okhttp:okhttp:2.4.0'
     compile 'com.jakewharton:butterknife:7.0.1'
@@ -48,4 +68,7 @@ dependencies {
     compile 'de.hdodenhof:circleimageview:1.3.0'
     compile 'com.wdullaer:materialdatetimepicker:1.5.0'
     compile 'com.github.Commit451:bypasses:1.0.0'
+    compile('com.crashlytics.sdk.android:crashlytics:2.5.2@aar') {
+        transitive = true;
+    }
 }

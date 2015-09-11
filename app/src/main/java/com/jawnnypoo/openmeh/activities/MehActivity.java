@@ -1,4 +1,4 @@
-package com.jawnnypoo.openmeh;
+package com.jawnnypoo.openmeh.activities;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -21,6 +21,8 @@ import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerSupportFragment;
 import com.google.gson.Gson;
+import com.jawnnypoo.openmeh.BuildConfig;
+import com.jawnnypoo.openmeh.R;
 import com.jawnnypoo.openmeh.adapters.ImageAdapter;
 import com.jawnnypoo.openmeh.api.MehClient;
 import com.jawnnypoo.openmeh.api.MehResponse;

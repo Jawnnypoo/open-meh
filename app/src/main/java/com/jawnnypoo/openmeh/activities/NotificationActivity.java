@@ -1,4 +1,4 @@
-package com.jawnnypoo.openmeh;
+package com.jawnnypoo.openmeh.activities;
 
 import android.content.Context;
 import android.content.Intent;
@@ -14,6 +14,8 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
 
+import com.jawnnypoo.openmeh.dialogs.NotifyIfDialog;
+import com.jawnnypoo.openmeh.R;
 import com.jawnnypoo.openmeh.data.Theme;
 import com.jawnnypoo.openmeh.util.ColorUtil;
 import com.jawnnypoo.openmeh.util.MehPreferencesManager;

@@ -1,4 +1,4 @@
-package com.jawnnypoo.openmeh;
+package com.jawnnypoo.openmeh.activities;
 
 import android.content.Context;
 import android.content.Intent;
@@ -15,6 +15,7 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.jawnnypoo.openmeh.R;
 import com.jawnnypoo.openmeh.data.Theme;
 import com.jawnnypoo.openmeh.github.Contributor;
 import com.jawnnypoo.openmeh.github.GithubClient;

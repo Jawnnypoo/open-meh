@@ -11,7 +11,12 @@ Open source meh Android App
 
 [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-Open%20Meh-green.svg?style=flat)](https://android-arsenal.com/details/3/1999) [![Build Status](https://travis-ci.org/Jawnnypoo/open-meh.svg?branch=master)](https://travis-ci.org/Jawnnypoo/open-meh)
 #Building
-You will need to generate your own API key from [meh](https://meh.com/forum/topics/meh-api) and add it to your gradle.properties file (create one in your home directory, under .gradle). You will also need to create an API key for the [YouTube API](https://developers.google.com/youtube/android/player/) if you want videos to show up while you are building.
+You will need to generate your own API key from [meh](https://meh.com/forum/topics/meh-api) and add it to your gradle.properties file (create one in your home directory, under .gradle). You will also need to create an API key for the [YouTube API](https://developers.google.com/youtube/android/player/) if you want videos to show up while you are building. The app also uses Fabric for Crashlytics, so you will need to generate your own crashlytics key. All in all, your gradle.properties will look something like this:
+```Gradle
+MEH_API_KEY = "MEH_API_KEY_GOES_HERE"
+YOUTUBE_API_KEY = "YOUTUBE_API_KEY_HERE_OR_RANDOM_STRING_IF_YOU_DONT_CARE"
+MEH_FABRIC_KEY = FABRIC_KEY_GOES_HERE_BUT_ONLY_REALLY_NEEDED_FOR_RELEASE_BUILDS
+```
 
 #Libraries
 The following 3rd party libraries are the reason this app works. Rapid development is easily attainable thanks to these fine folks and the work they do:

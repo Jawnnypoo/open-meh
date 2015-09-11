@@ -12,9 +12,10 @@ import com.jawnnypoo.openmeh.api.MehResponse;
 import com.jawnnypoo.openmeh.util.MehNotificationManager;
 import com.jawnnypoo.openmeh.util.MehPreferencesManager;
 
+import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 
-import retrofit.RetrofitError;
+import retrofit.Response;
 import timber.log.Timber;
 
 /**
@@ -39,19 +40,19 @@ public class PostReminderService extends IntentService {
             //Notifications disabled, go away
             return;
         }
-        MehResponse response = null;
+        Response<MehResponse> response = null;
         try {
-            response = MehClient.instance().getMeh();
-        } catch (RetrofitError error) {
+            response = MehClient.instance().getMeh().execute();
+        } catch (IOException error) {
             Timber.e(error.toString());
         }
-        if (response == null) {
+        if (response == null || !response.isSuccess() || response.body() == null) {
             Timber.e("Response was null. Will not notify");
             return;
         }
 
 
-        Deal deal = response.getDeal();
+        Deal deal = response.body().getDeal();
         Bitmap icon = null;
         //Shoot for the highest resolution
         //http://graphicdesign.stackexchange.com/questions/15776/issues-with-creating-a-hi-res-large-icon-for-android-notifications-in-jelly-bean
@@ -65,6 +66,6 @@ public class PostReminderService extends IntentService {
         } catch (ExecutionException | InterruptedException e) {
             Timber.e(e.toString());
         }
-        MehNotificationManager.postDailyNotification(getApplicationContext(), response, icon);
+        MehNotificationManager.postDailyNotification(getApplicationContext(), response.body(), icon);
     }
 }

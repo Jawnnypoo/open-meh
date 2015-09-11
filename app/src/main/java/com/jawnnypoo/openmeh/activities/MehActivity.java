@@ -43,8 +43,7 @@ import butterknife.OnClick;
 import in.uncod.android.bypass.Bypass;
 import me.relex.circleindicator.CircleIndicator;
 import retrofit.Callback;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
+import retrofit.Response;
 import timber.log.Timber;
 
 
@@ -72,7 +71,7 @@ public class MehActivity extends BaseActivity {
 
     YouTubePlayerSupportFragment youTubeFragment;
 
-    Bypass bypass = new Bypass();
+    Bypass bypass;
     MehResponse savedMehResponse;
 
     @OnClick(R.id.deal_full_specs)
@@ -113,11 +112,33 @@ public class MehActivity extends BaseActivity {
         }
     };
 
+    private final Callback<MehResponse> mMehResponseCallback = new Callback<MehResponse>() {
+        @Override
+        public void onResponse(Response<MehResponse> response) {
+            progress.setVisibility(View.GONE);
+            if (!response.isSuccess() || response.body() == null || response.body().getDeal() == null) {
+                Timber.e("There was a meh response, but it was null or the deal was null or something");
+                showError();
+                return;
+            }
+            savedMehResponse = response.body();
+            bindDeal(savedMehResponse.getDeal(), true);
+        }
+
+        @Override
+        public void onFailure(Throwable t) {
+            progress.setVisibility(View.GONE);
+            Timber.e(t.toString());
+            showError();
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_meh);
         ButterKnife.bind(this);
+        bypass = new Bypass(this);
         toolbarTitle.setText(R.string.app_name);
         toolbarTitle.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -156,26 +177,7 @@ public class MehActivity extends BaseActivity {
         failedView.setVisibility(View.GONE);
         root.setVisibility(View.GONE);
         imageBackground.setVisibility(View.GONE);
-        MehClient.instance().getMeh(new Callback<MehResponse>() {
-            @Override
-            public void success(MehResponse mehResponse, Response response) {
-                progress.setVisibility(View.GONE);
-                if (mehResponse == null || mehResponse.getDeal() == null) {
-                    Timber.e("There was a meh response, but it was null or the deal was null or something");
-                    showError();
-                    return;
-                }
-                savedMehResponse = mehResponse;
-                bindDeal(mehResponse.getDeal(), true);
-            }
-
-            @Override
-            public void failure(RetrofitError error) {
-                progress.setVisibility(View.GONE);
-                Timber.e(error.toString());
-                showError();
-            }
-        });
+        MehClient.instance().getMeh().enqueue(mMehResponseCallback);
     }
 
     private void bindDeal(final Deal deal, boolean animate) {

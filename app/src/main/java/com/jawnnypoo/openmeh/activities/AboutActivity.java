@@ -9,6 +9,7 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -36,8 +37,8 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit.Callback;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
+import retrofit.Response;
+import timber.log.Timber;
 
 /**
  * Thats what its all about
@@ -96,14 +97,19 @@ public class AboutActivity extends BaseActivity {
     };
 
     private final Callback<List<Contributor>> contributorResponseCallback = new Callback<List<Contributor>>() {
+
         @Override
-        public void success(List<Contributor> contributorList, Response response) {
-            addContributors(contributorList);
+        public void onResponse(Response<List<Contributor>> response) {
+            if (response.isSuccess()) {
+                addContributors(response.body());
+            }
         }
 
         @Override
-        public void failure(RetrofitError error) {
-            error.printStackTrace();
+        public void onFailure(Throwable t) {
+            Timber.e(t.toString());
+            Snackbar.make(getWindow().getDecorView(), R.string.error_getting_contributors, Snackbar.LENGTH_SHORT)
+                    .show();
         }
     };
 
@@ -124,7 +130,7 @@ public class AboutActivity extends BaseActivity {
         physicsLayout.getPhysics().enableFling();
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         gravitySensor = sensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY);
-        GithubClient.instance().contributors(REPO_USER, REPO_NAME, contributorResponseCallback);
+        GithubClient.instance().contributors(REPO_USER, REPO_NAME).enqueue(contributorResponseCallback);
         mTheme = Parcels.unwrap(getIntent().getParcelableExtra(EXTRA_THEME));
         if (mTheme != null) {
             applyTheme(mTheme);

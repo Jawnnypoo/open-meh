@@ -1,10 +1,11 @@
 package com.jawnnypoo.openmeh.api;
 
 import com.jawnnypoo.openmeh.BuildConfig;
+import com.squareup.okhttp.OkHttpClient;
 
-import retrofit.Callback;
-import retrofit.RequestInterceptor;
-import retrofit.RestAdapter;
+import retrofit.Call;
+import retrofit.GsonConverterFactory;
+import retrofit.Retrofit;
 import retrofit.http.GET;
 
 /**
@@ -12,39 +13,30 @@ import retrofit.http.GET;
  * Created by John on 4/17/2015.
  */
 public class MehClient {
-    //Replace with your API_KEY
     private static final String API_KEY_VALUE = BuildConfig.MEH_API_KEY;
-    private static final String API_URL = "https://api.meh.com/1";
+    private static final String API_URL = "https://api.meh.com";
     private static final String PARAM_API_KEY = "apikey";
 
     private static Meh mMeh;
 
     public interface Meh {
-        @GET("/current.json")
-        void getMeh(
-                Callback<MehResponse> responseCallback
-        );
-
-        @GET("/current.json")
-        MehResponse getMeh();
+        @GET("/1/current.json?" + PARAM_API_KEY + "=" + API_KEY_VALUE)
+        Call<MehResponse> getMeh( );
     }
 
     public static Meh instance() {
         if (mMeh == null) {
-            RestAdapter restAdapter = new RestAdapter.Builder()
-                    .setEndpoint(API_URL)
-                    .setLogLevel(BuildConfig.DEBUG ? RestAdapter.LogLevel.FULL : RestAdapter.LogLevel.NONE)
-                    .setRequestInterceptor(new MehRequestInterceptor())
+            OkHttpClient client = new OkHttpClient();
+            if (BuildConfig.DEBUG) {
+                client.networkInterceptors().add(new TimberRequestInterceptor());
+            }
+            Retrofit restAdapter = new Retrofit.Builder()
+                    .baseUrl(API_URL)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .client(client)
                     .build();
             mMeh = restAdapter.create(Meh.class);
         }
         return mMeh;
-    }
-
-    public static class MehRequestInterceptor implements RequestInterceptor {
-        @Override
-        public void intercept(RequestFacade request) {
-            request.addQueryParam(PARAM_API_KEY, API_KEY_VALUE);
-        }
     }
 }

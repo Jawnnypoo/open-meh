@@ -107,6 +107,28 @@ public class MehActivity extends BaseActivity {
                 case R.id.action_refresh:
                     loadMeh();
                     return true;
+                case R.id.action_account:
+                    int color = Color.WHITE;
+                    if (savedMehResponse != null && savedMehResponse.getDeal() != null && savedMehResponse.getDeal().getTheme() != null) {
+                        color = savedMehResponse.getDeal().getTheme().getAccentColor();
+                    }
+                    IntentUtil.openUrl(MehActivity.this, getString(R.string.url_account), color);
+                    return true;
+                case R.id.action_orders:
+                    int colorWhichHasToHaveDifferentNameBecauseOfSwitchStatmentsWeirdScope = Color.WHITE;
+                    if (savedMehResponse != null && savedMehResponse.getDeal() != null && savedMehResponse.getDeal().getTheme() != null) {
+                        colorWhichHasToHaveDifferentNameBecauseOfSwitchStatmentsWeirdScope = savedMehResponse.getDeal().getTheme().getAccentColor();
+                    }
+                    IntentUtil.openUrl(MehActivity.this, getString(R.string.url_orders), colorWhichHasToHaveDifferentNameBecauseOfSwitchStatmentsWeirdScope);
+                    return true;
+                case R.id.action_forum:
+                    int color2 = Color.WHITE;
+                    if (savedMehResponse != null && savedMehResponse.getDeal() != null && savedMehResponse.getDeal().getTheme() != null) {
+                        color2 = savedMehResponse.getDeal().getTheme().getAccentColor();
+                    }
+                    IntentUtil.openUrl(MehActivity.this, getString(R.string.url_forum), color2);
+                    return true;
+
             }
             return false;
         }

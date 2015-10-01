@@ -7,6 +7,9 @@
     <string name="action_settings">settings</string>
     <string name="action_share">share</string>
     <string name="action_refresh">refresh</string>
+    <string name="action_account">account</string>
+    <string name="action_orders">orders</string>
+    <string name="action_forum">forum</string>
     <string name="share_subject">today\'s meh deal</string>
     <string name="tap_to_load_again">tap to load again</string>
     <string name="full_product_specs"><u>more specifications</u></string>
@@ -30,4 +33,9 @@
     <string name="error_with_server">sorry, something went wrong :(. Blame meh, not me.</string>
     <string name="error_nothing_to_share">no deal to share!</string>
     <string name="error_getting_contributors">failed to load contributors</string>
+
+    <!-- urls -->
+    <string name="url_account">https://mediocre.com/account?client_id=meh.com</string>
+    <string name="url_orders">https://meh.com/orders</string>
+    <string name="url_forum">https://meh.com/forum</string>
 </resources>

@@ -21,4 +21,19 @@
         android:icon="@drawable/ic_share"
         app:showAsAction="ifRoom" />
 
+    <item
+        android:id="@+id/action_account"
+        android:title="@string/action_account"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_orders"
+        android:title="@string/action_orders"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_forum"
+        android:title="@string/action_forum"
+        app:showAsAction="never" />
+
 </menu>

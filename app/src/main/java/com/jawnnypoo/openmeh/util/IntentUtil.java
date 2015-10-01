@@ -34,6 +34,8 @@ public class IntentUtil {
     public static void openUrl(Activity activity, String url, int toolbarColor) {
         CustomTabsIntent.Builder intentBuilder = new CustomTabsIntent.Builder();
         intentBuilder.setToolbarColor(toolbarColor);
+        intentBuilder.setStartAnimations(activity, R.anim.fade_in, R.anim.do_nothing);
+        intentBuilder.setExitAnimations(activity, R.anim.do_nothing, R.anim.fade_out);
         CustomTabsActivityHelper.openCustomTab(activity, intentBuilder.build(), Uri.parse(url), new BrowserFallback());
     }
 

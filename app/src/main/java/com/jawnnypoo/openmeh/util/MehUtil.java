@@ -55,6 +55,11 @@ public class MehUtil {
         return map;
     }
 
+    /**
+     * Extracts the YouTube video id from a YouTube video. Kinda clunky
+     * @param videoUrl url to YouTube video
+     * @return YouTube video id, for use with YouTube API
+     */
     public static String getYouTubeIdFromUrl(String videoUrl) {
         if (videoUrl.contains("youtube")) {
             return MehUtil.getQueryMap(videoUrl).get("v");

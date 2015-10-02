@@ -279,7 +279,7 @@ public class MehActivity extends BaseActivity {
 
     private void bindVideoLink(final Video video) {
         Timber.d("YouTube didn't work. Just link it");
-        getSupportFragmentManager().beginTransaction().remove(youTubeFragment).commit();
+        getSupportFragmentManager().beginTransaction().remove(youTubeFragment).commitAllowingStateLoss();
         getLayoutInflater().inflate(R.layout.view_link_video, videoRoot);
         videoRoot.setOnClickListener(new View.OnClickListener() {
             @Override

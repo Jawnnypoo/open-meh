@@ -44,6 +44,7 @@ import in.uncod.android.bypass.Bypass;
 import me.relex.circleindicator.CircleIndicator;
 import retrofit.Callback;
 import retrofit.Response;
+import retrofit.Retrofit;
 import timber.log.Timber;
 
 
@@ -136,7 +137,7 @@ public class MehActivity extends BaseActivity {
 
     private final Callback<MehResponse> mMehResponseCallback = new Callback<MehResponse>() {
         @Override
-        public void onResponse(Response<MehResponse> response) {
+        public void onResponse(Response<MehResponse> response, Retrofit retrofit) {
             progress.setVisibility(View.GONE);
             if (!response.isSuccess() || response.body() == null || response.body().getDeal() == null) {
                 Timber.e("There was a meh response, but it was null or the deal was null or something");

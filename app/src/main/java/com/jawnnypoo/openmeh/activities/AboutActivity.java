@@ -38,6 +38,7 @@ import butterknife.OnClick;
 import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit.Callback;
 import retrofit.Response;
+import retrofit.Retrofit;
 import timber.log.Timber;
 
 /**
@@ -99,7 +100,7 @@ public class AboutActivity extends BaseActivity {
     private final Callback<List<Contributor>> contributorResponseCallback = new Callback<List<Contributor>>() {
 
         @Override
-        public void onResponse(Response<List<Contributor>> response) {
+        public void onResponse(Response<List<Contributor>> response, Retrofit retrofit) {
             if (response.isSuccess()) {
                 addContributors(response.body());
             }

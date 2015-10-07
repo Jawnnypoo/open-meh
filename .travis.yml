@@ -21,4 +21,4 @@ before_script:
     - chmod +x gradlew
     - printf "MEH_API_KEY = \"\"\nYOUTUBE_API_KEY = \"\"\nMEH_FABRIC_KEY = \"\"\n" > gradle.properties
 
-script: "./gradlew build -x fabricGenerateResourcesRelease"
+script: "./gradlew build dependencyUpdates -x fabricGenerateResourcesRelease"

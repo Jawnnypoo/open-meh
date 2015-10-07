@@ -6,8 +6,8 @@ buildscript {
     }
     dependencies {
         classpath 'com.github.ben-manes:gradle-versions-plugin:0.11.3'
-        classpath 'com.android.tools.build:gradle:1.4.0-beta3'
-        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.7'
+        classpath 'com.android.tools.build:gradle:1.4.0-beta6'
+        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files

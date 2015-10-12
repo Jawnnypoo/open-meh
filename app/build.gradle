@@ -72,7 +72,7 @@ dependencies {
     compile 'com.pnikosis:materialish-progress:1.7'
     compile 'com.jawnnypoo:physicslayout:1.0.0'
     compile 'de.hdodenhof:circleimageview:2.0.0'
-    compile 'com.wdullaer:materialdatetimepicker:1.5.0'
+    compile 'com.wdullaer:materialdatetimepicker:1.5.3'
     compile 'com.commit451:bypasses:1.0.1'
     compile('com.crashlytics.sdk.android:crashlytics:2.5.2@aar') {
         transitive = true;

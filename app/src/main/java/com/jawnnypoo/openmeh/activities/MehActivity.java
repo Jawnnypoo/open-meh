@@ -330,6 +330,7 @@ public class MehActivity extends BaseActivity {
             decorView.setBackgroundColor(backgroundColor);
         }
         ColorUtil.setMenuItemsColor(toolbar.getMenu(), backgroundColor);
+        ColorUtil.setOverflowColor(this, backgroundColor);
         Glide.with(this)
                 .load(theme.getBackgroundImage())
                 .into(imageBackground);

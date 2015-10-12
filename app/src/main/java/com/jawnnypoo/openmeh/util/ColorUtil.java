@@ -3,6 +3,7 @@ package com.jawnnypoo.openmeh.util;
 import android.animation.Animator;
 import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
+import android.app.Activity;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
@@ -11,6 +12,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
+import android.support.v7.internal.widget.TintImageView;
 import android.support.v7.widget.SwitchCompat;
 import android.view.Menu;
 import android.view.View;
@@ -20,6 +22,8 @@ import android.view.animation.LinearInterpolator;
 import android.widget.CheckBox;
 
 import com.jawnnypoo.openmeh.R;
+
+import java.util.ArrayList;
 
 /**
  * Created by John on 4/20/2015.
@@ -144,6 +148,23 @@ public class ColorUtil {
                 icon.setColorFilter(color, PorterDuff.Mode.MULTIPLY);
             }
         }
+    }
+
+    /**
+     * Sets the color of the overflow menu item. You most likely need to use a {@link android.view.ViewTreeObserver.OnGlobalLayoutListener} with this to make it work
+     * @param activity activity
+     * @param color color to set the overflow icon to
+     */
+    public static void setOverflowColor(final Activity activity, int color) {
+        final String overflowDescription = activity.getString(R.string.abc_action_menu_overflow_description);
+        final ArrayList<View> outViews = new ArrayList<>();
+        activity.getWindow().getDecorView().findViewsWithText(outViews, overflowDescription,
+                View.FIND_VIEWS_WITH_CONTENT_DESCRIPTION);
+        if (outViews.isEmpty()) {
+            return;
+        }
+        TintImageView overflow=(TintImageView) outViews.get(0);
+        overflow.setColorFilter(color);
     }
 
 }

@@ -18,7 +18,7 @@ android:
     - extra-android-m2repository
 
 before_script:
-    - chmod +x gradlew
-    - printf "MEH_API_KEY = \"\"\nYOUTUBE_API_KEY = \"\"\nMEH_FABRIC_KEY = \"\"\n" > gradle.properties
+    - chmod 777 scripts/prepare-build.sh
+    - scripts/prepare-build.sh
 
 script: "./gradlew build dependencyUpdates -x fabricGenerateResourcesRelease"

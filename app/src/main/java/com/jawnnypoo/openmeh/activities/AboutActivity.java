@@ -64,31 +64,31 @@ public class AboutActivity extends BaseActivity {
     }
 
     @Bind(R.id.root)
-    View root;
+    View mRoot;
     @Bind(R.id.toolbar)
-    Toolbar toolbar;
+    Toolbar mToolbar;
     @Bind(R.id.toolbar_title)
-    TextView toolbarTitle;
+    TextView mToolbarTitle;
     @Bind(R.id.contributors)
-    TextView contributors;
+    TextView mContributors;
     @Bind(R.id.physics_layout)
-    PhysicsFrameLayout physicsLayout;
+    PhysicsFrameLayout mPhysicsLayout;
     @OnClick(R.id.sauce)
     void onSauceClick() {
         IntentUtil.openUrl(this, getString(R.string.source_url), mTheme == null ? Color.WHITE : mTheme.getAccentColor());
     }
 
-    SensorManager sensorManager;
-    Sensor gravitySensor;
+    SensorManager mSensorManager;
+    Sensor mGravitySensor;
     Theme mTheme;
 
     private final SensorEventListener sensorEventListener = new SensorEventListener() {
         @Override
         public void onSensorChanged(SensorEvent event) {
             if (event.sensor.getType() == Sensor.TYPE_GRAVITY) {
-                if (physicsLayout.getPhysics().getWorld() != null) {
+                if (mPhysicsLayout.getPhysics().getWorld() != null) {
                     WindowUtil.normalizeForOrientation(getWindow(), event);
-                    physicsLayout.getPhysics().getWorld().setGravity(new Vec2(-event.values[0], event.values[1]));
+                    mPhysicsLayout.getPhysics().getWorld().setGravity(new Vec2(-event.values[0], event.values[1]));
                 }
             }
         }
@@ -120,17 +120,17 @@ public class AboutActivity extends BaseActivity {
         WindowUtil.lockToCurrentOrientation(this);
         setContentView(R.layout.activity_about);
         ButterKnife.bind(this);
-        toolbar.setNavigationIcon(R.drawable.abc_ic_ab_back_mtrl_am_alpha);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+        mToolbar.setNavigationIcon(R.drawable.abc_ic_ab_back_mtrl_am_alpha);
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onBackPressed();
             }
         });
-        toolbarTitle.setText(R.string.about);
-        physicsLayout.getPhysics().enableFling();
-        sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-        gravitySensor = sensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY);
+        mToolbarTitle.setText(R.string.about);
+        mPhysicsLayout.getPhysics().enableFling();
+        mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        mGravitySensor = mSensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY);
         GithubClient.instance().contributors(REPO_USER, REPO_NAME).enqueue(contributorResponseCallback);
         mTheme = Parcels.unwrap(getIntent().getParcelableExtra(EXTRA_THEME));
         if (mTheme != null) {
@@ -141,13 +141,13 @@ public class AboutActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        sensorManager.registerListener(sensorEventListener, gravitySensor, SensorManager.SENSOR_DELAY_GAME);
+        mSensorManager.registerListener(sensorEventListener, mGravitySensor, SensorManager.SENSOR_DELAY_GAME);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        sensorManager.unregisterListener(sensorEventListener);
+        mSensorManager.unregisterListener(sensorEventListener);
     }
 
     @Override
@@ -160,9 +160,9 @@ public class AboutActivity extends BaseActivity {
         //Tint widgets
         int accentColor = theme.getAccentColor();
         int foreGround = theme.getForeground() == Theme.FOREGROUND_LIGHT ? Color.WHITE : Color.BLACK;
-        toolbarTitle.setTextColor(theme.getBackgroundColor());
-        toolbar.setBackgroundColor(accentColor);
-        toolbar.getNavigationIcon().setColorFilter(theme.getBackgroundColor(), PorterDuff.Mode.MULTIPLY);
+        mToolbarTitle.setTextColor(theme.getBackgroundColor());
+        mToolbar.setBackgroundColor(accentColor);
+        mToolbar.getNavigationIcon().setColorFilter(theme.getBackgroundColor(), PorterDuff.Mode.MULTIPLY);
         ColorUtil.setStatusBarAndNavBarColor(getWindow(), ColorUtil.getDarkerColor(accentColor));
         getWindow().getDecorView().setBackgroundColor(theme.getBackgroundColor());
     }
@@ -188,19 +188,19 @@ public class AboutActivity extends BaseActivity {
             imageView.setBorderWidth(borderSize);
             imageView.setBorderColor(Color.BLACK);
             Physics.setPhysicsConfig(imageView, config);
-            physicsLayout.addView(imageView);
+            mPhysicsLayout.addView(imageView);
             imageView.setX(x);
             imageView.setY(y);
 
             x = (x + imageSize);
-            if (x > physicsLayout.getWidth()) {
+            if (x > mPhysicsLayout.getWidth()) {
                 x = 0;
-                y = (y + imageSize) % physicsLayout.getHeight();
+                y = (y + imageSize) % mPhysicsLayout.getHeight();
             }
             Glide.with(this)
                     .load(contributor.avatarUrl)
                     .into(imageView);
         }
-        physicsLayout.getPhysics().onLayout(true);
+        mPhysicsLayout.getPhysics().onLayout(true);
     }
 }

@@ -33,11 +33,13 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
+ * Notify all the things!
  * Created by Jawn on 4/23/2015.
  */
 public class NotificationActivity extends BaseActivity {
 
     private static final String TIMEPICKER_TAG = "timepicker";
+    private static SimpleDateFormat TIME_FORMAT = new SimpleDateFormat("h:mm a");
 
     public static Intent newInstance(Context context) {
         return newInstance(context, null);
@@ -51,33 +53,32 @@ public class NotificationActivity extends BaseActivity {
         return intent;
     }
 
-    @Bind(R.id.toolbar) Toolbar toolbar;
-    @Bind(R.id.toolbar_title) TextView toolbarTitle;
-    @Bind(R.id.notification_switch) SwitchCompat onOffSwitch;
-    @Bind(R.id.notification_switch_label) TextView onOffSwitchLabel;
-    @Bind(R.id.notification_time) TextView notifyTime;
-    @Bind(R.id.notification_time_label) TextView notifyTimeLabel;
-    @Bind(R.id.notification_sound) CheckBox soundCheck;
-    @Bind(R.id.notification_sound_label) TextView soundCheckLabel;
-    @Bind(R.id.notification_vibrate) CheckBox vibrateCheck;
-    @Bind(R.id.notification_vibrate_label) TextView vibrateCheckLabel;
+    @Bind(R.id.toolbar) Toolbar mToolbar;
+    @Bind(R.id.toolbar_title) TextView mToolbarTitle;
+    @Bind(R.id.notification_switch) SwitchCompat mOnOffSwitch;
+    @Bind(R.id.notification_switch_label) TextView mOnOffSwitchLabel;
+    @Bind(R.id.notification_time) TextView mNotifyTime;
+    @Bind(R.id.notification_time_label) TextView mNotifyTimeLabel;
+    @Bind(R.id.notification_sound) CheckBox mSoundCheck;
+    @Bind(R.id.notification_sound_label) TextView mSoundCheckLabel;
+    @Bind(R.id.notification_vibrate) CheckBox mVibrateCheck;
+    @Bind(R.id.notification_vibrate_label) TextView mVibrateCheckLabel;
 
-    Calendar timeToAlert = Calendar.getInstance();
-    static SimpleDateFormat timeformat = new SimpleDateFormat("h:mm a");
-    TimePickerDialog timePickerDialog;
-    NotifyIfDialog notifyIfDialog;
+    Calendar mTimeToAlert = Calendar.getInstance();
+    TimePickerDialog mTimePickerDialog;
+    NotifyIfDialog mNotifyIfDialog;
 
     private final TimePickerDialog.OnTimeSetListener onTimeSetListener = new TimePickerDialog.OnTimeSetListener() {
         @Override
         public void onTimeSet(RadialPickerLayout radialPickerLayout, int hourOfDay, int minute) {
-            timeToAlert.set(Calendar.HOUR_OF_DAY, hourOfDay);
-            timeToAlert.set(Calendar.MINUTE, minute);
-            notifyTime.setText(timeformat.format(timeToAlert.getTime()));
+            mTimeToAlert.set(Calendar.HOUR_OF_DAY, hourOfDay);
+            mTimeToAlert.set(Calendar.MINUTE, minute);
+            mNotifyTime.setText(TIME_FORMAT.format(mTimeToAlert.getTime()));
             MehPreferencesManager.setNotificationPreferenceHour(NotificationActivity.this, hourOfDay);
             MehPreferencesManager.setNotificationPreferenceMinute(NotificationActivity.this, minute);
             MehReminderManager.scheduleDailyReminder(NotificationActivity.this, hourOfDay, minute);
             //Recreate for next time, starting with the newly set time
-            timePickerDialog.setStartTime(hourOfDay, minute);
+            mTimePickerDialog.setStartTime(hourOfDay, minute);
         }
     };
 
@@ -86,23 +87,23 @@ public class NotificationActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notifications);
         ButterKnife.bind(this);
-        toolbar.setNavigationIcon(R.drawable.abc_ic_ab_back_mtrl_am_alpha);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+        mToolbar.setNavigationIcon(R.drawable.abc_ic_ab_back_mtrl_am_alpha);
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onBackPressed();
             }
         });
-        toolbarTitle.setText(R.string.action_notifications);
+        mToolbarTitle.setText(R.string.action_notifications);
 
-        timeToAlert.set(Calendar.HOUR_OF_DAY, MehPreferencesManager.getNotificationPreferenceHour(this));
-        timeToAlert.set(Calendar.MINUTE, MehPreferencesManager.getNotificationPreferenceMinute(this));
+        mTimeToAlert.set(Calendar.HOUR_OF_DAY, MehPreferencesManager.getNotificationPreferenceHour(this));
+        mTimeToAlert.set(Calendar.MINUTE, MehPreferencesManager.getNotificationPreferenceMinute(this));
         setupUi();
-        notifyIfDialog = new NotifyIfDialog(this);
-        timePickerDialog = (TimePickerDialog) getFragmentManager().findFragmentByTag(TIMEPICKER_TAG);
-        if (timePickerDialog == null) {
-            timePickerDialog = TimePickerDialog.newInstance(onTimeSetListener, timeToAlert.get(Calendar.HOUR_OF_DAY), timeToAlert.get(Calendar.MINUTE), false);
-            timePickerDialog.vibrate(false);
+        mNotifyIfDialog = new NotifyIfDialog(this);
+        mTimePickerDialog = (TimePickerDialog) getFragmentManager().findFragmentByTag(TIMEPICKER_TAG);
+        if (mTimePickerDialog == null) {
+            mTimePickerDialog = TimePickerDialog.newInstance(onTimeSetListener, mTimeToAlert.get(Calendar.HOUR_OF_DAY), mTimeToAlert.get(Calendar.MINUTE), false);
+            mTimePickerDialog.vibrate(false);
         }
         Theme theme = Parcels.unwrap(getIntent().getParcelableExtra(EXTRA_THEME));
         if (theme != null) {
@@ -114,20 +115,20 @@ public class NotificationActivity extends BaseActivity {
         //Tint widgets
         int accentColor = theme.getAccentColor();
         int foreGround = theme.getForeground() == Theme.FOREGROUND_LIGHT ? Color.WHITE : Color.BLACK;
-        ColorUtil.setTint(onOffSwitch, accentColor, foreGround);
-        ColorUtil.setTint(soundCheck, accentColor, foreGround);
-        ColorUtil.setTint(vibrateCheck, accentColor, foreGround);
-        toolbarTitle.setTextColor(theme.getBackgroundColor());
-        toolbar.setBackgroundColor(accentColor);
-        toolbar.getNavigationIcon().setColorFilter(theme.getBackgroundColor(), PorterDuff.Mode.MULTIPLY);
+        ColorUtil.setTint(mOnOffSwitch, accentColor, foreGround);
+        ColorUtil.setTint(mSoundCheck, accentColor, foreGround);
+        ColorUtil.setTint(mVibrateCheck, accentColor, foreGround);
+        mToolbarTitle.setTextColor(theme.getBackgroundColor());
+        mToolbar.setBackgroundColor(accentColor);
+        mToolbar.getNavigationIcon().setColorFilter(theme.getBackgroundColor(), PorterDuff.Mode.MULTIPLY);
         ColorUtil.setStatusBarAndNavBarColor(getWindow(), ColorUtil.getDarkerColor(accentColor));
         getWindow().getDecorView().setBackgroundColor(theme.getBackgroundColor());
-        onOffSwitchLabel.setTextColor(foreGround);
-        notifyTime.setTextColor(foreGround);
-        notifyTimeLabel.setTextColor(foreGround);
-        soundCheckLabel.setTextColor(foreGround);
-        vibrateCheckLabel.setTextColor(foreGround);
-        timePickerDialog.setAccentColor(theme.getAccentColor());
+        mOnOffSwitchLabel.setTextColor(foreGround);
+        mNotifyTime.setTextColor(foreGround);
+        mNotifyTimeLabel.setTextColor(foreGround);
+        mSoundCheckLabel.setTextColor(foreGround);
+        mVibrateCheckLabel.setTextColor(foreGround);
+        mTimePickerDialog.setAccentColor(theme.getAccentColor());
     }
 
     @Override
@@ -151,10 +152,10 @@ public class NotificationActivity extends BaseActivity {
     }
 
     private void setupUi() {
-        onOffSwitch.setChecked(MehPreferencesManager.getNotificationsPreference(this));
-        soundCheck.setChecked(MehPreferencesManager.getNotificationSound(this));
-        vibrateCheck.setChecked(MehPreferencesManager.getNotificationVibrate(this));
-        onOffSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        mOnOffSwitch.setChecked(MehPreferencesManager.getNotificationsPreference(this));
+        mSoundCheck.setChecked(MehPreferencesManager.getNotificationSound(this));
+        mVibrateCheck.setChecked(MehPreferencesManager.getNotificationVibrate(this));
+        mOnOffSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 MehPreferencesManager.setNotificationsPreference(NotificationActivity.this, isChecked);
@@ -166,14 +167,14 @@ public class NotificationActivity extends BaseActivity {
             }
         });
 
-        notifyTime.setText(timeformat.format(timeToAlert.getTime()));
-        soundCheck.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        mNotifyTime.setText(TIME_FORMAT.format(mTimeToAlert.getTime()));
+        mSoundCheck.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 MehPreferencesManager.setNotificationSound(NotificationActivity.this, isChecked);
             }
         });
-        vibrateCheck.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        mVibrateCheck.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 MehPreferencesManager.setNotificationVibrate(NotificationActivity.this, isChecked);
@@ -182,28 +183,28 @@ public class NotificationActivity extends BaseActivity {
     }
 
     @OnClick(R.id.notification_switch_root)
-    void onOffClick(View view) {
-        onOffSwitch.setChecked(!onOffSwitch.isChecked());
+    void onOffClick() {
+        mOnOffSwitch.setChecked(!mOnOffSwitch.isChecked());
     }
 
     @OnClick(R.id.notification_time_root)
-    void onTimeClick(View view) {
-        timePickerDialog.show(getFragmentManager(), TIMEPICKER_TAG);
+    void onTimeClick() {
+        mTimePickerDialog.show(getFragmentManager(), TIMEPICKER_TAG);
 
     }
 
     @OnClick(R.id.notification_sound_root)
-    void onSoundClick(View view) {
-        soundCheck.setChecked(!soundCheck.isChecked());
+    void onSoundClick() {
+        mSoundCheck.setChecked(!mSoundCheck.isChecked());
     }
 
     @OnClick(R.id.notification_vibrate_root)
-    void onVibrateClick(View view) {
-        vibrateCheck.setChecked(!vibrateCheck.isChecked());
+    void onVibrateClick() {
+        mVibrateCheck.setChecked(!mVibrateCheck.isChecked());
     }
 
     @OnClick(R.id.notification_key_words_root)
     void onKeyWordsClick() {
-        notifyIfDialog.show();
+        mNotifyIfDialog.show();
     }
 }

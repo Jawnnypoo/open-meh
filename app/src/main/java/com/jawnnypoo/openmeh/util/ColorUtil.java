@@ -12,7 +12,6 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
-import android.support.v7.internal.widget.TintImageView;
 import android.support.v7.widget.SwitchCompat;
 import android.view.Menu;
 import android.view.View;
@@ -20,6 +19,7 @@ import android.view.Window;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.LinearInterpolator;
 import android.widget.CheckBox;
+import android.widget.ImageView;
 
 import com.jawnnypoo.openmeh.R;
 
@@ -163,7 +163,7 @@ public class ColorUtil {
         if (outViews.isEmpty()) {
             return;
         }
-        TintImageView overflow=(TintImageView) outViews.get(0);
+        ImageView overflow=(ImageView) outViews.get(0);
         overflow.setColorFilter(color);
     }
 

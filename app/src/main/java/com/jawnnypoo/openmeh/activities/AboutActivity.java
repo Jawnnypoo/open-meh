@@ -100,9 +100,14 @@ public class AboutActivity extends BaseActivity {
     private final Callback<List<Contributor>> contributorResponseCallback = new Callback<List<Contributor>>() {
 
         @Override
-        public void onResponse(Response<List<Contributor>> response, Retrofit retrofit) {
+        public void onResponse(final Response<List<Contributor>> response, Retrofit retrofit) {
             if (response.isSuccess()) {
-                addContributors(response.body());
+                mPhysicsLayout.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        addContributors(response.body());
+                    }
+                });
             }
         }
 
@@ -120,7 +125,7 @@ public class AboutActivity extends BaseActivity {
         WindowUtil.lockToCurrentOrientation(this);
         setContentView(R.layout.activity_about);
         ButterKnife.bind(this);
-        mToolbar.setNavigationIcon(R.drawable.abc_ic_ab_back_mtrl_am_alpha);
+        mToolbar.setNavigationIcon(R.drawable.ic_arrow_back_24dp);
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

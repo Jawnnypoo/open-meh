@@ -7,15 +7,6 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <ImageView
-        android:id="@+id/deal_image_background"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:contentDescription="@null"
-        android:layout_gravity="center_horizontal"
-        android:visibility="gone"/>
-
-
     <android.support.v4.widget.NestedScrollView
         android:id="@+id/activity_root"
         android:layout_width="match_parent"
@@ -23,90 +14,104 @@
         android:visibility="gone"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <LinearLayout
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/padding_medium"
-            android:orientation="vertical"
-            android:paddingTop="?attr/actionBarSize">
+            android:layout_height="wrap_content">
 
-            <android.support.v4.view.ViewPager
-                android:id="@+id/deal_image_view_pager"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/image_size" />
+            <ImageView
+                android:id="@+id/deal_image_background"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:contentDescription="@null"
+                android:visibility="gone"/>
 
-            <me.relex.circleindicator.CircleIndicator
-                android:id="@+id/indicator"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"/>
 
-            <android.support.v7.widget.AppCompatButton
-                android:id="@+id/deal_buy_button"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                android:layout_marginRight="@dimen/activity_horizontal_margin"
-                android:background="@drawable/button"
-                android:text="@string/buy_it" />
+                android:layout_marginTop="@dimen/padding_medium"
+                android:orientation="vertical"
+                android:paddingTop="?attr/actionBarSize">
 
-            <TextView
-                android:id="@+id/deal_title"
-                style="@style/Base.TextAppearance.AppCompat.Headline"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingTop="@dimen/activity_vertical_margin"
-                android:paddingLeft="@dimen/activity_horizontal_margin"
-                android:paddingRight="@dimen/activity_horizontal_margin"
-                android:paddingBottom="@dimen/activity_vertical_margin"/>
+                <android.support.v4.view.ViewPager
+                    android:id="@+id/deal_image_view_pager"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/image_size"/>
 
-            <TextView
-                android:id="@+id/deal_description"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="@dimen/activity_horizontal_margin"
-                android:paddingRight="@dimen/activity_horizontal_margin"/>
+                <me.relex.circleindicator.CircleIndicator
+                    android:id="@+id/indicator"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"/>
 
-            <TextView
-                android:id="@+id/deal_full_specs"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/activity_vertical_margin"
-                android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                android:layout_marginRight="@dimen/activity_horizontal_margin"
-                android:text="@string/full_product_specs"/>
+                <android.support.v7.widget.AppCompatButton
+                    android:id="@+id/deal_buy_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                    android:layout_marginRight="@dimen/activity_horizontal_margin"
+                    android:background="@drawable/button"
+                    android:text="@string/buy_it"/>
 
-            <TextView
-                android:id="@+id/story_title"
-                style="@style/Text.Huge"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="@dimen/activity_horizontal_margin"
-                android:paddingRight="@dimen/activity_horizontal_margin"
-                android:paddingTop="@dimen/activity_vertical_margin"
-                android:paddingBottom="@dimen/activity_vertical_margin"
-                android:shadowRadius="1"
-                android:shadowDx="1"
-                android:shadowDy="1"
-                android:shadowColor="@color/black"
-                />
+                <TextView
+                    android:id="@+id/deal_title"
+                    style="@style/Base.TextAppearance.AppCompat.Headline"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="@dimen/activity_vertical_margin"
+                    android:paddingLeft="@dimen/activity_horizontal_margin"
+                    android:paddingRight="@dimen/activity_horizontal_margin"
+                    android:paddingTop="@dimen/activity_vertical_margin"/>
 
-            <TextView
-                android:id="@+id/story_body"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="@dimen/activity_horizontal_margin"
-                android:paddingRight="@dimen/activity_horizontal_margin"/>
+                <TextView
+                    android:id="@+id/deal_description"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="@dimen/activity_horizontal_margin"
+                    android:paddingRight="@dimen/activity_horizontal_margin"/>
 
-            <FrameLayout
-                android:id="@+id/video_root"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                android:layout_marginRight="@dimen/activity_horizontal_margin"
-                android:layout_marginTop="@dimen/activity_vertical_margin"
-                android:layout_marginBottom="@dimen/activity_vertical_margin"/>
+                <TextView
+                    android:id="@+id/deal_full_specs"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/activity_vertical_margin"
+                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                    android:layout_marginRight="@dimen/activity_horizontal_margin"
+                    android:text="@string/full_product_specs"/>
 
-        </LinearLayout>
+                <TextView
+                    android:id="@+id/story_title"
+                    style="@style/Text.Huge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="@dimen/activity_vertical_margin"
+                    android:paddingLeft="@dimen/activity_horizontal_margin"
+                    android:paddingRight="@dimen/activity_horizontal_margin"
+                    android:paddingTop="@dimen/activity_vertical_margin"
+                    android:shadowColor="@color/black"
+                    android:shadowDx="1"
+                    android:shadowDy="1"
+                    android:shadowRadius="1"
+                    />
+
+                <TextView
+                    android:id="@+id/story_body"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="@dimen/activity_horizontal_margin"
+                    android:paddingRight="@dimen/activity_horizontal_margin"/>
+
+                <FrameLayout
+                    android:id="@+id/video_root"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/activity_vertical_margin"
+                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                    android:layout_marginRight="@dimen/activity_horizontal_margin"
+                    android:layout_marginTop="@dimen/activity_vertical_margin"/>
+
+            </LinearLayout>
+        </FrameLayout>
 
     </android.support.v4.widget.NestedScrollView>
 
@@ -117,16 +122,16 @@
         android:layout_gravity="center"
         android:visibility="gone"
         app:matProg_barColor="?attr/colorAccent"
-        app:matProg_progressIndeterminate="true" />
+        app:matProg_progressIndeterminate="true"/>
 
     <LinearLayout
         android:id="@+id/failed"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:orientation="vertical"
         android:background="?attr/selectableItemBackground"
-        android:visibility="gone" >
+        android:orientation="vertical"
+        android:visibility="gone">
 
         <ImageView
             android:layout_width="wrap_content"
@@ -140,7 +145,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:padding="@dimen/padding_medium"
-            android:text="@string/tap_to_load_again" />
+            android:text="@string/tap_to_load_again"/>
     </LinearLayout>
 
 
@@ -148,21 +153,22 @@
         android:id="@+id/appbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
-            android:layout_height="wrap_content"
             android:layout_width="match_parent"
-            android:minHeight="?attr/actionBarSize"
+            android:layout_height="wrap_content"
             android:background="?attr/colorPrimary"
-            app:layout_scrollFlags="scroll|enterAlways" >
+            android:minHeight="?attr/actionBarSize"
+            app:layout_scrollFlags="scroll|enterAlways">
 
             <TextView
-                style="@style/TextAppearance.Widget.AppCompat.Toolbar.Title"
                 android:id="@+id/toolbar_title"
+                style="@style/TextAppearance.Widget.AppCompat.Toolbar.Title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/padding_medium"
                 android:background="?attr/selectableItemBackgroundBorderless"
+                android:padding="@dimen/padding_medium"
                 />
 
         </android.support.v7.widget.Toolbar>

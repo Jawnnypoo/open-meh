@@ -32,6 +32,7 @@ import com.jawnnypoo.openmeh.data.Topic;
 import com.jawnnypoo.openmeh.data.Video;
 import com.jawnnypoo.openmeh.services.PostReminderService;
 import com.jawnnypoo.openmeh.util.ColorUtil;
+import com.jawnnypoo.openmeh.util.GlideImageGetter;
 import com.jawnnypoo.openmeh.util.IntentUtil;
 import com.jawnnypoo.openmeh.util.MehUtil;
 
@@ -230,11 +231,11 @@ public class MehActivity extends BaseActivity {
             mImageBackground.animate().alpha(1.0f).setStartDelay(ANIMATION_TIME).setDuration(ANIMATION_TIME).setStartDelay(ANIMATION_TIME);
         }
         mTitleTextView.setText(deal.getTitle());
-        mDescriptionTextView.setText(markdownToCharSequence(deal.getFeatures()));
+        mDescriptionTextView.setText(markdownToCharSequence(mDescriptionTextView, deal.getFeatures()));
         mDescriptionTextView.setMovementMethod(LinkMovementMethod.getInstance());
         if (deal.getStory() != null) {
             mStoreTitleTextView.setText(deal.getStory().getTitle());
-            mStoryBodyTextView.setText(markdownToCharSequence(deal.getStory().getBody()));
+            mStoryBodyTextView.setText(markdownToCharSequence(mStoryBodyTextView, deal.getStory().getBody()));
             mStoryBodyTextView.setMovementMethod(LinkMovementMethod.getInstance());
         }
         if (mSavedMehResponse.getVideo() != null) {
@@ -336,8 +337,8 @@ public class MehActivity extends BaseActivity {
                 .into(mImageBackground);
     }
 
-    private CharSequence markdownToCharSequence(String markdownString) {
-        return mBypass.markdownToSpannable(markdownString);
+    private CharSequence markdownToCharSequence(TextView textView, String markdownString) {
+        return mBypass.markdownToSpannable(markdownString, new GlideImageGetter(this, textView));
     }
 
     @Override

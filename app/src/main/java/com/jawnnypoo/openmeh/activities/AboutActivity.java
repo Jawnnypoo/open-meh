@@ -8,6 +8,7 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.Toolbar;
@@ -16,11 +17,11 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.commit451.easel.Easel;
 import com.jawnnypoo.openmeh.R;
 import com.jawnnypoo.openmeh.data.Theme;
 import com.jawnnypoo.openmeh.github.Contributor;
 import com.jawnnypoo.openmeh.github.GithubClient;
-import com.jawnnypoo.openmeh.util.ColorUtil;
 import com.jawnnypoo.openmeh.util.IntentUtil;
 import com.jawnnypoo.openmeh.util.WindowUtil;
 import com.jawnnypoo.physicslayout.Physics;
@@ -168,7 +169,10 @@ public class AboutActivity extends BaseActivity {
         mToolbarTitle.setTextColor(theme.getBackgroundColor());
         mToolbar.setBackgroundColor(accentColor);
         mToolbar.getNavigationIcon().setColorFilter(theme.getBackgroundColor(), PorterDuff.Mode.MULTIPLY);
-        ColorUtil.setStatusBarAndNavBarColor(getWindow(), ColorUtil.getDarkerColor(accentColor));
+        if (Build.VERSION.SDK_INT >= 21) {
+            getWindow().setStatusBarColor(Easel.getDarkerColor(accentColor));
+            getWindow().setNavigationBarColor(Easel.getDarkerColor(accentColor));
+        }
         getWindow().getDecorView().setBackgroundColor(theme.getBackgroundColor());
     }
 

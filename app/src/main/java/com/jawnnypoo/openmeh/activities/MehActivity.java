@@ -3,6 +3,7 @@ package com.jawnnypoo.openmeh.activities;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.ViewPager;
@@ -17,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.commit451.easel.Easel;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerSupportFragment;
@@ -298,7 +300,7 @@ public class MehActivity extends BaseActivity {
     private void bindTheme(Deal deal, boolean animate) {
         Theme theme = deal.getTheme();
         int accentColor = theme.getAccentColor();
-        int darkerAccentColor = ColorUtil.getDarkerColor(accentColor);
+        int darkerAccentColor = Easel.getDarkerColor(accentColor);
         int backgroundColor = theme.getBackgroundColor();
         int foreGround = theme.getForeground() == Theme.FOREGROUND_LIGHT ? Color.WHITE : Color.BLACK;
         int foreGroundInverse = theme.getForeground() == Theme.FOREGROUND_LIGHT ? Color.BLACK : Color.WHITE;
@@ -311,7 +313,7 @@ public class MehActivity extends BaseActivity {
             mBuyButton.getBackground().setColorFilter(foreGround, PorterDuff.Mode.MULTIPLY);
             mBuyButton.setTextColor(foreGroundInverse);
         } else {
-            mBuyButton.setSupportBackgroundTintList(ColorUtil.createColorStateList(accentColor, ColorUtil.getDarkerColor(accentColor)));
+            mBuyButton.setSupportBackgroundTintList(ColorUtil.createColorStateList(accentColor, Easel.getDarkerColor(accentColor)));
             mBuyButton.setTextColor(theme.getBackgroundColor());
         }
         mFullSpecsTextView.setTextColor(foreGround);
@@ -322,16 +324,30 @@ public class MehActivity extends BaseActivity {
 
         View decorView = getWindow().getDecorView();
         if (animate) {
-            ColorUtil.backgroundColor(mToolbar, accentColor, ANIMATION_TIME);
-            ColorUtil.animateStatusBarAndNavBarColors(getWindow(), darkerAccentColor, ANIMATION_TIME);
-            ColorUtil.backgroundColor(decorView, backgroundColor, ANIMATION_TIME);
+            Easel.getBackgroundColorAnimator(mToolbar, accentColor)
+                .setDuration(ANIMATION_TIME)
+                .start();
+            if (Build.VERSION.SDK_INT >= 21) {
+                Easel.getStatusBarColorAnimator(getWindow(), darkerAccentColor)
+                        .setDuration(ANIMATION_TIME)
+                        .start();
+                Easel.getNavigationBarColorAnimator(getWindow(), darkerAccentColor)
+                        .setDuration(ANIMATION_TIME)
+                        .start();
+            }
+            Easel.getBackgroundColorAnimator(decorView, backgroundColor)
+                    .setDuration(ANIMATION_TIME)
+                    .start();
         } else {
             mToolbar.setBackgroundColor(accentColor);
-            ColorUtil.setStatusBarAndNavBarColor(getWindow(), darkerAccentColor);
+            if (Build.VERSION.SDK_INT >= 21) {
+                getWindow().setStatusBarColor(darkerAccentColor);
+                getWindow().setNavigationBarColor(darkerAccentColor);
+            }
             decorView.setBackgroundColor(backgroundColor);
         }
-        ColorUtil.setMenuItemsColor(mToolbar.getMenu(), backgroundColor);
-        ColorUtil.setOverflowColor(this, backgroundColor);
+        Easel.setTint(mToolbar.getMenu(), backgroundColor);
+        Easel.setOverflowTint(this, backgroundColor);
         Glide.with(this)
                 .load(theme.getBackgroundImage())
                 .into(mImageBackground);

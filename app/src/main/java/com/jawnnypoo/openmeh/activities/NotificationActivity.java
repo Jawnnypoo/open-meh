@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.SwitchCompat;
 import android.support.v7.widget.Toolbar;
@@ -14,10 +15,10 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
 
-import com.jawnnypoo.openmeh.dialogs.NotifyIfDialog;
+import com.commit451.easel.Easel;
 import com.jawnnypoo.openmeh.R;
 import com.jawnnypoo.openmeh.data.Theme;
-import com.jawnnypoo.openmeh.util.ColorUtil;
+import com.jawnnypoo.openmeh.dialogs.NotifyIfDialog;
 import com.jawnnypoo.openmeh.util.MehPreferencesManager;
 import com.jawnnypoo.openmeh.util.MehReminderManager;
 import com.wdullaer.materialdatetimepicker.time.RadialPickerLayout;
@@ -69,8 +70,9 @@ public class NotificationActivity extends BaseActivity {
     NotifyIfDialog mNotifyIfDialog;
 
     private final TimePickerDialog.OnTimeSetListener onTimeSetListener = new TimePickerDialog.OnTimeSetListener() {
+
         @Override
-        public void onTimeSet(RadialPickerLayout radialPickerLayout, int hourOfDay, int minute) {
+        public void onTimeSet(RadialPickerLayout view, int hourOfDay, int minute, int second) {
             mTimeToAlert.set(Calendar.HOUR_OF_DAY, hourOfDay);
             mTimeToAlert.set(Calendar.MINUTE, minute);
             mNotifyTime.setText(TIME_FORMAT.format(mTimeToAlert.getTime()));
@@ -115,13 +117,17 @@ public class NotificationActivity extends BaseActivity {
         //Tint widgets
         int accentColor = theme.getAccentColor();
         int foreGround = theme.getForeground() == Theme.FOREGROUND_LIGHT ? Color.WHITE : Color.BLACK;
-        ColorUtil.setTint(mOnOffSwitch, accentColor, foreGround);
-        ColorUtil.setTint(mSoundCheck, accentColor, foreGround);
-        ColorUtil.setTint(mVibrateCheck, accentColor, foreGround);
+        Easel.setTint(mOnOffSwitch, accentColor, foreGround);
+        Easel.setTint(mSoundCheck, accentColor);
+        Easel.setTint(mVibrateCheck, accentColor);
         mToolbarTitle.setTextColor(theme.getBackgroundColor());
         mToolbar.setBackgroundColor(accentColor);
         mToolbar.getNavigationIcon().setColorFilter(theme.getBackgroundColor(), PorterDuff.Mode.MULTIPLY);
-        ColorUtil.setStatusBarAndNavBarColor(getWindow(), ColorUtil.getDarkerColor(accentColor));
+        if (Build.VERSION.SDK_INT >= 21) {
+            int darkerAccentColor = Easel.getDarkerColor(accentColor);
+            getWindow().setStatusBarColor(darkerAccentColor);
+            getWindow().setNavigationBarColor(darkerAccentColor);
+        }
         getWindow().getDecorView().setBackgroundColor(theme.getBackgroundColor());
         mOnOffSwitchLabel.setTextColor(foreGround);
         mNotifyTime.setTextColor(foreGround);

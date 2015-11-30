@@ -1,12 +1,12 @@
 [open meh](https://github.com/Jawnnypoo/open-meh)
 =========
 
-Open source meh Android App
-![screenshot](https://github.com/Jawnnypoo/open-meh/raw/master/screenshots/screenshot-1.png)
+Open source meh.com Android App
+![screenshot](https://github.com/Jawnnypoo/open-meh/raw/master/assets/screenshot-1.png)
 
 <a href="https://play.google.com/store/apps/details?id=com.jawnnypoo.openmeh">
   <img alt="Get it on Google Play"
-       src="https://play.google.com/intl/en_us/badges/images/apps/en-play-badge.png" />
+       src="https://github.com/Jawnnypoo/open-meh/raw/master/assets/googel-play-badge-small.png" />
 </a>
 
 [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-Open%20Meh-green.svg?style=flat)](https://android-arsenal.com/details/3/1999) [![Build Status](https://travis-ci.org/Jawnnypoo/open-meh.svg?branch=master)](https://travis-ci.org/Jawnnypoo/open-meh)
@@ -37,6 +37,7 @@ The following 3rd party libraries are the reason this app works. Rapid developme
 - PhysicsLayout (https://github.com/Jawnnypoo/PhysicsLayout)
 - CircleImageView (https://github.com/hdodenhof/CircleImageView)
 - MaterialDateTimePicker (https://github.com/wdullaer/MaterialDateTimePicker)
+- Easel (https://github.com/Commit451/Easel)
 
 #Contribution
 Pull requests are welcomed and encouraged. If you experience any bugs, please [file an issue](https://github.com/Jawnnypoo/open-meh/issues/new)

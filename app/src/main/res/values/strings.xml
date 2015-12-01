@@ -10,7 +10,8 @@
     <string name="action_account">account</string>
     <string name="action_orders">orders</string>
     <string name="action_forum">forum</string>
-    <string name="share_subject">today\'s meh deal</string>
+    <string name="action_deal">today\'s deal</string>
+    <string name="share_subject">today\'s meh.com deal</string>
     <string name="tap_to_load_again">tap to load again</string>
     <string name="full_product_specs"><u>more specifications</u></string>
 

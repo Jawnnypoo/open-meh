@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:id="@+id/checkableGroup"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_meh"
+            android:icon="@drawable/ic_event_24dp"
+            android:title="@string/action_deal" />
+
+        <item
+            android:id="@+id/nav_notifications"
+            android:icon="@drawable/ic_notifications_24dp"
+            android:title="@string/notifications" />
+    </group>
+
+    <group android:id="@+id/nonCheckableGroup"
+        android:checkableBehavior="none">
+
+        <item
+            android:id="@+id/nav_account"
+            android:icon="@drawable/ic_account_24dp"
+            android:title="@string/action_account" />
+
+        <item
+            android:id="@+id/nav_orders"
+            android:icon="@drawable/ic_receipt_24dp"
+            android:title="@string/action_orders" />
+
+        <item
+            android:id="@+id/nav_forum"
+            android:icon="@drawable/ic_forum_24dp"
+            android:title="@string/action_forum"/>
+
+        <item
+            android:id="@+id/nav_about"
+            android:icon="@drawable/ic_about_24dp"
+            android:title="@string/about" />
+
+    </group>
+
+</menu>

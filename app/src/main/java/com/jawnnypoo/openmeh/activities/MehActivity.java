@@ -1,12 +1,16 @@
 package com.jawnnypoo.openmeh.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -37,6 +41,7 @@ import com.jawnnypoo.openmeh.util.ColorUtil;
 import com.jawnnypoo.openmeh.util.GlideImageGetter;
 import com.jawnnypoo.openmeh.util.IntentUtil;
 import com.jawnnypoo.openmeh.util.MehUtil;
+import com.jawnnypoo.openmeh.views.MehNavigationView;
 
 import org.parceler.Parcels;
 
@@ -50,16 +55,25 @@ import retrofit.Response;
 import retrofit.Retrofit;
 import timber.log.Timber;
 
-
+/**
+ * Activity that shows the meh.com deal of the day
+ */
 public class MehActivity extends BaseActivity {
 
     private static final String KEY_MEH_RESPONSE = "KEY_MEH_RESPONSE";
     private static final int ANIMATION_TIME = 800;
 
+    public static Intent newIntent(Context context) {
+        Intent intent = new Intent(context, MehActivity.class);
+        return intent;
+    }
+
+    @Bind(R.id.drawer_layout) DrawerLayout mDrawerLayout;
+    @Bind(R.id.nav_view) MehNavigationView mNavigationView;
     @Bind(R.id.toolbar) Toolbar mToolbar;
     @Bind(R.id.toolbar_title) TextView mToolbarTitle;
     @Bind(R.id.activity_root) View mRoot;
-    @Bind(R.id.progress) View mProgress;
+    @Bind(R.id.swipe_refresh) SwipeRefreshLayout mSwipeRefreshLayout;
     @Bind(R.id.failed) View mFailedView;
     @Bind(R.id.indicator) CircleIndicator mIndicator;
     @Bind(R.id.deal_image_background) ImageView mImageBackground;
@@ -97,42 +111,12 @@ public class MehActivity extends BaseActivity {
         @Override
         public boolean onMenuItemClick(MenuItem item) {
             switch (item.getItemId()) {
-                case R.id.action_notifications:
-                    Intent intent = mSavedMehResponse == null ?
-                            NotificationActivity.newInstance(MehActivity.this) :
-                            NotificationActivity.newInstance(MehActivity.this,
-                                    mSavedMehResponse.getDeal().getTheme());
-                    startActivity(intent);
-                    overridePendingTransition(R.anim.fade_in, R.anim.do_nothing);
-                    return true;
                 case R.id.action_share:
                     IntentUtil.shareDeal(mRoot, mSavedMehResponse);
                     return true;
                 case R.id.action_refresh:
                     loadMeh();
                     return true;
-                case R.id.action_account:
-                    int color = Color.WHITE;
-                    if (mSavedMehResponse != null && mSavedMehResponse.getDeal() != null && mSavedMehResponse.getDeal().getTheme() != null) {
-                        color = mSavedMehResponse.getDeal().getTheme().getAccentColor();
-                    }
-                    IntentUtil.openUrl(MehActivity.this, getString(R.string.url_account), color);
-                    return true;
-                case R.id.action_orders:
-                    int colorWhichHasToHaveDifferentNameBecauseOfSwitchStatmentsWeirdScope = Color.WHITE;
-                    if (mSavedMehResponse != null && mSavedMehResponse.getDeal() != null && mSavedMehResponse.getDeal().getTheme() != null) {
-                        colorWhichHasToHaveDifferentNameBecauseOfSwitchStatmentsWeirdScope = mSavedMehResponse.getDeal().getTheme().getAccentColor();
-                    }
-                    IntentUtil.openUrl(MehActivity.this, getString(R.string.url_orders), colorWhichHasToHaveDifferentNameBecauseOfSwitchStatmentsWeirdScope);
-                    return true;
-                case R.id.action_forum:
-                    int color2 = Color.WHITE;
-                    if (mSavedMehResponse != null && mSavedMehResponse.getDeal() != null && mSavedMehResponse.getDeal().getTheme() != null) {
-                        color2 = mSavedMehResponse.getDeal().getTheme().getAccentColor();
-                    }
-                    IntentUtil.openUrl(MehActivity.this, getString(R.string.url_forum), color2);
-                    return true;
-
             }
             return false;
         }
@@ -141,7 +125,8 @@ public class MehActivity extends BaseActivity {
     private final Callback<MehResponse> mMehResponseCallback = new Callback<MehResponse>() {
         @Override
         public void onResponse(Response<MehResponse> response, Retrofit retrofit) {
-            mProgress.setVisibility(View.GONE);
+            mSwipeRefreshLayout.setEnabled(false);
+            mSwipeRefreshLayout.setRefreshing(false);
             if (!response.isSuccess() || response.body() == null || response.body().getDeal() == null) {
                 Timber.e("There was a meh response, but it was null or the deal was null or something");
                 showError();
@@ -153,7 +138,8 @@ public class MehActivity extends BaseActivity {
 
         @Override
         public void onFailure(Throwable t) {
-            mProgress.setVisibility(View.GONE);
+            mSwipeRefreshLayout.setEnabled(false);
+            mSwipeRefreshLayout.setRefreshing(false);
             Timber.e(t.toString());
             showError();
         }
@@ -166,19 +152,16 @@ public class MehActivity extends BaseActivity {
         ButterKnife.bind(this);
         mBypass = new Bypass(this);
         mToolbarTitle.setText(R.string.app_name);
-        mToolbarTitle.setOnClickListener(new View.OnClickListener() {
+        mToolbar.setNavigationIcon(R.drawable.ic_menu_24dp);
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = mSavedMehResponse == null ?
-                        AboutActivity.newInstance(MehActivity.this) :
-                        AboutActivity.newInstance(MehActivity.this,
-                                mSavedMehResponse.getDeal().getTheme());
-                startActivity(intent);
-                overridePendingTransition(R.anim.fade_in, R.anim.do_nothing);
+                mDrawerLayout.openDrawer(GravityCompat.START);
             }
         });
         mToolbar.inflateMenu(R.menu.menu_main);
         mToolbar.setOnMenuItemClickListener(menuItemClickListener);
+        mSwipeRefreshLayout.setProgressViewOffset(false, 0, getResources().getDimensionPixelOffset(R.dimen.swipe_refresh_offset));
         mImagePagerAdapter = new ImageAdapter();
         mImageViewPager.setAdapter(mImagePagerAdapter);
 
@@ -199,7 +182,8 @@ public class MehActivity extends BaseActivity {
     }
 
     private void loadMeh() {
-        mProgress.setVisibility(View.VISIBLE);
+        mSwipeRefreshLayout.setEnabled(true);
+        mSwipeRefreshLayout.setRefreshing(true);
         mFailedView.setVisibility(View.GONE);
         mRoot.setVisibility(View.GONE);
         mImageBackground.setVisibility(View.GONE);
@@ -207,7 +191,8 @@ public class MehActivity extends BaseActivity {
     }
 
     private void bindDeal(final Deal deal, boolean animate) {
-        mProgress.setVisibility(View.GONE);
+        mSwipeRefreshLayout.setEnabled(false);
+        mSwipeRefreshLayout.setRefreshing(false);
         mFailedView.setVisibility(View.GONE);
         mImagePagerAdapter.setData(deal.getPhotos());
         mIndicator.setIndicatorColor(deal.getTheme().getForegroundColor());
@@ -299,6 +284,7 @@ public class MehActivity extends BaseActivity {
 
     private void bindTheme(Deal deal, boolean animate) {
         Theme theme = deal.getTheme();
+        mNavigationView.setTheme(theme);
         int accentColor = theme.getAccentColor();
         int darkerAccentColor = Easel.getDarkerColor(accentColor);
         int backgroundColor = theme.getBackgroundColor();

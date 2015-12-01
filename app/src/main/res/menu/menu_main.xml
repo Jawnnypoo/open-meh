@@ -10,30 +10,9 @@
         app:showAsAction="ifRoom" />
 
     <item
-        android:id="@+id/action_notifications"
-        android:icon="@drawable/ic_notifications_24dp"
-        android:title="@string/action_notifications"
-        app:showAsAction="ifRoom" />
-
-    <item
         android:id="@+id/action_share"
         android:title="@string/action_share"
         android:icon="@drawable/ic_share_24dp"
         app:showAsAction="ifRoom" />
-
-    <item
-        android:id="@+id/action_account"
-        android:title="@string/action_account"
-        app:showAsAction="never" />
-
-    <item
-        android:id="@+id/action_orders"
-        android:title="@string/action_orders"
-        app:showAsAction="never" />
-
-    <item
-        android:id="@+id/action_forum"
-        android:title="@string/action_forum"
-        app:showAsAction="never" />
 
 </menu>

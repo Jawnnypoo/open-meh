@@ -69,7 +69,6 @@ dependencies {
     compile 'com.google.code.gson:gson:2.4'
     compile "org.parceler:parceler-api:1.0.3"
     apt "org.parceler:parceler:1.0.3"
-    compile 'com.pnikosis:materialish-progress:1.7'
     compile 'de.hdodenhof:circleimageview:2.0.0'
     compile 'com.wdullaer:materialdatetimepicker:2.0.2'
     compile 'com.jawnnypoo:physicslayout:1.0.0'

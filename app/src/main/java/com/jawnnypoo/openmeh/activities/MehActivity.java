@@ -71,7 +71,6 @@ public class MehActivity extends BaseActivity {
     @Bind(R.id.drawer_layout) DrawerLayout mDrawerLayout;
     @Bind(R.id.nav_view) MehNavigationView mNavigationView;
     @Bind(R.id.toolbar) Toolbar mToolbar;
-    @Bind(R.id.toolbar_title) TextView mToolbarTitle;
     @Bind(R.id.activity_root) View mRoot;
     @Bind(R.id.swipe_refresh) SwipeRefreshLayout mSwipeRefreshLayout;
     @Bind(R.id.failed) View mFailedView;
@@ -151,7 +150,7 @@ public class MehActivity extends BaseActivity {
         setContentView(R.layout.activity_meh);
         ButterKnife.bind(this);
         mBypass = new Bypass(this);
-        mToolbarTitle.setText(R.string.app_name);
+        mToolbar.setTitle(R.string.app_name);
         mToolbar.setNavigationIcon(R.drawable.ic_menu_24dp);
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -306,7 +305,7 @@ public class MehActivity extends BaseActivity {
         mStoreTitleTextView.setTextColor(accentColor);
         mStoryBodyTextView.setTextColor(foreGround);
         mStoryBodyTextView.setLinkTextColor(foreGround);
-        mToolbarTitle.setTextColor(backgroundColor);
+        mToolbar.setTitleTextColor(backgroundColor);
 
         View decorView = getWindow().getDecorView();
         if (animate) {

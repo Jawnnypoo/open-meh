@@ -2,14 +2,15 @@ package com.jawnnypoo.openmeh.github;
 
 import java.util.List;
 
-import retrofit.Call;
-import retrofit.GsonConverterFactory;
-import retrofit.Retrofit;
-import retrofit.http.GET;
-import retrofit.http.Path;
+import retrofit2.Call;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.http.GET;
+import retrofit2.http.Path;
+
 
 /**
- * Created by Jawn on 6/30/2015.
+ * GitHub!
  */
 public class GithubClient {
 

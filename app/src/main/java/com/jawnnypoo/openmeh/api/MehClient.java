@@ -2,17 +2,16 @@ package com.jawnnypoo.openmeh.api;
 
 import com.jawnnypoo.openmeh.BuildConfig;
 import com.jawnnypoo.openmeh.api.rss.RSS;
-import com.squareup.okhttp.OkHttpClient;
 
-import retrofit.Call;
-import retrofit.GsonConverterFactory;
-import retrofit.Retrofit;
-import retrofit.SimpleXmlConverterFactory;
-import retrofit.http.GET;
+import okhttp3.OkHttpClient;
+import retrofit2.Call;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.converter.simplexml.SimpleXmlConverterFactory;
+import retrofit2.http.GET;
 
 /**
  * Meh-----.com?
- * Created by John on 4/17/2015.
  */
 public class MehClient {
     private static final String API_KEY_VALUE = BuildConfig.MEH_API_KEY;
@@ -37,9 +36,6 @@ public class MehClient {
     public static Meh instance() {
         if (sMeh == null) {
             OkHttpClient client = new OkHttpClient();
-            if (BuildConfig.DEBUG) {
-                client.networkInterceptors().add(new TimberRequestInterceptor());
-            }
             Retrofit restAdapter = new Retrofit.Builder()
                     .baseUrl(API_URL)
                     .addConverterFactory(GsonConverterFactory.create())
@@ -53,9 +49,6 @@ public class MehClient {
     public static MehRss rssInstance() {
         if (sMehRss == null) {
             OkHttpClient client = new OkHttpClient();
-            if (BuildConfig.DEBUG) {
-                client.networkInterceptors().add(new TimberRequestInterceptor());
-            }
             Retrofit restAdapter = new Retrofit.Builder()
                     .baseUrl(RSS_URL)
                     .addConverterFactory(SimpleXmlConverterFactory.create())

@@ -6,16 +6,16 @@ import android.graphics.Bitmap;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.Target;
-import com.jawnnypoo.openmeh.data.Deal;
 import com.jawnnypoo.openmeh.api.MehClient;
 import com.jawnnypoo.openmeh.api.MehResponse;
+import com.jawnnypoo.openmeh.data.Deal;
 import com.jawnnypoo.openmeh.util.MehNotificationManager;
 import com.jawnnypoo.openmeh.util.MehPreferencesManager;
 
 import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 
-import retrofit.Response;
+import retrofit2.Response;
 import timber.log.Timber;
 
 /**

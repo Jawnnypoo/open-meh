@@ -37,9 +37,9 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import de.hdodenhof.circleimageview.CircleImageView;
-import retrofit.Callback;
-import retrofit.Response;
-import retrofit.Retrofit;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import timber.log.Timber;
 
 /**
@@ -101,7 +101,7 @@ public class AboutActivity extends BaseActivity {
     private final Callback<List<Contributor>> contributorResponseCallback = new Callback<List<Contributor>>() {
 
         @Override
-        public void onResponse(final Response<List<Contributor>> response, Retrofit retrofit) {
+        public void onResponse(Call<List<Contributor>> call, final Response<List<Contributor>> response) {
             if (response.isSuccess()) {
                 mPhysicsLayout.post(new Runnable() {
                     @Override
@@ -113,7 +113,7 @@ public class AboutActivity extends BaseActivity {
         }
 
         @Override
-        public void onFailure(Throwable t) {
+        public void onFailure(Call<List<Contributor>> call, Throwable t) {
             Timber.e(t.toString());
             Snackbar.make(getWindow().getDecorView(), R.string.error_getting_contributors, Snackbar.LENGTH_SHORT)
                     .show();

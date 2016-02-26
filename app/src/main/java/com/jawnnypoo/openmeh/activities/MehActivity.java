@@ -50,9 +50,9 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import in.uncod.android.bypass.Bypass;
 import me.relex.circleindicator.CircleIndicator;
-import retrofit.Callback;
-import retrofit.Response;
-import retrofit.Retrofit;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import timber.log.Timber;
 
 /**
@@ -124,7 +124,7 @@ public class MehActivity extends BaseActivity {
 
     private final Callback<MehResponse> mMehResponseCallback = new Callback<MehResponse>() {
         @Override
-        public void onResponse(Response<MehResponse> response, Retrofit retrofit) {
+        public void onResponse(Call<MehResponse> call, Response<MehResponse> response) {
             mSwipeRefreshLayout.setEnabled(false);
             mSwipeRefreshLayout.setRefreshing(false);
             if (!response.isSuccess() || response.body() == null || response.body().getDeal() == null) {
@@ -137,7 +137,7 @@ public class MehActivity extends BaseActivity {
         }
 
         @Override
-        public void onFailure(Throwable t) {
+        public void onFailure(Call<MehResponse> call, Throwable t) {
             mSwipeRefreshLayout.setEnabled(false);
             mSwipeRefreshLayout.setRefreshing(false);
             Timber.e(t.toString());

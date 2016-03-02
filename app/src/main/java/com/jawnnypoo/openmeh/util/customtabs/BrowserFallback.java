@@ -10,7 +10,6 @@ import com.jawnnypoo.openmeh.R;
 
 /**
  * A fallback to open the url in the browser
- * Created by John on 9/3/15.
  */
 public class BrowserFallback implements CustomTabsActivityHelper.CustomTabFallback {
 

@@ -14,7 +14,6 @@ import com.jawnnypoo.openmeh.util.customtabs.CustomTabsActivityHelper;
 
 /**
  * All the intents
- * Created by Jawn on 7/16/2015.
  */
 public class IntentUtil {
 

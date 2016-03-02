@@ -1,15 +1,16 @@
 package com.jawnnypoo.openmeh.util;
 
 import android.app.Activity;
+import android.support.annotation.Nullable;
 
 import com.jawnnypoo.openmeh.R;
+import com.jawnnypoo.openmeh.activities.AboutActivity;
 import com.jawnnypoo.openmeh.activities.MehActivity;
 import com.jawnnypoo.openmeh.activities.NotificationActivity;
 import com.jawnnypoo.openmeh.data.Theme;
 
 /**
  * Manages all navigation
- * Created by Jawn on 12/1/2015.
  */
 public class NavigationManager {
 
@@ -18,8 +19,13 @@ public class NavigationManager {
         activity.overridePendingTransition(R.anim.fade_in, R.anim.do_nothing);
     }
 
-    public static void navigateToNotifications(Activity activity, Theme theme) {
+    public static void navigateToNotifications(Activity activity, @Nullable Theme theme) {
         activity.startActivity(NotificationActivity.newInstance(activity, theme));
+        activity.overridePendingTransition(R.anim.fade_in, R.anim.do_nothing);
+    }
+
+    public static void navigateToAbout(Activity activity, @Nullable Theme theme) {
+        activity.startActivity(AboutActivity.newInstance(activity, theme));
         activity.overridePendingTransition(R.anim.fade_in, R.anim.do_nothing);
     }
 }

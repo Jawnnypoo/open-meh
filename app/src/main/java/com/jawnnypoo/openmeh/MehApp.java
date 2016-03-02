@@ -10,7 +10,6 @@ import timber.log.Timber;
 
 /**
  * Meh
- * Created by Jawn on 4/20/2015.
  */
 public class MehApp extends Application {
 

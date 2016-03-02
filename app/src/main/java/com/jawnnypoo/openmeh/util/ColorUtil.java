@@ -3,7 +3,7 @@ package com.jawnnypoo.openmeh.util;
 import android.content.res.ColorStateList;
 
 /**
- * Created by John on 4/20/2015.
+ * Color util!
  */
 public class ColorUtil {
 

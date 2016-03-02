@@ -12,7 +12,6 @@ import com.jawnnypoo.openmeh.util.MehReminderManager;
  *
  * Keep in mind that the BootReceiver does not work for application
  * installs on external storage
- * Created by john.carlson on 8/19/14.
  */
 public class BootReceiver extends BroadcastReceiver {
     @Override

@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.SwitchCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -18,7 +19,6 @@ import android.widget.TextView;
 import com.commit451.easel.Easel;
 import com.jawnnypoo.openmeh.R;
 import com.jawnnypoo.openmeh.data.Theme;
-import com.jawnnypoo.openmeh.dialogs.NotifyIfDialog;
 import com.jawnnypoo.openmeh.util.MehPreferencesManager;
 import com.jawnnypoo.openmeh.util.MehReminderManager;
 import com.wdullaer.materialdatetimepicker.time.RadialPickerLayout;
@@ -35,7 +35,6 @@ import butterknife.OnClick;
 
 /**
  * Notify all the things!
- * Created by Jawn on 4/23/2015.
  */
 public class NotificationActivity extends BaseActivity {
 
@@ -46,7 +45,7 @@ public class NotificationActivity extends BaseActivity {
         return newInstance(context, null);
     }
 
-    public static Intent newInstance(Context context, Theme theme) {
+    public static Intent newInstance(Context context, @Nullable Theme theme) {
         Intent intent = new Intent(context, NotificationActivity.class);
         if (theme != null) {
             intent.putExtra(EXTRA_THEME, Parcels.wrap(theme));
@@ -67,7 +66,6 @@ public class NotificationActivity extends BaseActivity {
 
     Calendar mTimeToAlert = Calendar.getInstance();
     TimePickerDialog mTimePickerDialog;
-    NotifyIfDialog mNotifyIfDialog;
 
     private final TimePickerDialog.OnTimeSetListener onTimeSetListener = new TimePickerDialog.OnTimeSetListener() {
 
@@ -101,7 +99,6 @@ public class NotificationActivity extends BaseActivity {
         mTimeToAlert.set(Calendar.HOUR_OF_DAY, MehPreferencesManager.getNotificationPreferenceHour(this));
         mTimeToAlert.set(Calendar.MINUTE, MehPreferencesManager.getNotificationPreferenceMinute(this));
         setupUi();
-        mNotifyIfDialog = new NotifyIfDialog(this);
         mTimePickerDialog = (TimePickerDialog) getFragmentManager().findFragmentByTag(TIMEPICKER_TAG);
         if (mTimePickerDialog == null) {
             mTimePickerDialog = TimePickerDialog.newInstance(onTimeSetListener, mTimeToAlert.get(Calendar.HOUR_OF_DAY), mTimeToAlert.get(Calendar.MINUTE), false);
@@ -207,10 +204,5 @@ public class NotificationActivity extends BaseActivity {
     @OnClick(R.id.notification_vibrate_root)
     void onVibrateClick() {
         mVibrateCheck.setChecked(!mVibrateCheck.isChecked());
-    }
-
-    @OnClick(R.id.notification_key_words_root)
-    void onKeyWordsClick() {
-        mNotifyIfDialog.show();
     }
 }

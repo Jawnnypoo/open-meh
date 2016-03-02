@@ -11,7 +11,7 @@ import com.jawnnypoo.openmeh.services.PostReminderService;
 import java.util.Calendar;
 
 /**
- * Created by Jawn on 8/28/2014.
+ * Manages reminder stuff
  */
 public class MehReminderManager {
 

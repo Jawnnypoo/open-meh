@@ -11,7 +11,6 @@ import java.util.Locale;
 
 /**
  * The entire deal!
- * Created by John on 4/17/2015.
  */
 @Parcel
 public class Deal {

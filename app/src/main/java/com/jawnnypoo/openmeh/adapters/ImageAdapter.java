@@ -14,7 +14,6 @@ import java.util.Collection;
 
 /**
  * Simple PagerAdapter that shows images
- * Created by Jawn on 7/16/2015.
  */
 public class ImageAdapter extends PagerAdapter {
 

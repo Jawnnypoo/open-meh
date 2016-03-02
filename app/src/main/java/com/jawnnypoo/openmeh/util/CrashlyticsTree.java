@@ -6,7 +6,6 @@ import timber.log.Timber;
 
 /**
  * Tree that prints to Crashlytics
- * Created by Jawn on 9/10/2015.
  */
 public class CrashlyticsTree extends Timber.Tree {
 

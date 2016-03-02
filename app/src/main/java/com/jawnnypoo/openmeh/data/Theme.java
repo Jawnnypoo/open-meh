@@ -6,7 +6,6 @@ import org.parceler.Parcel;
 
 /**
  * Pretty cool theme. Tells us all about the colors we want to show
- * Created by John on 4/17/2015.
  */
 @Parcel
 public class Theme {

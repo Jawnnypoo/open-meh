@@ -10,7 +10,6 @@ import android.view.Window;
 
 /**
  * Silly util for window stuff
- * Created by Jawn on 7/15/2015.
  */
 public class WindowUtil {
 

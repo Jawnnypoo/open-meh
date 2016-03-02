@@ -11,7 +11,6 @@ import java.util.Map;
 
 /**
  * This should be better named or something... meh
- * Created by John on 4/23/2015.
  */
 public class MehUtil {
 

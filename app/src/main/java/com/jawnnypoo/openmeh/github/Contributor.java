@@ -3,7 +3,7 @@ package com.jawnnypoo.openmeh.github;
 import com.google.gson.annotations.SerializedName;
 
 /**
- * Created by Jawn on 6/14/2015.
+ * GitHub contributor
  */
 public class Contributor {
     public String login;

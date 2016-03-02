@@ -7,7 +7,7 @@ import com.jawnnypoo.openmeh.data.Video;
 import org.parceler.Parcel;
 
 /**
- * Created by John on 4/17/2015.
+ * The actual response we get when pulling in the meh deal
  */
 @Parcel
 public class MehResponse {

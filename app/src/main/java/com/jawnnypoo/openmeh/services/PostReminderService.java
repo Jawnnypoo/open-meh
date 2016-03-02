@@ -20,7 +20,6 @@ import timber.log.Timber;
 
 /**
  * Service that pretty much just posts a notification then goes away
- * Created by Jawn on 4/20/2015.
  */
 public class PostReminderService extends IntentService {
 

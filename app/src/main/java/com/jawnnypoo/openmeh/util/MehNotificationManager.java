@@ -17,14 +17,13 @@ import com.jawnnypoo.openmeh.data.Deal;
 import com.jawnnypoo.openmeh.data.Theme;
 
 /**
- * Created by Jawn on 4/20/2015.
+ * Manages notification stuff
  */
 public class MehNotificationManager {
 
     private static final int UNIQUE_ID = 42;
 
     public static void postDailyNotification(final Context context, MehResponse response, Bitmap icon) {
-
         postIt(context, response, icon);
     }
 

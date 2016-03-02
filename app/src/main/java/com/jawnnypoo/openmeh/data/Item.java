@@ -8,7 +8,6 @@ import java.util.List;
 
 /**
  * An item of the deal
- * Created by John on 4/17/2015.
  */
 @Parcel
 public class Item implements Comparable<Item>{

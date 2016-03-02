@@ -12,7 +12,6 @@ import java.util.Calendar;
 
 /**
  * Manager to manage access to all of the preferences in the app
- * Created by Jawn on 8/28/2014.
  */
 public class MehPreferencesManager {
 

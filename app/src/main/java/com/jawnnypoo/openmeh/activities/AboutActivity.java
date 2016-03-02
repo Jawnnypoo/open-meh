@@ -10,6 +10,7 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -44,7 +45,6 @@ import timber.log.Timber;
 
 /**
  * Thats what its all about
- * Created by Jawn on 7/15/2015.
  */
 public class AboutActivity extends BaseActivity {
 
@@ -56,7 +56,7 @@ public class AboutActivity extends BaseActivity {
         return intent;
     }
 
-    public static Intent newInstance(Context context, Theme theme) {
+    public static Intent newInstance(Context context, @Nullable Theme theme) {
         Intent intent = new Intent(context, AboutActivity.class);
         if (theme != null) {
             intent.putExtra(EXTRA_THEME, Parcels.wrap(theme));

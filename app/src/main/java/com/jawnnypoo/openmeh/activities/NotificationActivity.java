@@ -18,7 +18,7 @@ import android.widget.TextView;
 
 import com.commit451.easel.Easel;
 import com.jawnnypoo.openmeh.R;
-import com.jawnnypoo.openmeh.data.Theme;
+import com.jawnnypoo.openmeh.shared.Theme;
 import com.jawnnypoo.openmeh.util.MehPreferencesManager;
 import com.jawnnypoo.openmeh.util.MehReminderManager;
 import com.wdullaer.materialdatetimepicker.time.RadialPickerLayout;

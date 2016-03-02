@@ -1,4 +1,4 @@
-package com.jawnnypoo.openmeh.data;
+package com.jawnnypoo.openmeh.shared;
 
 import android.text.TextUtils;
 
@@ -16,6 +16,7 @@ import java.util.Locale;
 public class Deal {
     private static NumberFormat PRICE_FORMATTER = NumberFormat.getCurrencyInstance(Locale.US);
     private static final String PATH_CHECKOUT = "/checkout";
+
     String features;
     String id;
     List<Item> items;

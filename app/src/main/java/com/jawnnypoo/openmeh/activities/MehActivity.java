@@ -30,10 +30,10 @@ import com.jawnnypoo.openmeh.R;
 import com.jawnnypoo.openmeh.adapters.ImageAdapter;
 import com.jawnnypoo.openmeh.api.MehClient;
 import com.jawnnypoo.openmeh.api.MehResponse;
-import com.jawnnypoo.openmeh.data.Deal;
-import com.jawnnypoo.openmeh.data.Theme;
-import com.jawnnypoo.openmeh.data.Topic;
-import com.jawnnypoo.openmeh.data.Video;
+import com.jawnnypoo.openmeh.shared.Deal;
+import com.jawnnypoo.openmeh.shared.Theme;
+import com.jawnnypoo.openmeh.shared.Topic;
+import com.jawnnypoo.openmeh.shared.Video;
 import com.jawnnypoo.openmeh.services.PostReminderService;
 import com.jawnnypoo.openmeh.util.ColorUtil;
 import com.jawnnypoo.openmeh.util.GlideImageGetter;
@@ -162,6 +162,7 @@ public class MehActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        getLayoutInflater().setFactory(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_meh);
         ButterKnife.bind(this);

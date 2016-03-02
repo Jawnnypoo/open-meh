@@ -13,8 +13,8 @@ import android.support.v4.app.TaskStackBuilder;
 import com.jawnnypoo.openmeh.activities.MehActivity;
 import com.jawnnypoo.openmeh.R;
 import com.jawnnypoo.openmeh.api.MehResponse;
-import com.jawnnypoo.openmeh.data.Deal;
-import com.jawnnypoo.openmeh.data.Theme;
+import com.jawnnypoo.openmeh.shared.Deal;
+import com.jawnnypoo.openmeh.shared.Theme;
 
 /**
  * Manages notification stuff

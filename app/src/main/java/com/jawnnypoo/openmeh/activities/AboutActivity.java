@@ -20,7 +20,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.commit451.easel.Easel;
 import com.jawnnypoo.openmeh.R;
-import com.jawnnypoo.openmeh.data.Theme;
+import com.jawnnypoo.openmeh.shared.Theme;
 import com.jawnnypoo.openmeh.github.Contributor;
 import com.jawnnypoo.openmeh.github.GithubClient;
 import com.jawnnypoo.openmeh.util.IntentUtil;

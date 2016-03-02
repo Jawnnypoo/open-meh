@@ -1,4 +1,4 @@
-package com.jawnnypoo.openmeh.data;
+package com.jawnnypoo.openmeh.shared;
 
 import android.support.annotation.NonNull;
 

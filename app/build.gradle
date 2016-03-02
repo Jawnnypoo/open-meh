@@ -16,7 +16,6 @@ repositories {
     mavenCentral()
 }
 
-apply plugin: 'com.neenbedankt.android-apt'
 
 android {
     compileSdkVersion 23
@@ -61,13 +60,11 @@ dependencies {
     compile 'com.jakewharton:butterknife:7.0.1'
     compile 'com.jakewharton.timber:timber:4.1.1'
     compile 'com.github.bumptech.glide:glide:3.7.0'
-    compile ('com.github.bumptech.glide:okhttp3-integration:1.4.0') {
+    compile('com.github.bumptech.glide:okhttp3-integration:1.4.0') {
         exclude group: 'glide-parent'
     }
     compile 'com.squareup.okhttp3:okhttp:3.2.0'
     compile 'com.google.code.gson:gson:2.6.2'
-    compile "org.parceler:parceler-api:1.0.4"
-    apt "org.parceler:parceler:1.0.4"
     compile 'de.hdodenhof:circleimageview:2.0.0'
     compile 'com.wdullaer:materialdatetimepicker:2.2.0'
     compile 'com.jawnnypoo:physicslayout:1.0.1'
@@ -76,4 +73,5 @@ dependencies {
     compile('com.crashlytics.sdk.android:crashlytics:2.5.5@aar') {
         transitive = true;
     }
+    compile project(':shared')
 }

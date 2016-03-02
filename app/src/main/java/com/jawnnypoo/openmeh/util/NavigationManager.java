@@ -7,7 +7,7 @@ import com.jawnnypoo.openmeh.R;
 import com.jawnnypoo.openmeh.activities.AboutActivity;
 import com.jawnnypoo.openmeh.activities.MehActivity;
 import com.jawnnypoo.openmeh.activities.NotificationActivity;
-import com.jawnnypoo.openmeh.data.Theme;
+import com.jawnnypoo.openmeh.shared.Theme;
 
 /**
  * Manages all navigation

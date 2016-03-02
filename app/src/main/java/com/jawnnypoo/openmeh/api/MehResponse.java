@@ -1,8 +1,8 @@
 package com.jawnnypoo.openmeh.api;
 
-import com.jawnnypoo.openmeh.data.Deal;
-import com.jawnnypoo.openmeh.data.Poll;
-import com.jawnnypoo.openmeh.data.Video;
+import com.jawnnypoo.openmeh.shared.Deal;
+import com.jawnnypoo.openmeh.shared.Poll;
+import com.jawnnypoo.openmeh.shared.Video;
 
 import org.parceler.Parcel;
 

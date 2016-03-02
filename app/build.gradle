@@ -65,14 +65,14 @@ dependencies {
         exclude group: 'glide-parent'
     }
     compile 'com.squareup.okhttp3:okhttp:3.2.0'
-    compile 'com.google.code.gson:gson:2.6.1'
-    compile "org.parceler:parceler-api:1.0.3"
-    apt "org.parceler:parceler:1.0.3"
+    compile 'com.google.code.gson:gson:2.6.2'
+    compile "org.parceler:parceler-api:1.0.4"
+    apt "org.parceler:parceler:1.0.4"
     compile 'de.hdodenhof:circleimageview:2.0.0'
-    compile 'com.wdullaer:materialdatetimepicker:2.0.2'
+    compile 'com.wdullaer:materialdatetimepicker:2.2.0'
     compile 'com.jawnnypoo:physicslayout:1.0.1'
     compile 'com.commit451:bypasses:1.0.1'
-    compile 'com.commit451:easel:0.0.4'
+    compile 'com.commit451:easel:0.0.5'
     compile('com.crashlytics.sdk.android:crashlytics:2.5.5@aar') {
         transitive = true;
     }

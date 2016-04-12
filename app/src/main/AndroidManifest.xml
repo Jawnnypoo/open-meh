@@ -16,19 +16,19 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
-        <activity android:name=".activities.MehActivity">
+        <activity android:name=".activity.MehActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.NotificationActivity" />
-        <activity android:name=".activities.AboutActivity" />
+        <activity android:name=".activity.NotificationActivity" />
+        <activity android:name=".activity.AboutActivity" />
 
-        <service android:name=".services.PostReminderService" />
+        <service android:name=".service.PostReminderService" />
 
-        <receiver android:name=".receivers.BootReceiver">
+        <receiver android:name=".receiver.BootReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>

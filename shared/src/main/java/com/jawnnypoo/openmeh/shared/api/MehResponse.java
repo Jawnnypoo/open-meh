@@ -1,4 +1,4 @@
-package com.jawnnypoo.openmeh.api;
+package com.jawnnypoo.openmeh.shared.api;
 
 import com.jawnnypoo.openmeh.shared.Deal;
 import com.jawnnypoo.openmeh.shared.Poll;

@@ -6,7 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 
-import com.jawnnypoo.openmeh.services.PostReminderService;
+import com.jawnnypoo.openmeh.service.PostReminderService;
 
 import java.util.Calendar;
 

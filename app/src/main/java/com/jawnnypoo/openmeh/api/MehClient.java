@@ -1,6 +1,7 @@
 package com.jawnnypoo.openmeh.api;
 
 import com.jawnnypoo.openmeh.BuildConfig;
+import com.jawnnypoo.openmeh.shared.api.MehResponse;
 
 import okhttp3.OkHttpClient;
 import retrofit2.Call;

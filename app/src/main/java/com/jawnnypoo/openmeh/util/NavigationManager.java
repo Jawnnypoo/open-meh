@@ -4,9 +4,9 @@ import android.app.Activity;
 import android.support.annotation.Nullable;
 
 import com.jawnnypoo.openmeh.R;
-import com.jawnnypoo.openmeh.activities.AboutActivity;
-import com.jawnnypoo.openmeh.activities.MehActivity;
-import com.jawnnypoo.openmeh.activities.NotificationActivity;
+import com.jawnnypoo.openmeh.activity.AboutActivity;
+import com.jawnnypoo.openmeh.activity.MehActivity;
+import com.jawnnypoo.openmeh.activity.NotificationActivity;
 import com.jawnnypoo.openmeh.shared.Theme;
 
 /**

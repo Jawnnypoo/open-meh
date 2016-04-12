@@ -1,4 +1,4 @@
-package com.jawnnypoo.openmeh.services;
+package com.jawnnypoo.openmeh.service;
 
 import android.app.IntentService;
 import android.content.Intent;
@@ -7,7 +7,7 @@ import android.graphics.Bitmap;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.Target;
 import com.jawnnypoo.openmeh.api.MehClient;
-import com.jawnnypoo.openmeh.api.MehResponse;
+import com.jawnnypoo.openmeh.shared.api.MehResponse;
 import com.jawnnypoo.openmeh.shared.Deal;
 import com.jawnnypoo.openmeh.util.MehNotificationManager;
 import com.jawnnypoo.openmeh.util.MehPreferencesManager;

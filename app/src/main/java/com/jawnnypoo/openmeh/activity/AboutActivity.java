@@ -1,4 +1,4 @@
-package com.jawnnypoo.openmeh.activities;
+package com.jawnnypoo.openmeh.activity;
 
 import android.content.Context;
 import android.content.Intent;
@@ -19,12 +19,12 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.commit451.easel.Easel;
+import com.commit451.gitbal.Gimbal;
 import com.jawnnypoo.openmeh.R;
-import com.jawnnypoo.openmeh.shared.Theme;
 import com.jawnnypoo.openmeh.github.Contributor;
 import com.jawnnypoo.openmeh.github.GithubClient;
+import com.jawnnypoo.openmeh.shared.Theme;
 import com.jawnnypoo.openmeh.util.IntentUtil;
-import com.jawnnypoo.openmeh.util.WindowUtil;
 import com.jawnnypoo.physicslayout.Physics;
 import com.jawnnypoo.physicslayout.PhysicsConfig;
 import com.jawnnypoo.physicslayout.PhysicsFrameLayout;
@@ -82,13 +82,14 @@ public class AboutActivity extends BaseActivity {
     SensorManager mSensorManager;
     Sensor mGravitySensor;
     Theme mTheme;
+    Gimbal mGimbal;
 
     private final SensorEventListener sensorEventListener = new SensorEventListener() {
         @Override
         public void onSensorChanged(SensorEvent event) {
             if (event.sensor.getType() == Sensor.TYPE_GRAVITY) {
                 if (mPhysicsLayout.getPhysics().getWorld() != null) {
-                    WindowUtil.normalizeForOrientation(getWindow(), event);
+                    mGimbal.normalizeGravityEvent(event);
                     mPhysicsLayout.getPhysics().getWorld().setGravity(new Vec2(-event.values[0], event.values[1]));
                 }
             }
@@ -123,7 +124,8 @@ public class AboutActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        WindowUtil.lockToCurrentOrientation(this);
+        mGimbal = new Gimbal(this);
+        mGimbal.lock();
         setContentView(R.layout.activity_about);
         ButterKnife.bind(this);
         mToolbar.setNavigationIcon(R.drawable.ic_arrow_back_24dp);

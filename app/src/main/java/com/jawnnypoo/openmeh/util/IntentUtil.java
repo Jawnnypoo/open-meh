@@ -8,7 +8,7 @@ import android.support.design.widget.Snackbar;
 import android.view.View;
 
 import com.jawnnypoo.openmeh.R;
-import com.jawnnypoo.openmeh.api.MehResponse;
+import com.jawnnypoo.openmeh.shared.api.MehResponse;
 import com.jawnnypoo.openmeh.util.customtabs.BrowserFallback;
 import com.jawnnypoo.openmeh.util.customtabs.CustomTabsActivityHelper;
 

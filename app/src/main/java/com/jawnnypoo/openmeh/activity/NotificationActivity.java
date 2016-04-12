@@ -1,4 +1,4 @@
-package com.jawnnypoo.openmeh.activities;
+package com.jawnnypoo.openmeh.activity;
 
 import android.content.Context;
 import android.content.Intent;

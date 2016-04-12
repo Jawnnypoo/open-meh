@@ -1,4 +1,4 @@
-package com.jawnnypoo.openmeh.activities;
+package com.jawnnypoo.openmeh.activity;
 
 import android.content.Context;
 import android.content.Intent;
@@ -27,14 +27,14 @@ import com.google.android.youtube.player.YouTubePlayerSupportFragment;
 import com.google.gson.Gson;
 import com.jawnnypoo.openmeh.BuildConfig;
 import com.jawnnypoo.openmeh.R;
-import com.jawnnypoo.openmeh.adapters.ImageAdapter;
+import com.jawnnypoo.openmeh.adapter.ImageAdapter;
 import com.jawnnypoo.openmeh.api.MehClient;
-import com.jawnnypoo.openmeh.api.MehResponse;
+import com.jawnnypoo.openmeh.shared.api.MehResponse;
 import com.jawnnypoo.openmeh.shared.Deal;
 import com.jawnnypoo.openmeh.shared.Theme;
 import com.jawnnypoo.openmeh.shared.Topic;
 import com.jawnnypoo.openmeh.shared.Video;
-import com.jawnnypoo.openmeh.services.PostReminderService;
+import com.jawnnypoo.openmeh.service.PostReminderService;
 import com.jawnnypoo.openmeh.util.ColorUtil;
 import com.jawnnypoo.openmeh.util.GlideImageGetter;
 import com.jawnnypoo.openmeh.util.IntentUtil;

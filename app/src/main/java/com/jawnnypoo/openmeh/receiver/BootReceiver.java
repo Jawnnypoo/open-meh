@@ -1,4 +1,4 @@
-package com.jawnnypoo.openmeh.receivers;
+package com.jawnnypoo.openmeh.receiver;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

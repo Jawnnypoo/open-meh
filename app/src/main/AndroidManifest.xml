@@ -3,36 +3,34 @@
     package="com.jawnnypoo.openmeh"
     android:installLocation="internalOnly">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <!--Notification stuff-->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <!-- Notification stuff -->
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <application
-        android:name="com.jawnnypoo.openmeh.MehApp"
+        android:name=".MehApp"
         android:allowBackup="true"
         android:fullBackupContent="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
-        <activity
-            android:name=".activities.MehActivity" >
+        android:theme="@style/AppTheme">
+        <activity android:name=".activities.MehActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".activities.NotificationActivity" />
+        <activity android:name=".activities.AboutActivity" />
 
-        <activity android:name=".activities.NotificationActivity"/>
-        <activity android:name=".activities.AboutActivity"/>
+        <service android:name=".services.PostReminderService" />
 
-        <service android:name="com.jawnnypoo.openmeh.services.PostReminderService"/>
-        
-        <receiver
-            android:name="com.jawnnypoo.openmeh.receivers.BootReceiver" >
+        <receiver android:name=".receivers.BootReceiver">
             <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
 

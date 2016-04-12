@@ -142,7 +142,7 @@ public class MehActivity extends BaseActivity {
         public void onResponse(Call<MehResponse> call, Response<MehResponse> response) {
             mSwipeRefreshLayout.setEnabled(false);
             mSwipeRefreshLayout.setRefreshing(false);
-            if (!response.isSuccess() || response.body() == null || response.body().getDeal() == null) {
+            if (!response.isSuccessful() || response.body() == null || response.body().getDeal() == null) {
                 Timber.e("There was a meh response, but it was null or the deal was null or something");
                 showError();
                 return;

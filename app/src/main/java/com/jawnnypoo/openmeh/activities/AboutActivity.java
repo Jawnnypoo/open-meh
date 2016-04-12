@@ -102,7 +102,7 @@ public class AboutActivity extends BaseActivity {
 
         @Override
         public void onResponse(Call<List<Contributor>> call, final Response<List<Contributor>> response) {
-            if (response.isSuccess()) {
+            if (response.isSuccessful()) {
                 mPhysicsLayout.post(new Runnable() {
                     @Override
                     public void run() {

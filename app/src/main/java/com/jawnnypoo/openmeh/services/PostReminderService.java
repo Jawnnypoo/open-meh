@@ -45,7 +45,7 @@ public class PostReminderService extends IntentService {
         } catch (IOException error) {
             Timber.e(error.toString());
         }
-        if (response == null || !response.isSuccess() || response.body() == null) {
+        if (response == null || !response.isSuccessful() || response.body() == null) {
             Timber.e("Response was null. Will not notify");
             return;
         }

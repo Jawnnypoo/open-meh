@@ -83,9 +83,11 @@ public class MehActivity extends BaseActivity {
     @Bind(R.id.video_root) ViewGroup mVideoRoot;
 
     YouTubePlayerSupportFragment mYouTubeFragment;
+    YouTubePlayer mYouTubePlayer;
 
     Bypass mBypass;
     MehResponse mSavedMehResponse;
+    boolean mFullScreen = false;
 
     @OnClick(R.id.deal_full_specs)
     void onFullSpecsClick() {
@@ -101,6 +103,13 @@ public class MehActivity extends BaseActivity {
     void onErrorClick(){
         loadMeh();
     }
+
+    private YouTubePlayer.OnFullscreenListener mOnFullscreenListener = new YouTubePlayer.OnFullscreenListener() {
+        @Override
+        public void onFullscreen(boolean b) {
+            mFullScreen = b;
+        }
+    };
 
     private final Toolbar.OnMenuItemClickListener mMenuItemClickListener = new Toolbar.OnMenuItemClickListener() {
         @Override
@@ -261,9 +270,11 @@ public class MehActivity extends BaseActivity {
             @Override
             public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean wasRestored) {
                 Timber.d("onInitializationSuccess");
+                mYouTubePlayer = youTubePlayer;
                 if (!wasRestored) {
                     youTubePlayer.cueVideo(videoId);
                 }
+                youTubePlayer.setOnFullscreenListener(mOnFullscreenListener);
             }
 
             @Override
@@ -356,6 +367,16 @@ public class MehActivity extends BaseActivity {
         super.onSaveInstanceState(outState);
         if (mSavedMehResponse != null) {
             outState.putParcelable(KEY_MEH_RESPONSE, Parcels.wrap(mSavedMehResponse));
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (mFullScreen) {
+            mYouTubePlayer.setFullscreen(false);
+            return;
+        } else {
+            super.onBackPressed();
         }
     }
 

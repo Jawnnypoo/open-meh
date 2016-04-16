@@ -30,11 +30,12 @@ import com.jawnnypoo.openmeh.R;
 import com.jawnnypoo.openmeh.adapter.ImageAdapter;
 import com.jawnnypoo.openmeh.api.MehClient;
 import com.jawnnypoo.openmeh.shared.api.MehResponse;
-import com.jawnnypoo.openmeh.shared.Deal;
-import com.jawnnypoo.openmeh.shared.Theme;
-import com.jawnnypoo.openmeh.shared.Topic;
-import com.jawnnypoo.openmeh.shared.Video;
+import com.jawnnypoo.openmeh.shared.model.Deal;
+import com.jawnnypoo.openmeh.shared.model.Theme;
+import com.jawnnypoo.openmeh.shared.model.Topic;
+import com.jawnnypoo.openmeh.shared.model.Video;
 import com.jawnnypoo.openmeh.service.PostReminderService;
+import com.jawnnypoo.openmeh.shared.util.AssetUtil;
 import com.jawnnypoo.openmeh.util.ColorUtil;
 import com.jawnnypoo.openmeh.util.GlideImageGetter;
 import com.jawnnypoo.openmeh.util.IntentUtil;
@@ -395,7 +396,7 @@ public class MehActivity extends BaseActivity {
      */
     private void testMeh() {
         mSavedMehResponse = new Gson().fromJson(
-                MehUtil.loadJSONFromAsset(this, "4-23-2015.json"), MehResponse.class);
+                AssetUtil.loadJSONFromAsset(this, "4-23-2015.json"), MehResponse.class);
         Timber.d(mSavedMehResponse.toString());
         bindDeal(mSavedMehResponse.getDeal(), true);
     }

@@ -1,4 +1,4 @@
-package com.jawnnypoo.openmeh.shared;
+package com.jawnnypoo.openmeh.shared.model;
 
 import android.text.TextUtils;
 

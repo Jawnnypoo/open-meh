@@ -62,7 +62,6 @@ dependencies {
         exclude group: 'glide-parent'
     }
     compile 'com.squareup.okhttp3:okhttp:3.2.0'
-    compile 'com.google.code.gson:gson:2.6.2'
     compile 'de.hdodenhof:circleimageview:2.0.0'
     compile 'com.wdullaer:materialdatetimepicker:2.3.0'
     compile 'com.jawnnypoo:physicslayout:1.0.1'

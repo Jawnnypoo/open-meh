@@ -8,7 +8,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.Target;
 import com.jawnnypoo.openmeh.api.MehClient;
 import com.jawnnypoo.openmeh.shared.api.MehResponse;
-import com.jawnnypoo.openmeh.shared.Deal;
+import com.jawnnypoo.openmeh.shared.model.Deal;
 import com.jawnnypoo.openmeh.util.MehNotificationManager;
 import com.jawnnypoo.openmeh.util.MehPreferencesManager;
 

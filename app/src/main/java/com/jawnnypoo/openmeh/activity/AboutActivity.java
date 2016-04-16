@@ -23,7 +23,7 @@ import com.commit451.gitbal.Gimbal;
 import com.jawnnypoo.openmeh.R;
 import com.jawnnypoo.openmeh.github.Contributor;
 import com.jawnnypoo.openmeh.github.GithubClient;
-import com.jawnnypoo.openmeh.shared.Theme;
+import com.jawnnypoo.openmeh.shared.model.Theme;
 import com.jawnnypoo.openmeh.util.IntentUtil;
 import com.jawnnypoo.physicslayout.Physics;
 import com.jawnnypoo.physicslayout.PhysicsConfig;

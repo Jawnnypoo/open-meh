@@ -43,7 +43,7 @@ public class ShowOnPhoneFragment extends ActionPageFragment {
     @Override
     protected void onActionClicked() {
         //http://stackoverflow.com/questions/25482930/how-to-implement-open-on-phone-animation-on-android-wear
-        boolean sentMessage = getMessageSender().sendMessage(MessageType.TYPE_BUY_ON_PHONE, null);
+        boolean sentMessage = getMessageSender().sendMessage(MessageType.TYPE_OPEN_ON_PHONE, null);
         if (sentMessage) {
             Intent intent = new Intent(getActivity(), ConfirmationActivity.class);
             intent.putExtra(ConfirmationActivity.EXTRA_ANIMATION_TYPE, ConfirmationActivity.OPEN_ON_PHONE_ANIMATION);

@@ -119,7 +119,7 @@ public class MehActivity extends Activity implements MessageSender {
 
     @Override
     public boolean sendMessage(String path, byte[] data) {
-        if (mGoogleApiClient.isConnected() || mPhoneNode == null) {
+        if (!mGoogleApiClient.isConnected() || mPhoneNode == null) {
             return false;
         }
         Wearable.MessageApi.sendMessage(mGoogleApiClient, mPhoneNode.getId(), path, data);

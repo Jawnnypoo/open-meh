@@ -212,6 +212,13 @@ public class MehActivity extends BaseActivity {
         //testNotification();
     }
 
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        mBuyOnLoad = intent.getBooleanExtra(EXTRA_BUY_NOW, false);
+        loadMeh();
+    }
+
     private void loadMeh() {
         mSwipeRefreshLayout.setEnabled(true);
         mSwipeRefreshLayout.setRefreshing(true);

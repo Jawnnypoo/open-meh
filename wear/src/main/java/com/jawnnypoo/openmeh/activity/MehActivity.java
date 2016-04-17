@@ -1,34 +1,45 @@
-package com.jawnnypoo.openmeh;
+package com.jawnnypoo.openmeh.activity;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.support.wearable.view.DotsPageIndicator;
+import android.support.wearable.view.GridViewPager;
+import android.view.ViewGroup;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.wearable.Wearable;
-import com.google.gson.Gson;
+import com.jawnnypoo.openmeh.R;
+import com.jawnnypoo.openmeh.adapter.DealGridPagerAdapter;
 import com.jawnnypoo.openmeh.shared.api.MehResponse;
-import com.jawnnypoo.openmeh.shared.model.Deal;
-import com.jawnnypoo.openmeh.shared.util.AssetUtil;
+import com.jawnnypoo.openmeh.shared.communication.TinyMehResponse;
+import com.jawnnypoo.openmeh.shared.model.Theme;
+
+import org.parceler.Parcels;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
 public class MehActivity extends Activity {
 
-    @Bind(R.id.image)
-    ImageView mImage;
-    @Bind(R.id.title)
-    TextView mTextTitle;
-    @Bind(R.id.price)
-    TextView mTextPrice;
-    @Bind(R.id.progress)
-    View mProgress;
+    private static final String EXTRA_MEH_RESPONSE = "response";
+
+    public static Intent newIntent(Context context, TinyMehResponse tinyMehResponse) {
+        Intent intent = new Intent(context, MehActivity.class);
+        intent.putExtra(EXTRA_MEH_RESPONSE, Parcels.wrap(tinyMehResponse));
+        return intent;
+    }
+
+    @Bind(R.id.root)
+    ViewGroup mRoot;
+    @Bind(R.id.grid_view_pager)
+    GridViewPager mGridViewPager;
+    @Bind(R.id.indicator)
+    DotsPageIndicator mDotsPageIndicator;
 
     GoogleApiClient mGoogleApiClient;
     MehResponse mMehResponse;
@@ -37,7 +48,6 @@ public class MehActivity extends Activity {
         @Override
         public void onConnected(@Nullable Bundle bundle) {
             if (mMehResponse == null) {
-                load();
             }
         }
 
@@ -58,8 +68,12 @@ public class MehActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        TinyMehResponse response = Parcels.unwrap(getIntent().getParcelableExtra(EXTRA_MEH_RESPONSE));
+
+        mGridViewPager.setAdapter(new DealGridPagerAdapter(getFragmentManager(), response));
+        mDotsPageIndicator.setPager(mGridViewPager);
         initGoogleApi();
-        load();
+        bind(response.getTheme());
     }
 
     private void initGoogleApi() {
@@ -70,16 +84,10 @@ public class MehActivity extends Activity {
                 .build();
     }
 
-    private void load() {
-        mProgress.setVisibility(View.VISIBLE);
-        MehResponse mehResponse = new Gson().fromJson(
-                AssetUtil.loadJSONFromAsset(this, "4-25-2015.json"), MehResponse.class);
-        bind(mehResponse.getDeal());
-    }
-
-    private void bind(@NonNull Deal deal) {
-        mProgress.setVisibility(View.GONE);
-        mTextTitle.setText(deal.getTitle());
-        mTextPrice.setText(deal.getPriceRange());
+    private void bind(Theme theme) {
+        mRoot.setBackgroundColor(theme.getBackgroundColor());
+        int dotColor = theme.getForegroundColor();
+        mDotsPageIndicator.setDotColor(dotColor);
+        mDotsPageIndicator.setDotColorSelected(dotColor);
     }
 }

@@ -1,48 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.wearable.view.BoxInsetLayout
-    android:id="@+id/container"
+    android:id="@+id/root"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MehActivity"
+    tools:context=".activity.MehActivity"
     tools:deviceIds="wear">
 
-    <ImageView
-        android:id="@+id/image"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:contentDescription="@null"
-        android:scaleType="centerCrop"
-        app:layout_box="all"/>
+    <android.support.wearable.view.GridViewPager
+        android:id="@+id/grid_view_pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 
-    <LinearLayout
+    <android.support.wearable.view.DotsPageIndicator
+        android:id="@+id/indicator"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:layout_gravity="bottom|center_horizontal"
-        app:layout_box="bottom">
-
-        <TextView
-            android:id="@+id/title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            tools:text="Some drone"/>
-
-        <TextView
-            android:id="@+id/price"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            app:layout_box="all"
-            tools:text="$3"/>
-    </LinearLayout>
-
-    <android.support.wearable.view.ProgressSpinner
-        android:id="@+id/progress"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"/>
+        android:layout_marginBottom="16dp"
+        app:dotFadeWhenIdle="false"/>
 
 </android.support.wearable.view.BoxInsetLayout>

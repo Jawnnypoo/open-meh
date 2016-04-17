@@ -4,13 +4,21 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.support.wearable.view.FragmentGridPagerAdapter;
 
+import com.jawnnypoo.openmeh.fragment.BuyNowFragment;
+import com.jawnnypoo.openmeh.fragment.DealFragment;
+import com.jawnnypoo.openmeh.fragment.ShowOnPhoneFragment;
+import com.jawnnypoo.openmeh.shared.communication.TinyMehResponse;
+
 /**
  * Holds the pages of the meh deal (aka the details, the buy now, the open on phone)
  */
 public class DealGridPagerAdapter extends FragmentGridPagerAdapter {
 
-    public DealGridPagerAdapter(FragmentManager fm) {
+    private TinyMehResponse mTinyMehResponse;
+
+    public DealGridPagerAdapter(FragmentManager fm, TinyMehResponse response) {
         super(fm);
+        mTinyMehResponse = response;
     }
 
     @Override
@@ -27,8 +35,12 @@ public class DealGridPagerAdapter extends FragmentGridPagerAdapter {
     public Fragment getFragment(int row, int column) {
         switch (column) {
             case 0:
-                return null;
+                return DealFragment.newInstance(mTinyMehResponse);
+            case 1:
+                return ShowOnPhoneFragment.newInstance(mTinyMehResponse);
+            case 2:
+                return BuyNowFragment.newInstance(mTinyMehResponse);
         }
-        return null;
+        throw new IllegalStateException("Idk wut to do");
     }
 }

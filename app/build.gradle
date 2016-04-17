@@ -66,7 +66,6 @@ dependencies {
     compile 'com.wdullaer:materialdatetimepicker:2.3.0'
     compile 'com.jawnnypoo:physicslayout:1.0.1'
     compile 'com.commit451:bypasses:1.0.1'
-    compile 'com.commit451:easel:0.0.5'
     compile 'com.github.Commit451:Gimbal:0.0.1'
     compile('com.crashlytics.sdk.android:crashlytics:2.5.5@aar') {
         transitive = true;

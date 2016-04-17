@@ -1,5 +1,7 @@
 package com.jawnnypoo.openmeh.service;
 
+import android.content.Intent;
+
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.wearable.MessageEvent;
@@ -8,6 +10,7 @@ import com.google.android.gms.wearable.PutDataRequest;
 import com.google.android.gms.wearable.Wearable;
 import com.google.android.gms.wearable.WearableListenerService;
 import com.google.gson.Gson;
+import com.jawnnypoo.openmeh.activity.MehActivity;
 import com.jawnnypoo.openmeh.api.MehClient;
 import com.jawnnypoo.openmeh.shared.api.MehResponse;
 import com.jawnnypoo.openmeh.shared.communication.DataValues;
@@ -30,6 +33,17 @@ public class MobileWearableListenerService extends WearableListenerService {
             case MessageType.TYPE_FETCH_MEH:
                 loadMehAndSendItToWearable();
                 break;
+            case MessageType.TYPE_OPEN_ON_PHONE:
+                Intent intent = MehActivity.newIntent(this);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+                break;
+            case MessageType.TYPE_BUY_ON_PHONE:
+                Intent buyIntent = MehActivity.newIntentForInstaBuy(this);
+                buyIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(buyIntent);
+                break;
+
         }
     }
 

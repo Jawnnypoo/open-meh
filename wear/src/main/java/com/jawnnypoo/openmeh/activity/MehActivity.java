@@ -12,19 +12,23 @@ import android.view.ViewGroup;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.wearable.Node;
+import com.google.android.gms.wearable.NodeApi;
 import com.google.android.gms.wearable.Wearable;
 import com.jawnnypoo.openmeh.R;
 import com.jawnnypoo.openmeh.adapter.DealGridPagerAdapter;
 import com.jawnnypoo.openmeh.shared.api.MehResponse;
 import com.jawnnypoo.openmeh.shared.communication.TinyMehResponse;
 import com.jawnnypoo.openmeh.shared.model.Theme;
+import com.jawnnypoo.openmeh.util.MessageSender;
 
 import org.parceler.Parcels;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class MehActivity extends Activity {
+public class MehActivity extends Activity implements MessageSender {
 
     private static final String EXTRA_MEH_RESPONSE = "response";
 
@@ -42,17 +46,31 @@ public class MehActivity extends Activity {
     DotsPageIndicator mDotsPageIndicator;
 
     GoogleApiClient mGoogleApiClient;
+    Node mPhoneNode;
     MehResponse mMehResponse;
 
     private GoogleApiClient.ConnectionCallbacks mConnectionCallbacks = new GoogleApiClient.ConnectionCallbacks() {
         @Override
         public void onConnected(@Nullable Bundle bundle) {
-            if (mMehResponse == null) {
-            }
+            Wearable.NodeApi.getConnectedNodes(mGoogleApiClient).setResultCallback(mGetConnectedNodesResultResultCallback);
         }
 
         @Override
         public void onConnectionSuspended(int i) {
+        }
+    };
+
+    private ResultCallback<NodeApi.GetConnectedNodesResult> mGetConnectedNodesResultResultCallback = new ResultCallback<NodeApi.GetConnectedNodesResult>() {
+        @Override
+        public void onResult(@NonNull NodeApi.GetConnectedNodesResult getConnectedNodesResult) {
+            if (getConnectedNodesResult.getNodes() != null && !getConnectedNodesResult.getNodes().isEmpty()) {
+                for (Node node : getConnectedNodesResult.getNodes()) {
+                    if (node.isNearby()) {
+                        mPhoneNode = node;
+                        break;
+                    }
+                }
+            }
         }
     };
 
@@ -89,5 +107,14 @@ public class MehActivity extends Activity {
         int dotColor = theme.getForegroundColor();
         mDotsPageIndicator.setDotColor(dotColor);
         mDotsPageIndicator.setDotColorSelected(dotColor);
+    }
+
+    @Override
+    public boolean sendMessage(String path, byte[] data) {
+        if (mGoogleApiClient.isConnected() || mPhoneNode == null) {
+            return false;
+        }
+        Wearable.MessageApi.sendMessage(mGoogleApiClient, mPhoneNode.getId(), path, data);
+        return true;
     }
 }

@@ -1,6 +1,4 @@
 <resources>
-    <string name="app_name">open meh</string>
-
     <string name="buy_it">Buy it.</string>
     <string name="sold_out">Sold Out.\nThere Are No More.</string>
     <string name="action_notifications">notifications</string>

@@ -59,11 +59,18 @@ import timber.log.Timber;
  */
 public class MehActivity extends BaseActivity {
 
-    private static final String KEY_MEH_RESPONSE = "KEY_MEH_RESPONSE";
+    private static final String STATE_MEH_RESPONSE = "STATE_MEH_RESPONSE";
+    private static final String EXTRA_BUY_NOW = "key_meh_response";
     private static final int ANIMATION_TIME = 800;
 
     public static Intent newIntent(Context context) {
         Intent intent = new Intent(context, MehActivity.class);
+        return intent;
+    }
+
+    public static Intent newIntentForInstaBuy(Context context) {
+        Intent intent = new Intent(context, MehActivity.class);
+        intent.putExtra(EXTRA_BUY_NOW, true);
         return intent;
     }
 
@@ -89,6 +96,7 @@ public class MehActivity extends BaseActivity {
     Bypass mBypass;
     MehResponse mSavedMehResponse;
     boolean mFullScreen = false;
+    boolean mBuyOnLoad = false;
 
     @OnClick(R.id.deal_full_specs)
     void onFullSpecsClick() {
@@ -159,6 +167,10 @@ public class MehActivity extends BaseActivity {
             }
             mSavedMehResponse = response.body();
             bindDeal(mSavedMehResponse.getDeal(), true);
+            if (mBuyOnLoad) {
+                mBuyButton.callOnClick();
+                mBuyOnLoad = false;
+            }
         }
 
         @Override
@@ -187,17 +199,17 @@ public class MehActivity extends BaseActivity {
         mYouTubeFragment = YouTubePlayerSupportFragment.newInstance();
         getSupportFragmentManager().beginTransaction().replace(R.id.video_root, mYouTubeFragment).commit();
         if (savedInstanceState != null) {
-            mSavedMehResponse = Parcels.unwrap(savedInstanceState.getParcelable(KEY_MEH_RESPONSE));
+            mSavedMehResponse = Parcels.unwrap(savedInstanceState.getParcelable(STATE_MEH_RESPONSE));
             if (mSavedMehResponse != null) {
                 Timber.d("Restored from savedInstanceState");
                 bindDeal(mSavedMehResponse.getDeal(), false);
             }
+        } else {
+            mBuyOnLoad = getIntent().getBooleanExtra(EXTRA_BUY_NOW, false);
+            loadMeh();
         }
         //testMeh();
         //testNotification();
-        if (mSavedMehResponse == null) {
-            loadMeh();
-        }
     }
 
     private void loadMeh() {
@@ -248,7 +260,6 @@ public class MehActivity extends BaseActivity {
             bindVideo(mSavedMehResponse.getVideo());
         }
         bindTheme(deal, animate);
-
     }
 
     private void bindVideo(Video video) {
@@ -367,7 +378,7 @@ public class MehActivity extends BaseActivity {
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         if (mSavedMehResponse != null) {
-            outState.putParcelable(KEY_MEH_RESPONSE, Parcels.wrap(mSavedMehResponse));
+            outState.putParcelable(STATE_MEH_RESPONSE, Parcels.wrap(mSavedMehResponse));
         }
     }
 

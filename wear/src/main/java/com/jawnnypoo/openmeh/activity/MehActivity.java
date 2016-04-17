@@ -77,7 +77,6 @@ public class MehActivity extends Activity implements MessageSender {
     private GoogleApiClient.OnConnectionFailedListener mOnConnectionFailedListener = new GoogleApiClient.OnConnectionFailedListener() {
         @Override
         public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-            //TODO show error
         }
     };
 
@@ -91,7 +90,16 @@ public class MehActivity extends Activity implements MessageSender {
         mGridViewPager.setAdapter(new DealGridPagerAdapter(getFragmentManager(), response));
         mDotsPageIndicator.setPager(mGridViewPager);
         initGoogleApi();
+        mGoogleApiClient.connect();
         bind(response.getTheme());
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mGoogleApiClient.isConnected() || mGoogleApiClient.isConnecting()) {
+            mGoogleApiClient.disconnect();
+        }
     }
 
     private void initGoogleApi() {

@@ -49,6 +49,15 @@ public class LoadingActivity extends Activity {
         setContentView(R.layout.activity_loading);
         ButterKnife.bind(this);
         initGoogleApi();
+        mGoogleApiClient.connect();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mGoogleApiClient.isConnected() || mGoogleApiClient.isConnecting()) {
+            mGoogleApiClient.disconnect();
+        }
     }
 
     private void initGoogleApi() {

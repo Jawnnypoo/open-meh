@@ -4,8 +4,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.wearable.activity.ConfirmationActivity;
 import android.support.wearable.view.ActionPage;
+import android.widget.Toast;
 
 import com.jawnnypoo.openmeh.R;
+import com.jawnnypoo.openmeh.shared.communication.MessageType;
 import com.jawnnypoo.openmeh.shared.communication.TinyMehResponse;
 import com.jawnnypoo.openmeh.shared.model.Theme;
 
@@ -41,8 +43,14 @@ public class ShowOnPhoneFragment extends ActionPageFragment {
     @Override
     protected void onActionClicked() {
         //http://stackoverflow.com/questions/25482930/how-to-implement-open-on-phone-animation-on-android-wear
-        Intent intent = new Intent(getActivity(), ConfirmationActivity.class);
-        intent.putExtra(ConfirmationActivity.EXTRA_ANIMATION_TYPE, ConfirmationActivity.OPEN_ON_PHONE_ANIMATION);
-        startActivity(intent);
+        boolean sentMessage = getMessageSender().sendMessage(MessageType.TYPE_BUY_ON_PHONE, null);
+        if (sentMessage) {
+            Intent intent = new Intent(getActivity(), ConfirmationActivity.class);
+            intent.putExtra(ConfirmationActivity.EXTRA_ANIMATION_TYPE, ConfirmationActivity.OPEN_ON_PHONE_ANIMATION);
+            startActivity(intent);
+        } else {
+            Toast.makeText(getActivity(), R.string.unable_to_connect_to_phone, Toast.LENGTH_SHORT)
+                    .show();
+        }
     }
 }

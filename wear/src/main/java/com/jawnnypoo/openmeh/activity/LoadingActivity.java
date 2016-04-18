@@ -17,6 +17,8 @@ import com.google.android.gms.wearable.DataEventBuffer;
 import com.google.android.gms.wearable.DataItem;
 import com.google.android.gms.wearable.DataMap;
 import com.google.android.gms.wearable.DataMapItem;
+import com.google.android.gms.wearable.MessageApi;
+import com.google.android.gms.wearable.MessageEvent;
 import com.google.android.gms.wearable.Node;
 import com.google.android.gms.wearable.NodeApi;
 import com.google.android.gms.wearable.Wearable;
@@ -48,7 +50,9 @@ public class LoadingActivity extends Activity {
         @Override
         public void onConnected(@Nullable Bundle bundle) {
             Wearable.DataApi.addListener(mGoogleApiClient, mDataListener);
-            Wearable.NodeApi.getConnectedNodes(mGoogleApiClient).setResultCallback(mGetConnectedNodesResultResultCallback);
+            Wearable.MessageApi.addListener(mGoogleApiClient, mMessageListener);
+            Wearable.NodeApi.getConnectedNodes(mGoogleApiClient)
+                    .setResultCallback(mGetConnectedNodesResultResultCallback);
         }
 
         @Override
@@ -60,6 +64,15 @@ public class LoadingActivity extends Activity {
         @Override
         public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
             showError();
+        }
+    };
+
+    private MessageApi.MessageListener mMessageListener = new MessageApi.MessageListener() {
+        @Override
+        public void onMessageReceived(MessageEvent messageEvent) {
+            if (messageEvent.getPath().equals(MessageType.TYPE_FETCH_FAILED)) {
+                showError();
+            }
         }
     };
 
@@ -83,6 +96,7 @@ public class LoadingActivity extends Activity {
         @Override
         public void onResult(@NonNull DataApi.DataItemResult dataItemResult) {
             if (dataItemResult.getStatus().isSuccess() && dataItemResult.getDataItem() != null) {
+                Timber.d("Got the cached data from the url " + dataItemResult.getDataItem().getUri());
                 parseResult(dataItemResult.getDataItem());
             } else {
                 Timber.d("Cached data was null. Asking phone for new data...");
@@ -100,13 +114,13 @@ public class LoadingActivity extends Activity {
 
             for (DataEvent event : events) {
                 Uri uri = event.getDataItem().getUri();
-
-                switch (uri.getPath()) {
-                    case DataValues.DATA_PATH_MEH_RESPONSE:
-                        parseResult(event.getDataItem());
-                        break;
+                String expectedPath = DataValues.DATA_PATH_MEH_RESPONSE + "/" + DataValues.getDataMehPathForToday();
+                if (expectedPath.equals(uri.getPath())) {
+                    parseResult(event.getDataItem());
+                    return;
                 }
             }
+            showError();
         }
     };
 
@@ -140,7 +154,7 @@ public class LoadingActivity extends Activity {
     }
 
     private void load() {
-        Uri existingDataUri = Uri.parse("wear://" + mPhoneNode.getId() + DataValues.DATA_PATH_MEH_RESPONSE);
+        Uri existingDataUri = Uri.parse("wear://" + mPhoneNode.getId() + DataValues.DATA_PATH_MEH_RESPONSE + "/" + DataValues.getDataMehPathForToday());
         Wearable.DataApi.getDataItem(mGoogleApiClient, existingDataUri).setResultCallback(mDataItemResultResultCallback);
     }
 

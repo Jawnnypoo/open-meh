@@ -32,7 +32,7 @@ public class MobileWearableListenerService extends WearableListenerService {
     public void onMessageReceived(MessageEvent messageEvent) {
         switch (messageEvent.getPath()) {
             case MessageType.TYPE_FETCH_MEH:
-                loadMehAndSendItToWearable();
+                loadMehAndSendItToWearable(messageEvent.getSourceNodeId());
                 break;
             case MessageType.TYPE_OPEN_ON_PHONE:
                 Intent intent = MehActivity.newIntent(this);
@@ -48,7 +48,7 @@ public class MobileWearableListenerService extends WearableListenerService {
         }
     }
 
-    private void loadMehAndSendItToWearable() {
+    private void loadMehAndSendItToWearable(String nodeId) {
         Timber.d("loading meh to send to wearable");
         GoogleApiClient googleApiClient = new GoogleApiClient.Builder(this)
                 .addApi(Wearable.API)
@@ -69,17 +69,17 @@ public class MobileWearableListenerService extends WearableListenerService {
             }
         } catch (Exception any) {
             Timber.e(any, "Failed to fetch meh deal for wearable");
-            return;
         }
         if (mehResponse == null || mehResponse.getDeal() == null) {
             Timber.e("The meh response was null. Lame");
+            sendError(googleApiClient, nodeId);
             return;
         }
 
         TinyMehResponse tinyMehResponse = TinyMehResponse.create(mehResponse);
         String tinyMehResponseJson = new Gson().toJson(tinyMehResponse);
 
-        PutDataMapRequest putDataMapReq = PutDataMapRequest.create(DataValues.DATA_PATH_MEH_RESPONSE);
+        PutDataMapRequest putDataMapReq = PutDataMapRequest.create(DataValues.DATA_PATH_MEH_RESPONSE + "/" + DataValues.getDataMehPathForToday());
         putDataMapReq.getDataMap().putString(DataValues.DATA_KEY_MEH_RESPONSE, tinyMehResponseJson);
         PutDataRequest putDataReq = putDataMapReq.asPutDataRequest();
         //https://developers.google.com/android/reference/com/google/android/gms/wearable/PutDataRequest.html#setUrgent()
@@ -89,6 +89,11 @@ public class MobileWearableListenerService extends WearableListenerService {
             Timber.d("Successfully placed the data!");
         } else {
             Timber.e("Failed to put data item for some reason");
+            sendError(googleApiClient, nodeId);
         }
+    }
+
+    private void sendError(GoogleApiClient client, String nodeId) {
+        Wearable.MessageApi.sendMessage(client, nodeId, MessageType.TYPE_FETCH_FAILED, null);
     }
 }

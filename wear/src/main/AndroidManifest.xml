@@ -25,12 +25,6 @@
         <activity android:name=".activity.MehActivity"/>
         <activity android:name="android.support.wearable.activity.ConfirmationActivity" />
 
-        <service android:name=".service.MehWearListenerService">
-            <intent-filter>
-                <action android:name="com.google.android.gms.wearable.BIND_LISTENER" />
-            </intent-filter>
-        </service>
-
         <uses-library
             android:name="com.google.android.wearable"
             android:required="false" />

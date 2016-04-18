@@ -18,7 +18,6 @@ import com.google.android.gms.wearable.NodeApi;
 import com.google.android.gms.wearable.Wearable;
 import com.jawnnypoo.openmeh.R;
 import com.jawnnypoo.openmeh.adapter.DealGridPagerAdapter;
-import com.jawnnypoo.openmeh.shared.api.MehResponse;
 import com.jawnnypoo.openmeh.shared.communication.TinyMehResponse;
 import com.jawnnypoo.openmeh.shared.model.Theme;
 import com.jawnnypoo.openmeh.util.MessageSender;
@@ -47,7 +46,6 @@ public class MehActivity extends Activity implements MessageSender {
 
     GoogleApiClient mGoogleApiClient;
     Node mPhoneNode;
-    MehResponse mMehResponse;
 
     private GoogleApiClient.ConnectionCallbacks mConnectionCallbacks = new GoogleApiClient.ConnectionCallbacks() {
         @Override

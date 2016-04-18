@@ -1,8 +1,12 @@
 package com.jawnnypoo.openmeh.shared.model;
 
 import android.graphics.Color;
+import android.support.annotation.IntDef;
 
 import org.parceler.Parcel;
+
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 
 /**
  * Pretty cool theme. Tells us all about the colors we want to show
@@ -12,6 +16,10 @@ public class Theme {
 
     public static final int FOREGROUND_DARK = 0;
     public static final int FOREGROUND_LIGHT = 1;
+
+    @Retention(RetentionPolicy.SOURCE)
+    @IntDef({FOREGROUND_LIGHT, FOREGROUND_DARK})
+    public @interface Foreground {}
 
     String accentColor;
     String foreground;
@@ -24,6 +32,7 @@ public class Theme {
         return safeParseColor(accentColor);
     }
 
+    @Foreground
     public int getForeground() {
         return foreground.equals("light") ? FOREGROUND_LIGHT :
                 FOREGROUND_DARK;

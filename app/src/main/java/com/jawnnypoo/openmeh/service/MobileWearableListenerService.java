@@ -1,9 +1,12 @@
 package com.jawnnypoo.openmeh.service;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.wearable.Asset;
 import com.google.android.gms.wearable.DataApi;
 import com.google.android.gms.wearable.MessageEvent;
 import com.google.android.gms.wearable.PutDataMapRequest;
@@ -18,6 +21,7 @@ import com.jawnnypoo.openmeh.shared.communication.DataValues;
 import com.jawnnypoo.openmeh.shared.communication.MessageType;
 import com.jawnnypoo.openmeh.shared.communication.TinyMehResponse;
 
+import java.io.ByteArrayOutputStream;
 import java.util.concurrent.TimeUnit;
 
 import retrofit2.Response;
@@ -79,8 +83,23 @@ public class MobileWearableListenerService extends WearableListenerService {
         TinyMehResponse tinyMehResponse = TinyMehResponse.create(mehResponse);
         String tinyMehResponseJson = new Gson().toJson(tinyMehResponse);
 
+        Bitmap icon = null;
+        try {
+            icon = Glide.with(getApplicationContext())
+                    .load(mehResponse.getDeal().getPhotos().get(0))
+                    .asBitmap()
+                    .into(300, 300)
+                    .get();
+        } catch (Exception e) {
+            Timber.e(e, null);
+        }
+
         PutDataMapRequest putDataMapReq = PutDataMapRequest.create(DataValues.DATA_PATH_MEH_RESPONSE + "/" + DataValues.getDataMehPathForToday());
         putDataMapReq.getDataMap().putString(DataValues.DATA_KEY_MEH_RESPONSE, tinyMehResponseJson);
+        if (icon != null) {
+            Asset asset = createAssetFromBitmap(icon);
+            putDataMapReq.getDataMap().putAsset(DataValues.DATA_KEY_MEH_IMAGE, asset);
+        }
         PutDataRequest putDataReq = putDataMapReq.asPutDataRequest();
         //https://developers.google.com/android/reference/com/google/android/gms/wearable/PutDataRequest.html#setUrgent()
         putDataReq = putDataReq.setUrgent();
@@ -95,5 +114,14 @@ public class MobileWearableListenerService extends WearableListenerService {
 
     private void sendError(GoogleApiClient client, String nodeId) {
         Wearable.MessageApi.sendMessage(client, nodeId, MessageType.TYPE_FETCH_FAILED, null);
+    }
+
+    /**
+     * https://developer.android.com/training/wearables/data-layer/assets.html
+     */
+    private Asset createAssetFromBitmap(Bitmap bitmap) {
+        final ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteStream);
+        return Asset.createFromBytes(byteStream.toByteArray());
     }
 }

@@ -1,9 +1,11 @@
 package com.jawnnypoo.openmeh.fragment;
 
 import android.app.Fragment;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,8 +13,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.jawnnypoo.openmeh.R;
-import com.jawnnypoo.openmeh.shared.communication.TinyMehResponse;
+import com.jawnnypoo.openmeh.model.MehWearResponse;
 import com.jawnnypoo.openmeh.shared.model.Theme;
+import com.jawnnypoo.openmeh.util.ImageCache;
 
 import org.parceler.Parcels;
 
@@ -26,8 +29,8 @@ public class DealFragment extends Fragment {
 
     private static final String ARG_MEH_RESPONSE = "meh_response";
 
-    public static DealFragment newInstance(TinyMehResponse mehResponse) {
-         DealFragment dealFragment = new DealFragment();
+    public static DealFragment newInstance(MehWearResponse mehResponse) {
+        DealFragment dealFragment = new DealFragment();
         Bundle args = new Bundle();
         args.putParcelable(ARG_MEH_RESPONSE, Parcels.wrap(mehResponse));
         dealFragment.setArguments(args);
@@ -36,6 +39,8 @@ public class DealFragment extends Fragment {
 
     @Bind(R.id.image)
     ImageView mImage;
+    @Bind(R.id.root_details)
+    ViewGroup mRootDetails;
     @Bind(R.id.title)
     TextView mTextTitle;
     @Bind(R.id.price)
@@ -50,7 +55,7 @@ public class DealFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
-        TinyMehResponse mehResponse = Parcels.unwrap(getArguments().getParcelable(ARG_MEH_RESPONSE));
+        MehWearResponse mehResponse = Parcels.unwrap(getArguments().getParcelable(ARG_MEH_RESPONSE));
         bind(mehResponse);
     }
 
@@ -60,15 +65,26 @@ public class DealFragment extends Fragment {
         ButterKnife.unbind(this);
     }
 
-    private void bind(@NonNull TinyMehResponse response) {
-        mTextTitle.setText(response.getTitle());
-        mTextPrice.setText(response.getPriceRange());
-        bindTheme(response.getTheme());
+    private void bind(@NonNull MehWearResponse response) {
+        mTextTitle.setText(response.getTinyMehResponse().getTitle());
+        mTextPrice.setText(response.getTinyMehResponse().getPriceRange());
+        if (response.getImageId() != null) {
+            Bitmap bitmap = ImageCache.getImage(response.getImageId());
+            if (bitmap != null) {
+                mImage.setImageBitmap(bitmap);
+            }
+        }
+        bindTheme(response.getTinyMehResponse().getTheme());
     }
 
     private void bindTheme(Theme theme) {
         int foregroundColor = theme.getForegroundColor();
         mTextTitle.setTextColor(foregroundColor);
         mTextPrice.setTextColor(foregroundColor);
+        if (theme.getForeground() == Theme.FOREGROUND_LIGHT) {
+            mRootDetails.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.black_60));
+        } else {
+            mRootDetails.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.white_60));
+        }
     }
 }

@@ -11,6 +11,7 @@ public class DataValues {
 
     public static final String DATA_PATH_MEH_RESPONSE = "/meh_response";
     public static final String DATA_KEY_MEH_RESPONSE = "response_json";
+    public static final String DATA_KEY_MEH_IMAGE = "image";
 
     private static final SimpleDateFormat URL_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
 

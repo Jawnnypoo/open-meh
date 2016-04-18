@@ -7,8 +7,8 @@ import android.support.wearable.view.ActionPage;
 import android.widget.Toast;
 
 import com.jawnnypoo.openmeh.R;
+import com.jawnnypoo.openmeh.model.MehWearResponse;
 import com.jawnnypoo.openmeh.shared.communication.MessageType;
-import com.jawnnypoo.openmeh.shared.communication.TinyMehResponse;
 import com.jawnnypoo.openmeh.shared.model.Theme;
 
 import org.parceler.Parcels;
@@ -20,7 +20,7 @@ public class ShowOnPhoneFragment extends ActionPageFragment {
 
     private static final String ARG_MEH_RESPONSE = "meh_response";
 
-    public static ShowOnPhoneFragment newInstance(TinyMehResponse mehResponse) {
+    public static ShowOnPhoneFragment newInstance(MehWearResponse mehResponse) {
         ShowOnPhoneFragment fragment = new ShowOnPhoneFragment();
         Bundle args = new Bundle();
         args.putParcelable(ARG_MEH_RESPONSE, Parcels.wrap(mehResponse));
@@ -36,8 +36,8 @@ public class ShowOnPhoneFragment extends ActionPageFragment {
 
     @Override
     protected Theme getTheme() {
-        TinyMehResponse response = Parcels.unwrap(getArguments().getParcelable(ARG_MEH_RESPONSE));
-        return response.getTheme();
+        MehWearResponse response = Parcels.unwrap(getArguments().getParcelable(ARG_MEH_RESPONSE));
+        return response.getTinyMehResponse().getTheme();
     }
 
     @Override

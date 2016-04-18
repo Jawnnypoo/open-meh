@@ -4,8 +4,6 @@
 
     <uses-feature android:name="android.hardware.type.watch" />
 
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
-
     <application
         android:name=".App"
         android:allowBackup="true"

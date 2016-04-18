@@ -9,8 +9,8 @@ android {
         applicationId "com.jawnnypoo.openmeh"
         minSdkVersion 22
         targetSdkVersion 23
-        versionCode 1
-        versionName "1.0"
+        versionCode 130
+        versionName "1.3.0"
     }
     buildTypes {
         release {

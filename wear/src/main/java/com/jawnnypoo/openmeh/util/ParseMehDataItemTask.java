@@ -19,17 +19,18 @@ import java.util.UUID;
 /**
  * Runs a task to parse out a {@link MehWearResponse}
  */
-public class ImageLoadTask {
+public class ParseMehDataItemTask {
 
     private GoogleApiClient mGoogleApiClient;
     private DataItem mDataItem;
 
-    public ImageLoadTask(GoogleApiClient apiClient, DataItem dataItem) {
+    public ParseMehDataItemTask(GoogleApiClient apiClient, DataItem dataItem) {
         mGoogleApiClient = apiClient;
         mDataItem = dataItem;
     }
 
-    public void run(Callback<MehWearResponse> callback) {
+    public void enqueue(Callback<MehWearResponse> callback) {
+        //Not really queuing it, but I like to match Retrofit syntax
         new TheAsyncTask(mGoogleApiClient, callback).execute(mDataItem);
     }
 

@@ -6,7 +6,7 @@ import android.support.annotation.Nullable;
 import java.util.HashMap;
 
 /**
- * holds images
+ * holds images. its ugly but oh well, there won't be that many
  */
 public class ImageCache {
 

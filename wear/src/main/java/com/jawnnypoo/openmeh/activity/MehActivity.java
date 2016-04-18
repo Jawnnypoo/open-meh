@@ -32,7 +32,7 @@ import com.jawnnypoo.openmeh.shared.communication.DataValues;
 import com.jawnnypoo.openmeh.shared.communication.MessageType;
 import com.jawnnypoo.openmeh.shared.model.Theme;
 import com.jawnnypoo.openmeh.util.Callback;
-import com.jawnnypoo.openmeh.util.ImageLoadTask;
+import com.jawnnypoo.openmeh.util.ParseMehDataItemTask;
 import com.jawnnypoo.openmeh.util.MessageSender;
 
 import java.util.List;
@@ -190,7 +190,7 @@ public class MehActivity extends Activity implements MessageSender {
 
     private void parseResult(DataItem dataItem) {
         Timber.d("Parsing and binding data result");
-        new ImageLoadTask(mGoogleApiClient, dataItem).run(mCallback);
+        new ParseMehDataItemTask(mGoogleApiClient, dataItem).enqueue(mCallback);
 
     }
 

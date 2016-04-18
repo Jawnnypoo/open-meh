@@ -5,6 +5,6 @@ package com.jawnnypoo.openmeh.shared.communication;
  */
 public class DataValues {
 
-    public static final String DATA_PATH_MEH_RESPONSE = "meh_response";
+    public static final String DATA_PATH_MEH_RESPONSE = "/meh_response";
     public static final String DATA_KEY_MEH_RESPONSE = "response_json";
 }

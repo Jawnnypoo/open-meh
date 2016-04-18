@@ -27,6 +27,7 @@ dependencies {
     compile 'org.parceler:parceler-api:1.0.4'
     apt "org.parceler:parceler:1.0.4"
     compile 'com.jakewharton:butterknife:7.0.1'
+    compile 'com.jakewharton.timber:timber:4.1.2'
     compile 'com.google.code.gson:gson:2.6.2'
     compile 'com.commit451:easel:0.0.5'
 }

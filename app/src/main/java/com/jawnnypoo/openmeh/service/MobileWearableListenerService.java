@@ -4,6 +4,7 @@ import android.content.Intent;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.wearable.DataApi;
 import com.google.android.gms.wearable.MessageEvent;
 import com.google.android.gms.wearable.PutDataMapRequest;
 import com.google.android.gms.wearable.PutDataRequest;
@@ -48,6 +49,7 @@ public class MobileWearableListenerService extends WearableListenerService {
     }
 
     private void loadMehAndSendItToWearable() {
+        Timber.d("loading meh to send to wearable");
         GoogleApiClient googleApiClient = new GoogleApiClient.Builder(this)
                 .addApi(Wearable.API)
                 .build();
@@ -69,7 +71,7 @@ public class MobileWearableListenerService extends WearableListenerService {
             Timber.e(any, "Failed to fetch meh deal for wearable");
             return;
         }
-        if (mehResponse == null) {
+        if (mehResponse == null || mehResponse.getDeal() == null) {
             Timber.e("The meh response was null. Lame");
             return;
         }
@@ -82,6 +84,11 @@ public class MobileWearableListenerService extends WearableListenerService {
         PutDataRequest putDataReq = putDataMapReq.asPutDataRequest();
         //https://developers.google.com/android/reference/com/google/android/gms/wearable/PutDataRequest.html#setUrgent()
         putDataReq = putDataReq.setUrgent();
-        Wearable.DataApi.putDataItem(googleApiClient, putDataReq);
+        DataApi.DataItemResult result = Wearable.DataApi.putDataItem(googleApiClient, putDataReq).await();
+        if (result.getStatus().isSuccess()) {
+            Timber.d("Successfully placed the data!");
+        } else {
+            Timber.e("Failed to put data item for some reason");
+        }
     }
 }

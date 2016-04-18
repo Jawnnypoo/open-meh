@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.jawnnypoo.openmeh.R;
 import com.jawnnypoo.openmeh.shared.communication.TinyMehResponse;
+import com.jawnnypoo.openmeh.shared.model.Theme;
 
 import org.parceler.Parcels;
 
@@ -62,5 +63,12 @@ public class DealFragment extends Fragment {
     private void bind(@NonNull TinyMehResponse response) {
         mTextTitle.setText(response.getTitle());
         mTextPrice.setText(response.getPriceRange());
+        bindTheme(response.getTheme());
+    }
+
+    private void bindTheme(Theme theme) {
+        int foregroundColor = theme.getForegroundColor();
+        mTextTitle.setTextColor(foregroundColor);
+        mTextPrice.setTextColor(foregroundColor);
     }
 }

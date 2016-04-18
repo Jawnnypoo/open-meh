@@ -24,8 +24,6 @@ import com.jawnnypoo.openmeh.util.MehReminderManager;
 import com.wdullaer.materialdatetimepicker.time.RadialPickerLayout;
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
 
-import org.parceler.Parcels;
-
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
@@ -48,7 +46,7 @@ public class NotificationActivity extends BaseActivity {
     public static Intent newInstance(Context context, @Nullable Theme theme) {
         Intent intent = new Intent(context, NotificationActivity.class);
         if (theme != null) {
-            intent.putExtra(EXTRA_THEME, Parcels.wrap(theme));
+            intent.putExtra(EXTRA_THEME, theme);
         }
         return intent;
     }
@@ -104,7 +102,7 @@ public class NotificationActivity extends BaseActivity {
             mTimePickerDialog = TimePickerDialog.newInstance(onTimeSetListener, mTimeToAlert.get(Calendar.HOUR_OF_DAY), mTimeToAlert.get(Calendar.MINUTE), false);
             mTimePickerDialog.vibrate(false);
         }
-        Theme theme = Parcels.unwrap(getIntent().getParcelableExtra(EXTRA_THEME));
+        Theme theme = getIntent().getParcelableExtra(EXTRA_THEME);
         if (theme != null) {
             applyTheme(theme);
         }

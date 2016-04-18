@@ -2,8 +2,6 @@ package com.jawnnypoo.openmeh;
 
 import android.app.Application;
 
-import org.greenrobot.eventbus.EventBus;
-
 import timber.log.Timber;
 
 /**
@@ -17,8 +15,6 @@ public class App extends Application {
         return sInstance;
     }
 
-    private EventBus mEventBus;
-
     @Override
     public void onCreate() {
         super.onCreate();
@@ -26,10 +22,5 @@ public class App extends Application {
         if (BuildConfig.DEBUG) {
             Timber.plant(new Timber.DebugTree());
         }
-        mEventBus = new EventBus();
-    }
-
-    public EventBus getEventBus() {
-        return mEventBus;
     }
 }

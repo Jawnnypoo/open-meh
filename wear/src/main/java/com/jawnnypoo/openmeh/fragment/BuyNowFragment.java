@@ -11,7 +11,6 @@ import com.jawnnypoo.openmeh.model.MehWearResponse;
 import com.jawnnypoo.openmeh.shared.communication.MessageType;
 import com.jawnnypoo.openmeh.shared.model.Theme;
 
-import org.parceler.Parcels;
 
 /**
  * Basically just an {@link ActionPage} to show the deal on the phone
@@ -23,7 +22,7 @@ public class BuyNowFragment extends ActionPageFragment {
     public static BuyNowFragment newInstance(MehWearResponse mehResponse) {
         BuyNowFragment fragment = new BuyNowFragment();
         Bundle args = new Bundle();
-        args.putParcelable(ARG_MEH_RESPONSE, Parcels.wrap(mehResponse));
+        args.putParcelable(ARG_MEH_RESPONSE, mehResponse);
         fragment.setArguments(args);
         return fragment;
     }
@@ -36,7 +35,7 @@ public class BuyNowFragment extends ActionPageFragment {
 
     @Override
     protected Theme getTheme() {
-        MehWearResponse response = Parcels.unwrap(getArguments().getParcelable(ARG_MEH_RESPONSE));
+        MehWearResponse response = getArguments().getParcelable(ARG_MEH_RESPONSE);
         return response.getTinyMehResponse().getTheme();
     }
 

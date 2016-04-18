@@ -1,5 +1,4 @@
 apply plugin: 'com.android.application'
-apply plugin: 'com.neenbedankt.android-apt'
 
 android {
     compileSdkVersion 23
@@ -9,8 +8,8 @@ android {
         applicationId "com.jawnnypoo.openmeh"
         minSdkVersion 22
         targetSdkVersion 23
-        versionCode 130
-        versionName "1.3.0"
+        versionCode 131
+        versionName "1.3.1"
     }
     buildTypes {
         release {
@@ -23,7 +22,5 @@ android {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.google.android.support:wearable:1.4.0'
-    compile 'org.greenrobot:eventbus:3.0.0'
-    apt "org.parceler:parceler:1.0.4"
     compile project(':shared')
 }

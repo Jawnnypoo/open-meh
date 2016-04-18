@@ -1,9 +1,8 @@
 package com.jawnnypoo.openmeh.shared.model;
 
 import android.graphics.Color;
+import android.os.Parcelable;
 import android.support.annotation.IntDef;
-
-import org.parceler.Parcel;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -11,8 +10,7 @@ import java.lang.annotation.RetentionPolicy;
 /**
  * Pretty cool theme. Tells us all about the colors we want to show
  */
-@Parcel
-public class Theme {
+public class Theme implements Parcelable {
 
     public static final int FOREGROUND_DARK = 0;
     public static final int FOREGROUND_LIGHT = 1;
@@ -64,4 +62,36 @@ public class Theme {
             return Color.parseColor(rrggbb);
         }
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(android.os.Parcel dest, int flags) {
+        dest.writeString(this.accentColor);
+        dest.writeString(this.foreground);
+        dest.writeString(this.backgroundColor);
+        dest.writeString(this.backgroundImage);
+    }
+
+    protected Theme(android.os.Parcel in) {
+        this.accentColor = in.readString();
+        this.foreground = in.readString();
+        this.backgroundColor = in.readString();
+        this.backgroundImage = in.readString();
+    }
+
+    public static final Parcelable.Creator<Theme> CREATOR = new Parcelable.Creator<Theme>() {
+        @Override
+        public Theme createFromParcel(android.os.Parcel source) {
+            return new Theme(source);
+        }
+
+        @Override
+        public Theme[] newArray(int size) {
+            return new Theme[size];
+        }
+    };
 }

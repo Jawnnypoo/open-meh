@@ -30,7 +30,6 @@ import com.jawnnypoo.physicslayout.PhysicsConfig;
 import com.jawnnypoo.physicslayout.PhysicsFrameLayout;
 
 import org.jbox2d.common.Vec2;
-import org.parceler.Parcels;
 
 import java.util.List;
 
@@ -59,7 +58,7 @@ public class AboutActivity extends BaseActivity {
     public static Intent newInstance(Context context, @Nullable Theme theme) {
         Intent intent = new Intent(context, AboutActivity.class);
         if (theme != null) {
-            intent.putExtra(EXTRA_THEME, Parcels.wrap(theme));
+            intent.putExtra(EXTRA_THEME, theme);
         }
         return intent;
     }
@@ -140,7 +139,7 @@ public class AboutActivity extends BaseActivity {
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         mGravitySensor = mSensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY);
         GithubClient.instance().contributors(REPO_USER, REPO_NAME).enqueue(contributorResponseCallback);
-        mTheme = Parcels.unwrap(getIntent().getParcelableExtra(EXTRA_THEME));
+        mTheme = getIntent().getParcelableExtra(EXTRA_THEME);
         if (mTheme != null) {
             applyTheme(mTheme);
         }

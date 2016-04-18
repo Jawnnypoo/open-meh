@@ -1,17 +1,16 @@
 package com.jawnnypoo.openmeh.model;
 
-import com.jawnnypoo.openmeh.shared.communication.TinyMehResponse;
+import android.os.Parcelable;
 
-import org.parceler.Parcel;
+import com.jawnnypoo.openmeh.shared.communication.TinyMehResponse;
 
 /**
  * The meh response meant for wearables
  */
-@Parcel
-public class MehWearResponse {
+public class MehWearResponse implements Parcelable {
 
-    private TinyMehResponse mTinyMehResponse;
-    private String mImageId;
+    protected TinyMehResponse mTinyMehResponse;
+    protected String mImageId;
 
     protected MehWearResponse() {
         //for parceler
@@ -29,4 +28,32 @@ public class MehWearResponse {
     public String getImageId() {
         return mImageId;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(android.os.Parcel dest, int flags) {
+        dest.writeParcelable(this.mTinyMehResponse, flags);
+        dest.writeString(this.mImageId);
+    }
+
+    protected MehWearResponse(android.os.Parcel in) {
+        this.mTinyMehResponse = in.readParcelable(TinyMehResponse.class.getClassLoader());
+        this.mImageId = in.readString();
+    }
+
+    public static final Parcelable.Creator<MehWearResponse> CREATOR = new Parcelable.Creator<MehWearResponse>() {
+        @Override
+        public MehWearResponse createFromParcel(android.os.Parcel source) {
+            return new MehWearResponse(source);
+        }
+
+        @Override
+        public MehWearResponse[] newArray(int size) {
+            return new MehWearResponse[size];
+        }
+    };
 }

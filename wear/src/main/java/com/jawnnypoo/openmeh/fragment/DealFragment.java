@@ -17,8 +17,6 @@ import com.jawnnypoo.openmeh.model.MehWearResponse;
 import com.jawnnypoo.openmeh.shared.model.Theme;
 import com.jawnnypoo.openmeh.util.ImageCache;
 
-import org.parceler.Parcels;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
@@ -32,7 +30,7 @@ public class DealFragment extends Fragment {
     public static DealFragment newInstance(MehWearResponse mehResponse) {
         DealFragment dealFragment = new DealFragment();
         Bundle args = new Bundle();
-        args.putParcelable(ARG_MEH_RESPONSE, Parcels.wrap(mehResponse));
+        args.putParcelable(ARG_MEH_RESPONSE, mehResponse);
         dealFragment.setArguments(args);
         return dealFragment;
     }
@@ -55,7 +53,7 @@ public class DealFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
-        MehWearResponse mehResponse = Parcels.unwrap(getArguments().getParcelable(ARG_MEH_RESPONSE));
+        MehWearResponse mehResponse = getArguments().getParcelable(ARG_MEH_RESPONSE);
         bind(mehResponse);
     }
 

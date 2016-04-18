@@ -29,20 +29,18 @@ import com.jawnnypoo.openmeh.BuildConfig;
 import com.jawnnypoo.openmeh.R;
 import com.jawnnypoo.openmeh.adapter.ImageAdapter;
 import com.jawnnypoo.openmeh.api.MehClient;
+import com.jawnnypoo.openmeh.service.PostReminderService;
 import com.jawnnypoo.openmeh.shared.api.MehResponse;
 import com.jawnnypoo.openmeh.shared.model.Deal;
 import com.jawnnypoo.openmeh.shared.model.Theme;
 import com.jawnnypoo.openmeh.shared.model.Topic;
 import com.jawnnypoo.openmeh.shared.model.Video;
-import com.jawnnypoo.openmeh.service.PostReminderService;
 import com.jawnnypoo.openmeh.shared.util.AssetUtil;
 import com.jawnnypoo.openmeh.util.ColorUtil;
 import com.jawnnypoo.openmeh.util.GlideImageGetter;
 import com.jawnnypoo.openmeh.util.IntentUtil;
 import com.jawnnypoo.openmeh.util.MehUtil;
 import com.jawnnypoo.openmeh.util.NavigationManager;
-
-import org.parceler.Parcels;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -199,7 +197,7 @@ public class MehActivity extends BaseActivity {
         mYouTubeFragment = YouTubePlayerSupportFragment.newInstance();
         getSupportFragmentManager().beginTransaction().replace(R.id.video_root, mYouTubeFragment).commit();
         if (savedInstanceState != null) {
-            mSavedMehResponse = Parcels.unwrap(savedInstanceState.getParcelable(STATE_MEH_RESPONSE));
+            mSavedMehResponse = savedInstanceState.getParcelable(STATE_MEH_RESPONSE);
             if (mSavedMehResponse != null) {
                 Timber.d("Restored from savedInstanceState");
                 bindDeal(mSavedMehResponse.getDeal(), false);
@@ -385,7 +383,7 @@ public class MehActivity extends BaseActivity {
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         if (mSavedMehResponse != null) {
-            outState.putParcelable(STATE_MEH_RESPONSE, Parcels.wrap(mSavedMehResponse));
+            outState.putParcelable(STATE_MEH_RESPONSE, mSavedMehResponse);
         }
     }
 

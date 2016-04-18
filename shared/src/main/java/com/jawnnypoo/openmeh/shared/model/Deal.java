@@ -1,8 +1,7 @@
 package com.jawnnypoo.openmeh.shared.model;
 
+import android.os.Parcelable;
 import android.text.TextUtils;
-
-import org.parceler.Parcel;
 
 import java.text.NumberFormat;
 import java.util.Collections;
@@ -12,8 +11,7 @@ import java.util.Locale;
 /**
  * The entire deal!
  */
-@Parcel
-public class Deal {
+public class Deal implements Parcelable {
     private static NumberFormat PRICE_FORMATTER = NumberFormat.getCurrencyInstance(Locale.US);
     private static final String PATH_CHECKOUT = "/checkout";
 
@@ -109,4 +107,50 @@ public class Deal {
     public String getCheckoutUrl() {
         return url + PATH_CHECKOUT;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(android.os.Parcel dest, int flags) {
+        dest.writeString(this.features);
+        dest.writeString(this.id);
+        dest.writeTypedList(items);
+        dest.writeStringList(this.photos);
+        dest.writeString(this.title);
+        dest.writeString(this.soldOutAt);
+        dest.writeString(this.specifications);
+        dest.writeParcelable(this.story, flags);
+        dest.writeParcelable(this.theme, flags);
+        dest.writeParcelable(this.topic, flags);
+        dest.writeString(this.url);
+    }
+
+    protected Deal(android.os.Parcel in) {
+        this.features = in.readString();
+        this.id = in.readString();
+        this.items = in.createTypedArrayList(Item.CREATOR);
+        this.photos = in.createStringArrayList();
+        this.title = in.readString();
+        this.soldOutAt = in.readString();
+        this.specifications = in.readString();
+        this.story = in.readParcelable(Story.class.getClassLoader());
+        this.theme = in.readParcelable(Theme.class.getClassLoader());
+        this.topic = in.readParcelable(Topic.class.getClassLoader());
+        this.url = in.readString();
+    }
+
+    public static final Parcelable.Creator<Deal> CREATOR = new Parcelable.Creator<Deal>() {
+        @Override
+        public Deal createFromParcel(android.os.Parcel source) {
+            return new Deal(source);
+        }
+
+        @Override
+        public Deal[] newArray(int size) {
+            return new Deal[size];
+        }
+    };
 }

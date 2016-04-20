@@ -4,6 +4,7 @@ import android.app.Application;
 
 import com.crashlytics.android.Crashlytics;
 import com.jawnnypoo.openmeh.util.CrashlyticsTree;
+import com.novoda.simplechromecustomtabs.SimpleChromeCustomTabs;
 
 import io.fabric.sdk.android.Fabric;
 import timber.log.Timber;
@@ -22,6 +23,7 @@ public class MehApp extends Application {
             Fabric.with(this, new Crashlytics());
             Timber.plant(new CrashlyticsTree());
         }
+        SimpleChromeCustomTabs.initialize(this);
     }
 
 }

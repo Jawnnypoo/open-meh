@@ -3,14 +3,14 @@ package com.jawnnypoo.openmeh.util;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
-import android.support.customtabs.CustomTabsIntent;
 import android.support.design.widget.Snackbar;
 import android.view.View;
 
 import com.jawnnypoo.openmeh.R;
 import com.jawnnypoo.openmeh.shared.api.MehResponse;
-import com.jawnnypoo.openmeh.util.customtabs.BrowserFallback;
-import com.jawnnypoo.openmeh.util.customtabs.CustomTabsActivityHelper;
+import com.novoda.simplechromecustomtabs.SimpleChromeCustomTabs;
+import com.novoda.simplechromecustomtabs.navigation.IntentCustomizer;
+import com.novoda.simplechromecustomtabs.navigation.SimpleChromeCustomTabsIntentBuilder;
 
 /**
  * All the intents
@@ -31,11 +31,27 @@ public class IntentUtil {
     }
 
     public static void openUrl(Activity activity, String url, int toolbarColor) {
-        CustomTabsIntent.Builder intentBuilder = new CustomTabsIntent.Builder();
-        intentBuilder.setToolbarColor(toolbarColor);
-        intentBuilder.setStartAnimations(activity, R.anim.fade_in, R.anim.do_nothing);
-        intentBuilder.setExitAnimations(activity, R.anim.do_nothing, R.anim.fade_out);
-        CustomTabsActivityHelper.openCustomTab(activity, intentBuilder.build(), Uri.parse(url), new BrowserFallback());
+        SimpleChromeCustomTabs.getInstance()
+                .withFallback(new BrowserFallback(activity))
+                .withIntentCustomizer(new MehIntentCustomizer(activity, toolbarColor))
+                .navigateTo(Uri.parse(url), activity);
+    }
+
+    private static class MehIntentCustomizer implements IntentCustomizer {
+
+        private int mToolbarColor;
+        private Activity mActivity;
+        public MehIntentCustomizer(Activity activity, int toolbarColor) {
+            mToolbarColor = toolbarColor;
+            mActivity = activity;
+        }
+
+        @Override
+        public SimpleChromeCustomTabsIntentBuilder onCustomiseIntent(SimpleChromeCustomTabsIntentBuilder simpleChromeCustomTabsIntentBuilder) {
+            return simpleChromeCustomTabsIntentBuilder.withToolbarColor(mToolbarColor)
+                    .withStartAnimations(mActivity, R.anim.fade_in, R.anim.do_nothing)
+                    .withExitAnimations(mActivity, R.anim.do_nothing, R.anim.fade_out);
+        }
     }
 
 }

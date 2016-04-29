@@ -41,6 +41,7 @@ import com.jawnnypoo.openmeh.util.GlideImageGetter;
 import com.jawnnypoo.openmeh.util.IntentUtil;
 import com.jawnnypoo.openmeh.util.MehUtil;
 import com.jawnnypoo.openmeh.util.NavigationManager;
+import com.novoda.simplechromecustomtabs.SimpleChromeCustomTabs;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -215,6 +216,18 @@ public class MehActivity extends BaseActivity {
         super.onNewIntent(intent);
         mBuyOnLoad = intent.getBooleanExtra(EXTRA_BUY_NOW, false);
         loadMeh();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        SimpleChromeCustomTabs.getInstance().connectTo(this);
+    }
+
+    @Override
+    protected void onPause() {
+        SimpleChromeCustomTabs.getInstance().disconnectFrom(this);
+        super.onPause();
     }
 
     private void loadMeh() {

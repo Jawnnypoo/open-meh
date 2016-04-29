@@ -69,6 +69,7 @@ dependencies {
     compile('com.crashlytics.sdk.android:crashlytics:2.5.5@aar') {
         transitive = true;
     }
+    compile 'com.novoda:simple-chrome-custom-tabs:0.1.2'
     compile project(':shared')
     wearApp project(':wear')
 }

@@ -226,7 +226,9 @@ public class MehActivity extends BaseActivity {
 
     @Override
     protected void onPause() {
-        SimpleChromeCustomTabs.getInstance().disconnectFrom(this);
+        if (SimpleChromeCustomTabs.getInstance().isConnected()) {
+            SimpleChromeCustomTabs.getInstance().disconnectFrom(this);
+        }
         super.onPause();
     }
 

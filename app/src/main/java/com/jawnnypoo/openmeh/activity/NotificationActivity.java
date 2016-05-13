@@ -27,7 +27,7 @@ import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -51,16 +51,16 @@ public class NotificationActivity extends BaseActivity {
         return intent;
     }
 
-    @Bind(R.id.toolbar) Toolbar mToolbar;
-    @Bind(R.id.toolbar_title) TextView mToolbarTitle;
-    @Bind(R.id.notification_switch) SwitchCompat mOnOffSwitch;
-    @Bind(R.id.notification_switch_label) TextView mOnOffSwitchLabel;
-    @Bind(R.id.notification_time) TextView mNotifyTime;
-    @Bind(R.id.notification_time_label) TextView mNotifyTimeLabel;
-    @Bind(R.id.notification_sound) CheckBox mSoundCheck;
-    @Bind(R.id.notification_sound_label) TextView mSoundCheckLabel;
-    @Bind(R.id.notification_vibrate) CheckBox mVibrateCheck;
-    @Bind(R.id.notification_vibrate_label) TextView mVibrateCheckLabel;
+    @BindView(R.id.toolbar) Toolbar mToolbar;
+    @BindView(R.id.toolbar_title) TextView mToolbarTitle;
+    @BindView(R.id.notification_switch) SwitchCompat mOnOffSwitch;
+    @BindView(R.id.notification_switch_label) TextView mOnOffSwitchLabel;
+    @BindView(R.id.notification_time) TextView mNotifyTime;
+    @BindView(R.id.notification_time_label) TextView mNotifyTimeLabel;
+    @BindView(R.id.notification_sound) CheckBox mSoundCheck;
+    @BindView(R.id.notification_sound_label) TextView mSoundCheckLabel;
+    @BindView(R.id.notification_vibrate) CheckBox mVibrateCheck;
+    @BindView(R.id.notification_vibrate_label) TextView mVibrateCheckLabel;
 
     Calendar mTimeToAlert = Calendar.getInstance();
     TimePickerDialog mTimePickerDialog;

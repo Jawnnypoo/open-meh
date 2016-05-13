@@ -43,7 +43,7 @@ import com.jawnnypoo.openmeh.util.MehUtil;
 import com.jawnnypoo.openmeh.util.NavigationManager;
 import com.novoda.simplechromecustomtabs.SimpleChromeCustomTabs;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import in.uncod.android.bypass.Bypass;
@@ -73,21 +73,21 @@ public class MehActivity extends BaseActivity {
         return intent;
     }
 
-    @Bind(R.id.toolbar) Toolbar mToolbar;
-    @Bind(R.id.activity_root) View mRoot;
-    @Bind(R.id.swipe_refresh) SwipeRefreshLayout mSwipeRefreshLayout;
-    @Bind(R.id.failed) View mFailedView;
-    @Bind(R.id.indicator) CircleIndicator mIndicator;
-    @Bind(R.id.deal_image_background) ImageView mImageBackground;
-    @Bind(R.id.deal_image_view_pager) ViewPager mImageViewPager;
+    @BindView(R.id.toolbar) Toolbar mToolbar;
+    @BindView(R.id.activity_root) View mRoot;
+    @BindView(R.id.swipe_refresh) SwipeRefreshLayout mSwipeRefreshLayout;
+    @BindView(R.id.failed) View mFailedView;
+    @BindView(R.id.indicator) CircleIndicator mIndicator;
+    @BindView(R.id.deal_image_background) ImageView mImageBackground;
+    @BindView(R.id.deal_image_view_pager) ViewPager mImageViewPager;
     ImageAdapter mImagePagerAdapter;
-    @Bind(R.id.deal_buy_button) AppCompatButton mBuyButton;
-    @Bind(R.id.deal_title) TextView mTitleTextView;
-    @Bind(R.id.deal_description) TextView mDescriptionTextView;
-    @Bind(R.id.deal_full_specs) TextView mFullSpecsTextView;
-    @Bind(R.id.story_title) TextView mStoreTitleTextView;
-    @Bind(R.id.story_body) TextView mStoryBodyTextView;
-    @Bind(R.id.video_root) ViewGroup mVideoRoot;
+    @BindView(R.id.deal_buy_button) AppCompatButton mBuyButton;
+    @BindView(R.id.deal_title) TextView mTitleTextView;
+    @BindView(R.id.deal_description) TextView mDescriptionTextView;
+    @BindView(R.id.deal_full_specs) TextView mFullSpecsTextView;
+    @BindView(R.id.story_title) TextView mStoreTitleTextView;
+    @BindView(R.id.story_body) TextView mStoryBodyTextView;
+    @BindView(R.id.video_root) ViewGroup mVideoRoot;
 
     YouTubePlayerSupportFragment mYouTubeFragment;
     YouTubePlayer mYouTubePlayer;
@@ -298,7 +298,7 @@ public class MehActivity extends BaseActivity {
     private void bindYouTubeVideo(final String videoId) {
         Timber.d("bindingYouTubeVideo");
 
-        mYouTubeFragment.initialize(BuildConfig.YOUTUBE_API_KEY, new YouTubePlayer.OnInitializedListener() {
+        mYouTubeFragment.initialize(BuildConfig.OPEN_MEH_GOOGLE_API_KEY, new YouTubePlayer.OnInitializedListener() {
             @Override
             public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean wasRestored) {
                 Timber.d("onInitializationSuccess");

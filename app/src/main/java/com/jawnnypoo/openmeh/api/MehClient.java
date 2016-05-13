@@ -13,7 +13,7 @@ import retrofit2.http.GET;
  * Meh-----.com?
  */
 public class MehClient {
-    private static final String API_KEY_VALUE = BuildConfig.MEH_API_KEY;
+    private static final String API_KEY_VALUE = BuildConfig.OPEN_MEH_MEH_API_KEY;
     private static final String API_URL = "https://api.meh.com";
     private static final String PARAM_API_KEY = "apikey";
 

@@ -32,24 +32,24 @@ import com.jawnnypoo.openmeh.shared.communication.DataValues;
 import com.jawnnypoo.openmeh.shared.communication.MessageType;
 import com.jawnnypoo.openmeh.shared.model.Theme;
 import com.jawnnypoo.openmeh.util.Callback;
-import com.jawnnypoo.openmeh.util.ParseMehDataItemTask;
 import com.jawnnypoo.openmeh.util.MessageSender;
+import com.jawnnypoo.openmeh.util.ParseMehDataItemTask;
 
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import timber.log.Timber;
 
 public class MehActivity extends Activity implements MessageSender {
 
-    @Bind(R.id.root)
+    @BindView(R.id.root)
     ViewGroup mRoot;
-    @Bind(R.id.grid_view_pager)
+    @BindView(R.id.grid_view_pager)
     GridViewPager mGridViewPager;
-    @Bind(R.id.indicator)
+    @BindView(R.id.indicator)
     DotsPageIndicator mDotsPageIndicator;
-    @Bind(R.id.progress)
+    @BindView(R.id.progress)
     ProgressSpinner mProgressSpinner;
 
     GoogleApiClient mGoogleApiClient;

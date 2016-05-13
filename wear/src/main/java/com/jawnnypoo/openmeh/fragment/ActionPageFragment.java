@@ -14,8 +14,9 @@ import com.jawnnypoo.openmeh.R;
 import com.jawnnypoo.openmeh.shared.model.Theme;
 import com.jawnnypoo.openmeh.util.MessageSender;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 /**
  * Shows an {@link android.support.wearable.view.ActionPage}
@@ -26,8 +27,10 @@ public abstract class ActionPageFragment extends Fragment {
     protected abstract void onActionClicked();
     protected abstract void setTheThings(ActionPage actionPage);
 
-    @Bind(R.id.action_page)
+    @BindView(R.id.action_page)
     ActionPage mActionPage;
+
+    Unbinder mUnbinder;
 
     private MessageSender mMessageSender;
 
@@ -39,7 +42,7 @@ public abstract class ActionPageFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ButterKnife.bind(this, view);
+        mUnbinder = ButterKnife.bind(this, view);
         setTheThings(mActionPage);
         Theme theme = getTheme();
         int accentColor = theme.getAccentColor();
@@ -71,7 +74,7 @@ public abstract class ActionPageFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        ButterKnife.unbind(this);
+        mUnbinder.unbind();
     }
 
     public MessageSender getMessageSender() {

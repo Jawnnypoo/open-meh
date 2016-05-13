@@ -33,7 +33,7 @@ import org.jbox2d.common.Vec2;
 
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -63,15 +63,15 @@ public class AboutActivity extends BaseActivity {
         return intent;
     }
 
-    @Bind(R.id.root)
+    @BindView(R.id.root)
     View mRoot;
-    @Bind(R.id.toolbar)
+    @BindView(R.id.toolbar)
     Toolbar mToolbar;
-    @Bind(R.id.toolbar_title)
+    @BindView(R.id.toolbar_title)
     TextView mToolbarTitle;
-    @Bind(R.id.contributors)
+    @BindView(R.id.contributors)
     TextView mContributors;
-    @Bind(R.id.physics_layout)
+    @BindView(R.id.physics_layout)
     PhysicsFrameLayout mPhysicsLayout;
     @OnClick(R.id.sauce)
     void onSauceClick() {

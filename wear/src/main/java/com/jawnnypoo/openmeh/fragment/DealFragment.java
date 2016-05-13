@@ -17,8 +17,9 @@ import com.jawnnypoo.openmeh.model.MehWearResponse;
 import com.jawnnypoo.openmeh.shared.model.Theme;
 import com.jawnnypoo.openmeh.util.ImageCache;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 /**
  * Shows the deal
@@ -35,14 +36,16 @@ public class DealFragment extends Fragment {
         return dealFragment;
     }
 
-    @Bind(R.id.image)
+    @BindView(R.id.image)
     ImageView mImage;
-    @Bind(R.id.root_details)
+    @BindView(R.id.root_details)
     ViewGroup mRootDetails;
-    @Bind(R.id.title)
+    @BindView(R.id.title)
     TextView mTextTitle;
-    @Bind(R.id.price)
+    @BindView(R.id.price)
     TextView mTextPrice;
+
+    Unbinder mUnbinder;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -52,7 +55,7 @@ public class DealFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ButterKnife.bind(this, view);
+        mUnbinder = ButterKnife.bind(this, view);
         MehWearResponse mehResponse = getArguments().getParcelable(ARG_MEH_RESPONSE);
         bind(mehResponse);
     }
@@ -60,7 +63,7 @@ public class DealFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        ButterKnife.unbind(this);
+        mUnbinder.unbind();
     }
 
     private void bind(@NonNull MehWearResponse response) {

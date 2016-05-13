@@ -1,5 +1,6 @@
 package com.jawnnypoo.openmeh.shared.model;
 
+import android.os.Parcel;
 import android.os.Parcelable;
 
 /**
@@ -7,8 +8,18 @@ import android.os.Parcelable;
  */
 public class Attribute implements Parcelable {
 
+    String key;
+    String value;
+
     public Attribute(){}
 
+    public String getKey() {
+        return key;
+    }
+
+    public String getValue() {
+        return value;
+    }
 
     @Override
     public int describeContents() {
@@ -16,15 +27,19 @@ public class Attribute implements Parcelable {
     }
 
     @Override
-    public void writeToParcel(android.os.Parcel dest, int flags) {
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.key);
+        dest.writeString(this.value);
     }
 
-    protected Attribute(android.os.Parcel in) {
+    protected Attribute(Parcel in) {
+        this.key = in.readString();
+        this.value = in.readString();
     }
 
-    public static final Parcelable.Creator<Attribute> CREATOR = new Parcelable.Creator<Attribute>() {
+    public static final Creator<Attribute> CREATOR = new Creator<Attribute>() {
         @Override
-        public Attribute createFromParcel(android.os.Parcel source) {
+        public Attribute createFromParcel(Parcel source) {
             return new Attribute(source);
         }
 

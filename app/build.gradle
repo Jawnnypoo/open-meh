@@ -22,7 +22,7 @@ android {
     buildToolsVersion "23.0.3"
 
     project.ext {
-        OPEN_MEH_GOOGLE_API_KEY = project.hasProperty("OPEN_MEH_GOOGLE_API_KEY") ? project.OPEN_MEH_GOOGLE_API_KEY : "ASDF";
+        OPEN_MEH_GOOGLE_API_KEY = project.hasProperty("OPEN_MEH_GOOGLE_API_KEY") ? project.OPEN_MEH_GOOGLE_API_KEY : "\"\"";
         OPEN_MEH_FABRIC_KEY = project.hasProperty("OPEN_MEH_FABRIC_KEY") ? project.OPEN_MEH_FABRIC_KEY : "";
     }
     defaultConfig {

@@ -18,26 +18,34 @@ import java.util.Collection;
 public class ImageAdapter extends PagerAdapter {
 
     private ArrayList<String> mData = new ArrayList<>();
+    private Listener mListener;
+    private boolean mAllowZoom;
 
-    public ImageAdapter() {}
-
-    public void setData(Collection<String> data) {
-        if (data != null && !data.isEmpty()) {
-            mData.clear();
-            mData.addAll(data);
-            notifyDataSetChanged();
-        }
+    public ImageAdapter(boolean allowZoom, Listener listener) {
+        mListener = listener;
+        mAllowZoom = allowZoom;
     }
 
     @Override
-    public Object instantiateItem(ViewGroup collection, int position) {
-        View v = LayoutInflater.from(collection.getContext()).inflate(R.layout.item_deal_image, collection, false);
+    public Object instantiateItem(ViewGroup collection, final int position) {
+        View v;
+        if (mAllowZoom) {
+            v = LayoutInflater.from(collection.getContext()).inflate(R.layout.item_zoomable_image, collection, false);
+        } else {
+            v = LayoutInflater.from(collection.getContext()).inflate(R.layout.item_deal_image, collection, false);
+        }
         ImageView imageView = (ImageView) v.findViewById(R.id.imageView);
         Glide.with(collection.getContext())
                 .load(mData.get(position))
                 .into(imageView);
 
         collection.addView(v, 0);
+        v.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mListener.onImageClicked(position);
+            }
+        });
         return v;
     }
 
@@ -54,5 +62,17 @@ public class ImageAdapter extends PagerAdapter {
     @Override
     public boolean isViewFromObject(View view, Object object) {
         return view == object;
+    }
+
+    public void setData(Collection<String> data) {
+        if (data != null && !data.isEmpty()) {
+            mData.clear();
+            mData.addAll(data);
+            notifyDataSetChanged();
+        }
+    }
+
+    public interface Listener {
+        void onImageClicked(int position);
     }
 }

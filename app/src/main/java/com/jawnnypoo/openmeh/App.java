@@ -12,7 +12,7 @@ import timber.log.Timber;
 /**
  * Meh
  */
-public class MehApp extends Application {
+public class App extends Application {
 
     @Override
     public void onCreate() {

@@ -1,9 +1,11 @@
 package com.jawnnypoo.openmeh.shared.model;
 
+import android.os.Parcel;
 import android.os.Parcelable;
 import android.text.TextUtils;
 
 import java.text.NumberFormat;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
@@ -18,7 +20,7 @@ public class Deal implements Parcelable {
     String features;
     String id;
     List<Item> items;
-    List<String> photos;
+    ArrayList<String> photos;
     String title;
     String soldOutAt; //null if not sold out
     String specifications;
@@ -49,7 +51,7 @@ public class Deal implements Parcelable {
         return items;
     }
 
-    public List<String> getPhotos() {
+    public ArrayList<String> getPhotos() {
         return photos;
     }
 
@@ -114,10 +116,10 @@ public class Deal implements Parcelable {
     }
 
     @Override
-    public void writeToParcel(android.os.Parcel dest, int flags) {
+    public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(this.features);
         dest.writeString(this.id);
-        dest.writeTypedList(items);
+        dest.writeTypedList(this.items);
         dest.writeStringList(this.photos);
         dest.writeString(this.title);
         dest.writeString(this.soldOutAt);
@@ -128,7 +130,7 @@ public class Deal implements Parcelable {
         dest.writeString(this.url);
     }
 
-    protected Deal(android.os.Parcel in) {
+    protected Deal(Parcel in) {
         this.features = in.readString();
         this.id = in.readString();
         this.items = in.createTypedArrayList(Item.CREATOR);
@@ -142,9 +144,9 @@ public class Deal implements Parcelable {
         this.url = in.readString();
     }
 
-    public static final Parcelable.Creator<Deal> CREATOR = new Parcelable.Creator<Deal>() {
+    public static final Creator<Deal> CREATOR = new Creator<Deal>() {
         @Override
-        public Deal createFromParcel(android.os.Parcel source) {
+        public Deal createFromParcel(Parcel source) {
             return new Deal(source);
         }
 

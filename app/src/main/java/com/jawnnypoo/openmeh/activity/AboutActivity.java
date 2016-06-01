@@ -178,12 +178,8 @@ public class AboutActivity extends BaseActivity {
     }
 
     private void addContributors(List<Contributor> contributors) {
-        PhysicsConfig config = new PhysicsConfig.Builder()
-                .setShapeType(PhysicsConfig.ShapeType.CIRCLE)
-                .setDensity(1.0f)
-                .setFriction(0.0f)
-                .setRestitution(0.0f)
-                .build();
+        PhysicsConfig config = PhysicsConfig.create();
+        config.shapeType = PhysicsConfig.SHAPE_TYPE_CIRCLE;
         int borderSize = getResources().getDimensionPixelSize(R.dimen.border_size);
         int x = 0;
         int y = 0;

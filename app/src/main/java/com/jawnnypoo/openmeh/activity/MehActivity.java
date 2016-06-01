@@ -40,7 +40,7 @@ import com.jawnnypoo.openmeh.util.ColorUtil;
 import com.jawnnypoo.openmeh.util.GlideImageGetter;
 import com.jawnnypoo.openmeh.util.IntentUtil;
 import com.jawnnypoo.openmeh.util.MehUtil;
-import com.jawnnypoo.openmeh.util.NavigationManager;
+import com.jawnnypoo.openmeh.util.Navigator;
 import com.novoda.simplechromecustomtabs.SimpleChromeCustomTabs;
 
 import butterknife.BindView;
@@ -129,7 +129,7 @@ public class MehActivity extends BaseActivity {
             int accentColor = theme == null ? Color.WHITE : theme.getAccentColor();
             switch (item.getItemId()) {
                 case R.id.nav_notifications:
-                    NavigationManager.navigateToNotifications(MehActivity.this, theme);
+                    Navigator.navigateToNotifications(MehActivity.this, theme);
                     return true;
                 case R.id.action_share:
                     IntentUtil.shareDeal(mRoot, mSavedMehResponse);
@@ -138,7 +138,7 @@ public class MehActivity extends BaseActivity {
                     loadMeh();
                     return true;
                 case R.id.nav_about:
-                    NavigationManager.navigateToAbout(MehActivity.this, theme);
+                    Navigator.navigateToAbout(MehActivity.this, theme);
                     return true;
                 case R.id.nav_account:
                     IntentUtil.openUrl(MehActivity.this, getString(R.string.url_account), accentColor);
@@ -192,7 +192,14 @@ public class MehActivity extends BaseActivity {
         mToolbar.inflateMenu(R.menu.menu_main);
         mToolbar.setOnMenuItemClickListener(mMenuItemClickListener);
         mSwipeRefreshLayout.setProgressViewOffset(false, 0, getResources().getDimensionPixelOffset(R.dimen.swipe_refresh_offset));
-        mImagePagerAdapter = new ImageAdapter();
+        mImagePagerAdapter = new ImageAdapter(false, new ImageAdapter.Listener() {
+            @Override
+            public void onImageClicked(int position) {
+                if (mSavedMehResponse != null && mSavedMehResponse.getDeal() != null) {
+                    Navigator.navigateToFullScreenImageViewer(MehActivity.this, mSavedMehResponse.getDeal().getTheme(), mSavedMehResponse.getDeal().getPhotos());
+                }
+            }
+        });
         mImageViewPager.setAdapter(mImagePagerAdapter);
 
         mYouTubeFragment = YouTubePlayerSupportFragment.newInstance();

@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.jawnnypoo.openmeh"
-    android:installLocation="internalOnly">
+<manifest package="com.jawnnypoo.openmeh"
+          xmlns:android="http://schemas.android.com/apk/res/android"
+          android:installLocation="internalOnly">
 
-    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.INTERNET"/>
     <!-- Notification stuff -->
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.VIBRATE"/>
 
     <application
         android:name=".App"
@@ -15,36 +15,43 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.MehActivity"
-                  android:launchMode="singleTask">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
+        <meta-data
+            android:name="com.bumptech.glide.integration.okhttp3.OkHttpGlideModule"
+            android:value="GlideModule"/>
+
+        <activity
+            android:name=".activity.MehActivity"
+            android:launchMode="singleTask">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".activity.NotificationActivity" />
-        <activity android:name=".activity.AboutActivity" />
-        <activity android:name=".activity.FullScreenImageViewerActivity"
+        <activity android:name=".activity.NotificationActivity"/>
+        <activity android:name=".activity.AboutActivity"/>
+        <activity
+            android:name=".activity.FullScreenImageViewerActivity"
             android:theme="@style/Activity.Translucent.FullScreenImageViewer"/>
 
-        <service android:name=".service.PostReminderService" />
+        <service android:name=".service.PostReminderService"/>
 
         <service android:name=".service.MobileWearableListenerService">
             <intent-filter>
-                <action android:name="com.google.android.gms.wearable.BIND_LISTENER" />
+                <action android:name="com.google.android.gms.wearable.BIND_LISTENER"/>
             </intent-filter>
         </service>
 
         <receiver android:name=".receiver.BootReceiver">
             <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
             </intent-filter>
         </receiver>
 
         <meta-data
             android:name="com.crashlytics.ApiKey"
-            android:value="${fabric_key}" />
+            android:value="${fabric_key}"/>
     </application>
 
 </manifest>

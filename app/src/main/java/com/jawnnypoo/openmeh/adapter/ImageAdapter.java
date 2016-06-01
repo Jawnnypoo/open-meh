@@ -43,7 +43,7 @@ public class ImageAdapter extends PagerAdapter {
         v.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mListener.onImageClicked(position);
+                mListener.onImageClicked(v, position);
             }
         });
         return v;
@@ -73,6 +73,6 @@ public class ImageAdapter extends PagerAdapter {
     }
 
     public interface Listener {
-        void onImageClicked(int position);
+        void onImageClicked(View v, int position);
     }
 }

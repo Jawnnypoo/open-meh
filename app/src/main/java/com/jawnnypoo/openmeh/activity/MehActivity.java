@@ -194,9 +194,9 @@ public class MehActivity extends BaseActivity {
         mSwipeRefreshLayout.setProgressViewOffset(false, 0, getResources().getDimensionPixelOffset(R.dimen.swipe_refresh_offset));
         mImagePagerAdapter = new ImageAdapter(false, new ImageAdapter.Listener() {
             @Override
-            public void onImageClicked(int position) {
+            public void onImageClicked(View view, int position) {
                 if (mSavedMehResponse != null && mSavedMehResponse.getDeal() != null) {
-                    Navigator.navigateToFullScreenImageViewer(MehActivity.this, mSavedMehResponse.getDeal().getTheme(), mSavedMehResponse.getDeal().getPhotos());
+                    Navigator.navigateToFullScreenImageViewer(MehActivity.this, view, mSavedMehResponse.getDeal().getTheme(), mSavedMehResponse.getDeal().getPhotos());
                 }
             }
         });

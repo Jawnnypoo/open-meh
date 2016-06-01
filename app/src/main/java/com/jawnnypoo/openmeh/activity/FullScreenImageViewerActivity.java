@@ -5,7 +5,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
+import android.view.View;
 
+import com.commit451.elasticdragdismisslayout.ElasticDragDismissFrameLayout;
+import com.commit451.elasticdragdismisslayout.ElasticDragDismissListener;
 import com.jawnnypoo.openmeh.R;
 import com.jawnnypoo.openmeh.adapter.ImageAdapter;
 import com.jawnnypoo.openmeh.shared.model.Theme;
@@ -37,6 +40,9 @@ public class FullScreenImageViewerActivity extends BaseActivity {
     ViewPager mImageViewPager;
     @BindView(R.id.indicator)
     CircleIndicator mIndicator;
+    @BindView(R.id.draggable_frame)
+    ElasticDragDismissFrameLayout mDraggableFrame;
+
     ImageAdapter mImagePagerAdapter;
 
     @OnClick(R.id.close)
@@ -54,17 +60,34 @@ public class FullScreenImageViewerActivity extends BaseActivity {
 
         Theme theme = getIntent().getParcelableExtra(EXTRA_THEME);
 
+
         mImagePagerAdapter = new ImageAdapter(true, new ImageAdapter.Listener() {
             @Override
-            public void onImageClicked(int position) {
+            public void onImageClicked(View view, int position) {
 
             }
         });
         mImageViewPager.setAdapter(mImagePagerAdapter);
         mImagePagerAdapter.setData(images);
         if (theme != null) {
+            mDraggableFrame.setBackgroundColor(theme.getBackgroundColor());
             mIndicator.setIndicatorColor(theme.getForegroundColor());
         }
         mIndicator.setViewPager(mImageViewPager);
+        mDraggableFrame.addListener(new ElasticDragDismissListener() {
+            @Override
+            public void onDrag(float elasticOffset, float elasticOffsetPixels, float rawOffset, float rawOffsetPixels) {}
+
+            @Override
+            public void onDragDismissed() {
+                //if you are targeting 21+ you might want to finish after transition
+                onBackPressed();
+            }
+        });
+    }
+
+    @Override
+    public void onBackPressed() {
+        supportFinishAfterTransition();
     }
 }

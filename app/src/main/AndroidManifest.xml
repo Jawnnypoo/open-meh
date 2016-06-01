@@ -25,7 +25,8 @@
         </activity>
         <activity android:name=".activity.NotificationActivity" />
         <activity android:name=".activity.AboutActivity" />
-        <activity android:name=".activity.FullScreenImageViewerActivity"/>
+        <activity android:name=".activity.FullScreenImageViewerActivity"
+            android:theme="@style/Activity.Translucent.FullScreenImageViewer"/>
 
         <service android:name=".service.PostReminderService" />
 

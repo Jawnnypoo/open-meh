@@ -71,6 +71,7 @@ dependencies {
     compile 'com.github.Jawnnypoo:PhysicsLayout:2.0.0'
     compile 'com.github.Commit451:bypasses:1.0.3'
     compile 'com.github.Commit451:Gimbal:1.0.0'
+    compile 'com.commit451:elasticdragdismisslayout:1.0.2'
     compile 'com.github.chrisbanes:PhotoView:1.2.6'
     compile('com.crashlytics.sdk.android:crashlytics:2.5.5@aar') {
         transitive = true;

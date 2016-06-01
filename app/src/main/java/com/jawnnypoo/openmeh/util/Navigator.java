@@ -1,7 +1,11 @@
 package com.jawnnypoo.openmeh.util;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 
 import com.jawnnypoo.openmeh.R;
 import com.jawnnypoo.openmeh.activity.AboutActivity;
@@ -32,8 +36,10 @@ public class Navigator {
         activity.overridePendingTransition(R.anim.fade_in, R.anim.do_nothing);
     }
 
-    public static void navigateToFullScreenImageViewer(Activity activity, @Nullable Theme theme, ArrayList<String> images) {
-        activity.startActivity(FullScreenImageViewerActivity.newInstance(activity, theme, images));
-        activity.overridePendingTransition(R.anim.fade_in, R.anim.do_nothing);
+    public static void navigateToFullScreenImageViewer(AppCompatActivity activity, View image, @Nullable Theme theme, ArrayList<String> images) {
+        Intent intent = FullScreenImageViewerActivity.newInstance(activity, theme, images);
+        ActivityOptionsCompat options = ActivityOptionsCompat.
+                makeSceneTransitionAnimation(activity, image, activity.getString(R.string.transition_images));
+        activity.startActivity(intent, options.toBundle());
     }
 }

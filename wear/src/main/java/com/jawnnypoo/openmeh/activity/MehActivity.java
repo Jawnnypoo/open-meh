@@ -199,6 +199,8 @@ public class MehActivity extends Activity implements MessageSender {
         int dotColor = theme.getForegroundColor();
         mDotsPageIndicator.setDotColor(dotColor);
         mDotsPageIndicator.setDotColorSelected(dotColor);
+        //Seems dumb, but this is a workaround to the fact that the dots do not actually update otherwise
+        mDotsPageIndicator.setDotShadowColor(mDotsPageIndicator.getDotShadowColor());
     }
 
     private void showError() {

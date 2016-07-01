@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:fullBackupContent="false"
         android:theme="@android:style/Theme.DeviceDefault">
-        
+
         <activity
             android:name=".activity.MehActivity"
             android:label="@string/app_name">

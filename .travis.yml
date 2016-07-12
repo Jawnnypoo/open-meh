@@ -22,7 +22,7 @@ android:
     - extra-android-m2repository
 
 before_script:
-    - chmod 777 scripts/prepare-build.sh
-    - scripts/prepare-build.sh
+    - chmod +x prepare-build.sh
+    - ./prepare-build.sh
 
 script: "./gradlew build dependencyUpdates -x fabricGenerateResourcesRelease"

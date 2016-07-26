@@ -66,13 +66,13 @@ dependencies {
     compile 'com.github.bumptech.glide:okhttp3-integration:1.4.0@aar'
     compile 'com.squareup.okhttp3:okhttp:3.4.1'
     compile 'de.hdodenhof:circleimageview:2.1.0'
-    compile 'com.wdullaer:materialdatetimepicker:2.3.0'
+    compile 'com.wdullaer:materialdatetimepicker:2.4.0'
     compile 'com.github.Jawnnypoo:PhysicsLayout:2.0.0'
     compile 'com.github.Commit451:bypasses:1.0.3'
-    compile 'com.github.Commit451:Gimbal:1.0.0'
+    compile 'com.github.Commit451:Gimbal:2.0.0'
     compile 'com.commit451:elasticdragdismisslayout:1.0.2'
-    compile 'com.github.chrisbanes:PhotoView:1.2.6'
-    compile('com.crashlytics.sdk.android:crashlytics:2.6.0@aar') {
+    compile 'com.github.chrisbanes:PhotoView:1.2.7'
+    compile('com.crashlytics.sdk.android:crashlytics:2.6.1@aar') {
         transitive = true;
     }
     compile 'com.novoda:simple-chrome-custom-tabs:0.1.3'

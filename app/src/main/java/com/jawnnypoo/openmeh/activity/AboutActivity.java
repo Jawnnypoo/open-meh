@@ -19,7 +19,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.commit451.easel.Easel;
-import com.commit451.gitbal.Gimbal;
+import com.commit451.gimbal.Gimbal;
 import com.jawnnypoo.openmeh.R;
 import com.jawnnypoo.openmeh.github.Contributor;
 import com.jawnnypoo.openmeh.github.GithubClient;

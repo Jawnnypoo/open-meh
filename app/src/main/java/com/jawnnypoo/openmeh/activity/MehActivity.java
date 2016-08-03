@@ -73,22 +73,36 @@ public class MehActivity extends BaseActivity {
         return intent;
     }
 
-    @BindView(R.id.toolbar) Toolbar mToolbar;
-    @BindView(R.id.activity_root) View mRoot;
-    @BindView(R.id.swipe_refresh) SwipeRefreshLayout mSwipeRefreshLayout;
-    @BindView(R.id.failed) View mFailedView;
-    @BindView(R.id.indicator) CircleIndicator mIndicator;
-    @BindView(R.id.deal_image_background) ImageView mImageBackground;
-    @BindView(R.id.deal_image_view_pager) ViewPager mImageViewPager;
-    ImageAdapter mImagePagerAdapter;
-    @BindView(R.id.deal_buy_button) AppCompatButton mBuyButton;
-    @BindView(R.id.deal_title) TextView mTitleTextView;
-    @BindView(R.id.deal_description) TextView mDescriptionTextView;
-    @BindView(R.id.deal_full_specs) TextView mFullSpecsTextView;
-    @BindView(R.id.story_title) TextView mStoreTitleTextView;
-    @BindView(R.id.story_body) TextView mStoryBodyTextView;
-    @BindView(R.id.video_root) ViewGroup mVideoRoot;
+    @BindView(R.id.toolbar)
+    Toolbar mToolbar;
+    @BindView(R.id.activity_root)
+    View mRoot;
+    @BindView(R.id.swipe_refresh)
+    SwipeRefreshLayout mSwipeRefreshLayout;
+    @BindView(R.id.failed)
+    View mFailedView;
+    @BindView(R.id.indicator)
+    CircleIndicator mIndicator;
+    @BindView(R.id.deal_image_background)
+    ImageView mImageBackground;
+    @BindView(R.id.deal_image_view_pager)
+    ViewPager mImageViewPager;
+    @BindView(R.id.deal_buy_button)
+    AppCompatButton mBuyButton;
+    @BindView(R.id.deal_title)
+    TextView mTitleTextView;
+    @BindView(R.id.deal_description)
+    TextView mDescriptionTextView;
+    @BindView(R.id.deal_full_specs)
+    TextView mFullSpecsTextView;
+    @BindView(R.id.story_title)
+    TextView mStoreTitleTextView;
+    @BindView(R.id.story_body)
+    TextView mStoryBodyTextView;
+    @BindView(R.id.video_root)
+    ViewGroup mVideoRoot;
 
+    ImageAdapter mImagePagerAdapter;
     YouTubePlayerSupportFragment mYouTubeFragment;
     YouTubePlayer mYouTubePlayer;
 
@@ -96,21 +110,6 @@ public class MehActivity extends BaseActivity {
     MehResponse mSavedMehResponse;
     boolean mFullScreen = false;
     boolean mBuyOnLoad = false;
-
-    @OnClick(R.id.deal_full_specs)
-    void onFullSpecsClick() {
-        if (mSavedMehResponse != null && mSavedMehResponse.getDeal() != null) {
-            Topic topic = mSavedMehResponse.getDeal().getTopic();
-            if (topic != null && !TextUtils.isEmpty(topic.getUrl())) {
-                IntentUtil.openUrl(this, topic.getUrl(), mSavedMehResponse.getDeal().getTheme().getAccentColor());
-            }
-        }
-    }
-
-    @OnClick(R.id.failed)
-    void onErrorClick(){
-        loadMeh();
-    }
 
     private YouTubePlayer.OnFullscreenListener mOnFullscreenListener = new YouTubePlayer.OnFullscreenListener() {
         @Override
@@ -180,6 +179,21 @@ public class MehActivity extends BaseActivity {
             showError();
         }
     };
+
+    @OnClick(R.id.deal_full_specs)
+    void onFullSpecsClick() {
+        if (mSavedMehResponse != null && mSavedMehResponse.getDeal() != null) {
+            Topic topic = mSavedMehResponse.getDeal().getTopic();
+            if (topic != null && !TextUtils.isEmpty(topic.getUrl())) {
+                IntentUtil.openUrl(this, topic.getUrl(), mSavedMehResponse.getDeal().getTheme().getAccentColor());
+            }
+        }
+    }
+
+    @OnClick(R.id.failed)
+    void onErrorClick() {
+        loadMeh();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -369,8 +383,8 @@ public class MehActivity extends BaseActivity {
         View decorView = getWindow().getDecorView();
         if (animate) {
             Easel.getBackgroundColorAnimator(mToolbar, accentColor)
-                .setDuration(ANIMATION_TIME)
-                .start();
+                    .setDuration(ANIMATION_TIME)
+                    .start();
             if (Build.VERSION.SDK_INT >= 21) {
                 Easel.getStatusBarColorAnimator(getWindow(), darkerAccentColor)
                         .setDuration(ANIMATION_TIME)
@@ -422,7 +436,7 @@ public class MehActivity extends BaseActivity {
     private void showError() {
         mFailedView.setVisibility(View.VISIBLE);
         Snackbar.make(mRoot, R.string.error_with_server, Snackbar.LENGTH_SHORT)
-            .show();
+                .show();
     }
 
     private void testNotification() {

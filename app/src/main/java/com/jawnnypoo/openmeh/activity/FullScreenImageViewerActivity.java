@@ -2,10 +2,13 @@ package com.jawnnypoo.openmeh.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 import android.view.View;
+import android.widget.ImageView;
 
 import com.commit451.elasticdragdismisslayout.ElasticDragDismissFrameLayout;
 import com.commit451.elasticdragdismisslayout.ElasticDragDismissListener;
@@ -36,6 +39,8 @@ public class FullScreenImageViewerActivity extends BaseActivity {
         return intent;
     }
 
+    @BindView(R.id.close)
+    ImageView mButtonClose;
     @BindView(R.id.images)
     ViewPager mImageViewPager;
     @BindView(R.id.indicator)
@@ -60,7 +65,6 @@ public class FullScreenImageViewerActivity extends BaseActivity {
 
         Theme theme = getIntent().getParcelableExtra(EXTRA_THEME);
 
-
         mImagePagerAdapter = new ImageAdapter(true, new ImageAdapter.Listener() {
             @Override
             public void onImageClicked(View view, int position) {
@@ -70,6 +74,7 @@ public class FullScreenImageViewerActivity extends BaseActivity {
         mImageViewPager.setAdapter(mImagePagerAdapter);
         mImagePagerAdapter.setData(images);
         if (theme != null) {
+            mButtonClose.getDrawable().setColorFilter(new PorterDuffColorFilter(theme.getForegroundColor(), PorterDuff.Mode.MULTIPLY));
             mDraggableFrame.setBackgroundColor(theme.getBackgroundColor());
             mIndicator.setIndicatorColor(theme.getForegroundColor());
         }

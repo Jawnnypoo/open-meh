@@ -20,6 +20,7 @@ android {
     buildToolsVersion BUILD_TOOLS_VERSION
 
     project.ext {
+        OPEN_MEH_MEH_API_KEY = project.hasProperty("OPEN_MEH_MEH_API_KEY") ? project.OPEN_MEH_GOOGLE_API_KEY : "\"\"";
         OPEN_MEH_GOOGLE_API_KEY = project.hasProperty("OPEN_MEH_GOOGLE_API_KEY") ? project.OPEN_MEH_GOOGLE_API_KEY : "\"\"";
         OPEN_MEH_FABRIC_KEY = project.hasProperty("OPEN_MEH_FABRIC_KEY") ? project.OPEN_MEH_FABRIC_KEY : "";
     }
@@ -27,9 +28,9 @@ android {
         applicationId "com.jawnnypoo.openmeh"
         minSdkVersion 16
         targetSdkVersion 24
-        versionCode 131
-        versionName "1.3.1"
-        buildConfigField "String", "OPEN_MEH_MEH_API_KEY", project.OPEN_MEH_MEH_API_KEY
+        versionCode 132
+        versionName "1.3.2"
+        buildConfigField "String", "OPEN_MEH_MEH_API_KEY", project.ext.OPEN_MEH_MEH_API_KEY
         buildConfigField "String", "OPEN_MEH_GOOGLE_API_KEY", project.ext.OPEN_MEH_GOOGLE_API_KEY
         manifestPlaceholders = [fabric_key: project.ext.OPEN_MEH_FABRIC_KEY]
     }

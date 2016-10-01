@@ -29,7 +29,7 @@
 
     <!--errors-->
     <string name="error_no_browser">no browser found. how...</string>
-    <string name="error_with_server">sorry, something went wrong :(. Blame meh, not me.</string>
+    <string name="error_with_server">sorry, something went wrong</string>
     <string name="error_nothing_to_share">no deal to share!</string>
     <string name="error_getting_contributors">failed to load contributors</string>
 

@@ -27,9 +27,9 @@ dependencies {
     testCompile 'junit:junit:4.12'
     androidTestCompile 'com.github.Commit451:ParcelCheck:1.0.2'
     compile "com.android.support:appcompat-v7:$SUPPORT_LIB_VERSION"
-    compile 'com.google.android.gms:play-services-wearable:9.4.0'
+    compile 'com.google.android.gms:play-services-wearable:9.6.1'
     compile "com.jakewharton:butterknife:$BUTTERKNIFE_VERSION"
-    compile 'com.jakewharton.timber:timber:4.1.2'
+    compile 'com.jakewharton.timber:timber:4.3.1'
     compile 'com.google.code.gson:gson:2.7'
     compile 'com.github.Commit451:Easel:1.0.0'
 }

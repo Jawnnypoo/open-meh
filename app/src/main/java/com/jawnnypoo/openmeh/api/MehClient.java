@@ -4,6 +4,7 @@ import com.jawnnypoo.openmeh.BuildConfig;
 import com.jawnnypoo.openmeh.shared.api.MehResponse;
 
 import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -26,11 +27,14 @@ public class MehClient {
 
     public static Meh instance() {
         if (sMeh == null) {
-            OkHttpClient client = new OkHttpClient();
+            OkHttpClient.Builder clientBuilder = new OkHttpClient.Builder();
+            if (BuildConfig.DEBUG) {
+                clientBuilder.addInterceptor(new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY));
+            }
             Retrofit restAdapter = new Retrofit.Builder()
                     .baseUrl(API_URL)
                     .addConverterFactory(GsonConverterFactory.create())
-                    .client(client)
+                    .client(clientBuilder.build())
                     .build();
             sMeh = restAdapter.create(Meh.class);
         }

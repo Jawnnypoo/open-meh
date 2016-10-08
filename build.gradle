@@ -5,7 +5,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.2.0'
+        classpath 'com.android.tools.build:gradle:2.2.1'
         classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
         // ./gradlew dependencyUpdates
         classpath 'com.github.ben-manes:gradle-versions-plugin:0.13.0'
@@ -20,5 +20,9 @@ allprojects {
         jcenter()
         maven { url "https://jitpack.io" }
         maven { url  "http://dl.bintray.com/novoda/maven" }
+        maven {
+            name 'glide-snapshot'
+            url 'http://oss.sonatype.org/content/repositories/snapshots'
+        }
     }
 }

@@ -112,9 +112,9 @@ public class NotificationActivity extends BaseActivity {
         //Tint widgets
         int accentColor = theme.getAccentColor();
         int foreGround = theme.getForeground() == Theme.FOREGROUND_LIGHT ? Color.WHITE : Color.BLACK;
-        Easel.setTint(mOnOffSwitch, accentColor, foreGround);
-        Easel.setTint(mSoundCheck, accentColor);
-        Easel.setTint(mVibrateCheck, accentColor);
+        Easel.tint(mOnOffSwitch, accentColor, foreGround);
+        Easel.tint(mSoundCheck, accentColor);
+        Easel.tint(mVibrateCheck, accentColor);
         mToolbarTitle.setTextColor(theme.getBackgroundColor());
         mToolbar.setBackgroundColor(accentColor);
         mToolbar.getNavigationIcon().setColorFilter(theme.getBackgroundColor(), PorterDuff.Mode.MULTIPLY);

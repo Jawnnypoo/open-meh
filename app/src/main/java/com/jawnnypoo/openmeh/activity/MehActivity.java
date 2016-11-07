@@ -20,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.commit451.alakazam.Alakazam;
 import com.commit451.easel.Easel;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
@@ -382,18 +383,18 @@ public class MehActivity extends BaseActivity {
 
         View decorView = getWindow().getDecorView();
         if (animate) {
-            Easel.getBackgroundColorAnimator(mToolbar, accentColor)
+            Alakazam.backgroundColorAnimator(mToolbar, accentColor)
                     .setDuration(ANIMATION_TIME)
                     .start();
             if (Build.VERSION.SDK_INT >= 21) {
-                Easel.getStatusBarColorAnimator(getWindow(), darkerAccentColor)
+                Alakazam.statusBarColorAnimator(getWindow(), darkerAccentColor)
                         .setDuration(ANIMATION_TIME)
                         .start();
-                Easel.getNavigationBarColorAnimator(getWindow(), darkerAccentColor)
+                Alakazam.navigationBarColorAnimator(getWindow(), darkerAccentColor)
                         .setDuration(ANIMATION_TIME)
                         .start();
             }
-            Easel.getBackgroundColorAnimator(decorView, backgroundColor)
+            Alakazam.backgroundColorAnimator(decorView, backgroundColor)
                     .setDuration(ANIMATION_TIME)
                     .start();
         } else {
@@ -404,8 +405,8 @@ public class MehActivity extends BaseActivity {
             }
             decorView.setBackgroundColor(backgroundColor);
         }
-        Easel.setTint(mToolbar.getMenu(), backgroundColor);
-        Easel.setOverflowTint(this, backgroundColor);
+        Easel.tint(mToolbar.getMenu(), backgroundColor);
+        Easel.tintOverflow(mToolbar, backgroundColor);
         Glide.with(this)
                 .load(theme.getBackgroundImage())
                 .into(mImageBackground);

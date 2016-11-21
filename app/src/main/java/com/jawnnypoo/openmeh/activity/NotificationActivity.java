@@ -21,7 +21,6 @@ import com.jawnnypoo.openmeh.R;
 import com.jawnnypoo.openmeh.shared.model.Theme;
 import com.jawnnypoo.openmeh.util.MehPreferencesManager;
 import com.jawnnypoo.openmeh.util.MehReminderManager;
-import com.wdullaer.materialdatetimepicker.time.RadialPickerLayout;
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
 
 import java.text.SimpleDateFormat;
@@ -68,7 +67,7 @@ public class NotificationActivity extends BaseActivity {
     private final TimePickerDialog.OnTimeSetListener onTimeSetListener = new TimePickerDialog.OnTimeSetListener() {
 
         @Override
-        public void onTimeSet(RadialPickerLayout view, int hourOfDay, int minute, int second) {
+        public void onTimeSet(TimePickerDialog view, int hourOfDay, int minute, int second) {
             mTimeToAlert.set(Calendar.HOUR_OF_DAY, hourOfDay);
             mTimeToAlert.set(Calendar.MINUTE, minute);
             mNotifyTime.setText(TIME_FORMAT.format(mTimeToAlert.getTime()));

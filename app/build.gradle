@@ -28,7 +28,7 @@ android {
     defaultConfig {
         applicationId "com.jawnnypoo.openmeh"
         minSdkVersion 16
-        targetSdkVersion 24
+        targetSdkVersion COMPILE_SDK_VERSION as int
         versionCode 132
         versionName "1.3.2"
         buildConfigField "String", "OPEN_MEH_MEH_API_KEY", project.ext.OPEN_MEH_MEH_API_KEY
@@ -67,7 +67,7 @@ dependencies {
     compile 'com.squareup.okhttp3:okhttp:3.4.2'
     compile 'com.squareup.okhttp3:logging-interceptor:3.4.2'
     compile 'de.hdodenhof:circleimageview:2.1.0'
-    compile 'com.wdullaer:materialdatetimepicker:2.5.0'
+    compile 'com.wdullaer:materialdatetimepicker:3.0.0'
     compile 'com.github.Jawnnypoo:PhysicsLayout:2.1.0'
     compile 'com.github.Commit451:bypasses:1.0.4'
     compile 'com.github.Commit451:Gimbal:2.0.2'
@@ -77,7 +77,7 @@ dependencies {
     compile('com.crashlytics.sdk.android:crashlytics:2.6.5@aar') {
         transitive = true;
     }
-    compile 'com.novoda:simple-chrome-custom-tabs:0.1.3'
+    compile 'com.novoda:simple-chrome-custom-tabs:0.1.4'
     compile project(':shared')
     wearApp project(':wear')
 }

@@ -30,5 +30,5 @@ dependencies {
     compile "com.jakewharton:butterknife:$BUTTERKNIFE_VERSION"
     compile 'com.jakewharton.timber:timber:4.3.1'
     compile 'com.google.code.gson:gson:2.8.0'
-    compile 'com.github.Commit451.Easel:easel:2.0.0'
+    compile 'com.github.Commit451.Easel:easel:2.1.1'
 }

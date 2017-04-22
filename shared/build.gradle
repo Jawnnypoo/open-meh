@@ -1,12 +1,13 @@
 apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
 
 android {
-    compileSdkVersion COMPILE_SDK_VERSION as int
-    buildToolsVersion BUILD_TOOLS_VERSION
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
 
     defaultConfig {
         minSdkVersion 16
-        targetSdkVersion COMPILE_SDK_VERSION as int
+        targetSdkVersion rootProject.ext.compileSdkVersion
         versionCode 1
         versionName "1.0"
     }
@@ -23,12 +24,16 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    testCompile 'junit:junit:4.12'
-    androidTestCompile 'com.github.Commit451:ParcelCheck:1.0.2'
-    compile "com.android.support:appcompat-v7:$SUPPORT_LIB_VERSION"
-    compile 'com.google.android.gms:play-services-wearable:9.8.0'
-    compile "com.jakewharton:butterknife:$BUTTERKNIFE_VERSION"
-    compile 'com.jakewharton.timber:timber:4.3.1'
+
+    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
+    compile "com.android.support:appcompat-v7:$supportLibVersion"
+    compile 'com.google.android.gms:play-services-wearable:10.2.1'
+    compile "com.jakewharton:butterknife:$butterknifeVersion"
+    compile 'com.jakewharton.timber:timber:4.5.1'
     compile 'com.google.code.gson:gson:2.8.0'
     compile 'com.github.Commit451.Easel:easel:2.1.1'
+
+    androidTestCompile 'com.github.Commit451:ParcelCheck:1.0.2'
+
+    testCompile 'junit:junit:4.12'
 }

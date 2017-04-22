@@ -1,23 +1,8 @@
-buildscript {
-    repositories {
-        maven { url 'https://maven.fabric.io/public' }
-    }
-
-    dependencies {
-        classpath 'io.fabric.tools:gradle:1.22.0'
-    }
-}
 apply plugin: 'com.android.application'
-apply plugin: 'com.neenbedankt.android-apt'
+apply plugin: 'kotlin-android'
 apply plugin: 'io.fabric'
 
-repositories {
-    maven { url 'https://maven.fabric.io/public' }
-}
-
 android {
-    compileSdkVersion COMPILE_SDK_VERSION as int
-    buildToolsVersion BUILD_TOOLS_VERSION
 
     //doing it this way allows values to be left blank
     project.ext {
@@ -25,16 +10,23 @@ android {
         OPEN_MEH_GOOGLE_API_KEY = project.hasProperty("OPEN_MEH_GOOGLE_API_KEY") ? project.OPEN_MEH_GOOGLE_API_KEY : "\"\"";
         OPEN_MEH_FABRIC_KEY = project.hasProperty("OPEN_MEH_FABRIC_KEY") ? project.OPEN_MEH_FABRIC_KEY : "";
     }
+
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
+
     defaultConfig {
         applicationId "com.jawnnypoo.openmeh"
         minSdkVersion 16
-        targetSdkVersion COMPILE_SDK_VERSION as int
+        targetSdkVersion rootProject.ext.compileSdkVersion
         versionCode 132
         versionName "1.3.2"
         buildConfigField "String", "OPEN_MEH_MEH_API_KEY", project.ext.OPEN_MEH_MEH_API_KEY
         buildConfigField "String", "OPEN_MEH_GOOGLE_API_KEY", project.ext.OPEN_MEH_GOOGLE_API_KEY
         manifestPlaceholders = [fabric_key: project.ext.OPEN_MEH_FABRIC_KEY]
+
+        vectorDrawables.useSupportLibrary = true
     }
+
     buildTypes {
         release {
             minifyEnabled true
@@ -47,6 +39,7 @@ android {
             ext.enableCrashlytics = false
         }
     }
+
     lintOptions {
         abortOnError false
     }
@@ -54,30 +47,30 @@ android {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile "com.android.support:appcompat-v7:$SUPPORT_LIB_VERSION"
-    compile "com.android.support:design:$SUPPORT_LIB_VERSION"
-    compile "com.android.support:design:$SUPPORT_LIB_VERSION"
-    compile "com.android.support:recyclerview-v7:$SUPPORT_LIB_VERSION"
-    compile "com.android.support:customtabs:$SUPPORT_LIB_VERSION"
-    compile 'com.squareup.retrofit2:retrofit:2.1.0'
-    compile 'com.squareup.retrofit2:converter-gson:2.1.0'
-    apt "com.jakewharton:butterknife-compiler:$BUTTERKNIFE_VERSION"
+    compile "com.android.support:appcompat-v7:$supportLibVersion"
+    compile "com.android.support:design:$supportLibVersion"
+    compile "com.android.support:support-v13:$supportLibVersion"
+    compile "com.android.support:recyclerview-v7:$supportLibVersion"
+    compile "com.android.support:customtabs:$supportLibVersion"
+    compile 'com.squareup.retrofit2:retrofit:2.2.0'
+    compile 'com.squareup.retrofit2:converter-gson:2.2.0'
+    kapt "com.jakewharton:butterknife-compiler:$butterknifeVersion"
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'com.github.bumptech.glide:okhttp3-integration:1.5.0-SNAPSHOT'
-    compile 'com.squareup.okhttp3:okhttp:3.4.2'
-    compile 'com.squareup.okhttp3:logging-interceptor:3.4.2'
+    compile 'com.squareup.okhttp3:okhttp:3.7.0'
+    compile 'com.squareup.okhttp3:logging-interceptor:3.7.0'
     compile 'de.hdodenhof:circleimageview:2.1.0'
-    compile 'com.wdullaer:materialdatetimepicker:3.0.0'
+    compile 'com.wdullaer:materialdatetimepicker:3.1.3'
     compile 'com.github.Jawnnypoo:PhysicsLayout:2.1.0'
-    compile 'com.github.Commit451:bypasses:1.0.4'
+    compile 'com.github.Commit451:bypasses:1.1.0'
     compile 'com.github.Commit451:Gimbal:2.0.2'
-    compile 'com.github.Commit451:Alakazam:0.0.1'
-    compile 'com.commit451:elasticdragdismisslayout:1.0.2'
-    compile 'com.github.chrisbanes:PhotoView:1.3.1'
-    compile('com.crashlytics.sdk.android:crashlytics:2.6.5@aar') {
+    compile 'com.github.Commit451.Alakazam:alakazam:1.0.1'
+    compile 'com.github.Commit451:ElasticDragDismissLayout:1.0.4'
+    compile 'com.github.chrisbanes:PhotoView:2.0.0'
+    compile('com.crashlytics.sdk.android:crashlytics:2.6.7@aar') {
         transitive = true;
     }
-    compile 'com.novoda:simple-chrome-custom-tabs:0.1.4'
+    compile 'com.novoda:simple-chrome-custom-tabs:0.1.5'
     compile project(':shared')
     wearApp project(':wear')
 }

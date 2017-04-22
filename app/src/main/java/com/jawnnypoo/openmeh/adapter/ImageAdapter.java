@@ -17,33 +17,34 @@ import java.util.Collection;
  */
 public class ImageAdapter extends PagerAdapter {
 
-    private ArrayList<String> mData = new ArrayList<>();
-    private Listener mListener;
-    private boolean mAllowZoom;
+    private ArrayList<String> data;
+    private Listener listener;
+    private boolean allowZoom;
 
     public ImageAdapter(boolean allowZoom, Listener listener) {
-        mListener = listener;
-        mAllowZoom = allowZoom;
+        data = new ArrayList<>();
+        this.listener = listener;
+        this.allowZoom = allowZoom;
     }
 
     @Override
     public Object instantiateItem(ViewGroup collection, final int position) {
         View v;
-        if (mAllowZoom) {
+        if (allowZoom) {
             v = LayoutInflater.from(collection.getContext()).inflate(R.layout.item_zoomable_image, collection, false);
         } else {
             v = LayoutInflater.from(collection.getContext()).inflate(R.layout.item_deal_image, collection, false);
         }
         ImageView imageView = (ImageView) v.findViewById(R.id.imageView);
         Glide.with(collection.getContext())
-                .load(mData.get(position))
+                .load(data.get(position))
                 .into(imageView);
 
         collection.addView(v, 0);
         v.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mListener.onImageClicked(v, position);
+                listener.onImageClicked(v, position);
             }
         });
         return v;
@@ -56,7 +57,7 @@ public class ImageAdapter extends PagerAdapter {
 
     @Override
     public int getCount() {
-        return mData.size();
+        return data.size();
     }
 
     @Override
@@ -66,8 +67,8 @@ public class ImageAdapter extends PagerAdapter {
 
     public void setData(Collection<String> data) {
         if (data != null && !data.isEmpty()) {
-            mData.clear();
-            mData.addAll(data);
+            this.data.clear();
+            this.data.addAll(data);
             notifyDataSetChanged();
         }
     }

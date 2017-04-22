@@ -12,4 +12,11 @@ android:
     - extra-google-m2repository
     - extra-android-m2repository
 
+before_install:
+  - rvm install 2.2.6
+  - gem install dropbox-deployment
+
 script: "./gradlew assembleDebug"
+
+after_success:
+  - dropbox-deployment

@@ -24,10 +24,6 @@ allprojects {
         maven { url "https://jitpack.io" }
         maven { url  "http://dl.bintray.com/novoda/maven" }
         maven { url 'https://maven.fabric.io/public' }
-        maven {
-            name 'glide-snapshot'
-            url 'http://oss.sonatype.org/content/repositories/snapshots'
-        }
     }
 }
 

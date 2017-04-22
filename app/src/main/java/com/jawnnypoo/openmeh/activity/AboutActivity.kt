@@ -1,0 +1,180 @@
+package com.jawnnypoo.openmeh.activity
+
+import android.content.Context
+import android.content.Intent
+import android.graphics.Color
+import android.graphics.PorterDuff
+import android.hardware.Sensor
+import android.hardware.SensorEvent
+import android.hardware.SensorEventListener
+import android.hardware.SensorManager
+import android.os.Build
+import android.os.Bundle
+import android.support.design.widget.Snackbar
+import android.support.v7.widget.Toolbar
+import android.view.View
+import android.widget.FrameLayout
+import android.widget.TextView
+import butterknife.BindView
+import butterknife.ButterKnife
+import butterknife.OnClick
+import com.bumptech.glide.Glide
+import com.commit451.easel.Easel
+import com.commit451.gimbal.Gimbal
+import com.commit451.reptar.ComposableSingleObserver
+import com.commit451.reptar.kotlin.fromIoToMainThread
+import com.jawnnypoo.openmeh.R
+import com.jawnnypoo.openmeh.github.Contributor
+import com.jawnnypoo.openmeh.github.GitHubClient
+import com.jawnnypoo.openmeh.shared.model.Theme
+import com.jawnnypoo.openmeh.util.IntentUtil
+import com.jawnnypoo.physicslayout.Physics
+import com.jawnnypoo.physicslayout.PhysicsConfig
+import com.jawnnypoo.physicslayout.PhysicsFrameLayout
+import de.hdodenhof.circleimageview.CircleImageView
+import org.jbox2d.common.Vec2
+import timber.log.Timber
+
+/**
+ * Thats what its all about
+ */
+class AboutActivity : BaseActivity() {
+
+    companion object {
+
+        private val REPO_USER = "Jawnnypoo"
+        private val REPO_NAME = "open-meh"
+
+        fun newInstance(context: Context, theme: Theme?): Intent {
+            val intent = Intent(context, AboutActivity::class.java)
+            if (theme != null) {
+                intent.putExtra(BaseActivity.EXTRA_THEME, theme)
+            }
+            return intent
+        }
+    }
+
+    @BindView(R.id.root) lateinit var root: View
+    @BindView(R.id.toolbar) lateinit var toolbar: Toolbar
+    @BindView(R.id.toolbar_title) lateinit var toolbarTitle: TextView
+    @BindView(R.id.contributors) lateinit var textContributors: TextView
+    @BindView(R.id.physics_layout) lateinit var physicsLayout: PhysicsFrameLayout
+
+    lateinit var sensorManager: SensorManager
+    lateinit var gravitySensor: Sensor
+    lateinit var gimbal: Gimbal
+    var theme: Theme? = null
+
+    private val sensorEventListener = object : SensorEventListener {
+        override fun onSensorChanged(event: SensorEvent) {
+            if (event.sensor.type == Sensor.TYPE_GRAVITY) {
+                if (physicsLayout.physics.world != null) {
+                    gimbal.normalizeGravityEvent(event)
+                    physicsLayout.physics.world.gravity = Vec2(-event.values[0], event.values[1])
+                }
+            }
+        }
+
+        override fun onAccuracyChanged(sensor: Sensor, accuracy: Int) {}
+    }
+
+    @OnClick(R.id.sauce)
+    fun onSauceClick() {
+        IntentUtil.openUrl(this, getString(R.string.source_url), if (theme == null) Color.WHITE else theme!!.accentColor)
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        gimbal = Gimbal(this)
+        gimbal.lock()
+        setContentView(R.layout.activity_about)
+        ButterKnife.bind(this)
+        toolbar.setNavigationIcon(R.drawable.ic_arrow_back_24dp)
+        toolbar.setNavigationOnClickListener { onBackPressed() }
+        toolbarTitle.setText(R.string.about)
+        physicsLayout.physics.enableFling()
+        sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
+        gravitySensor = sensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY)
+        theme = intent.getParcelableExtra<Theme>(BaseActivity.EXTRA_THEME)
+        theme?.let {
+            applyTheme(it)
+        }
+
+        GitHubClient.contributors(REPO_USER, REPO_NAME)
+                .compose(bindToLifecycle())
+                .fromIoToMainThread()
+                .subscribe(object : ComposableSingleObserver<List<Contributor>>() {
+                    override fun success(t: List<Contributor>) {
+                        physicsLayout.post { addContributors(t) }
+                    }
+
+                    override fun error(t: Throwable) {
+                        Timber.e(t)
+                        Snackbar.make(window.decorView, R.string.error_getting_contributors, Snackbar.LENGTH_SHORT)
+                                .show()
+                    }
+                })
+    }
+
+    override fun onResume() {
+        super.onResume()
+        sensorManager.registerListener(sensorEventListener, gravitySensor, SensorManager.SENSOR_DELAY_GAME)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        sensorManager.unregisterListener(sensorEventListener)
+    }
+
+    override fun finish() {
+        super.finish()
+        overridePendingTransition(R.anim.do_nothing, R.anim.fade_out)
+    }
+
+    private fun applyTheme(theme: Theme) {
+        //Tint widgets
+        val accentColor = theme.accentColor
+        val foreGround = if (theme.foreground == Theme.FOREGROUND_LIGHT) Color.WHITE else Color.BLACK
+        toolbarTitle.setTextColor(theme.backgroundColor)
+        toolbar.setBackgroundColor(accentColor)
+        toolbar.navigationIcon?.setColorFilter(theme.backgroundColor, PorterDuff.Mode.MULTIPLY)
+        if (Build.VERSION.SDK_INT >= 21) {
+            window.statusBarColor = Easel.getDarkerColor(accentColor)
+            window.navigationBarColor = Easel.getDarkerColor(accentColor)
+        }
+        window.decorView.setBackgroundColor(theme.backgroundColor)
+    }
+
+    private fun addContributors(contributors: List<Contributor>) {
+        val config = PhysicsConfig.create()
+        config.shapeType = PhysicsConfig.SHAPE_TYPE_CIRCLE
+        val borderSize = resources.getDimensionPixelSize(R.dimen.border_size)
+        var x = 0
+        var y = 0
+        val imageSize = resources.getDimensionPixelSize(R.dimen.circle_size)
+        for (i in contributors.indices) {
+            val contributor = contributors[i]
+            val imageView = CircleImageView(this)
+            val llp = FrameLayout.LayoutParams(
+                    imageSize,
+                    imageSize)
+            imageView.layoutParams = llp
+            imageView.borderWidth = borderSize
+            imageView.borderColor = Color.BLACK
+            Physics.setPhysicsConfig(imageView, config)
+            physicsLayout.addView(imageView)
+            imageView.x = x.toFloat()
+            imageView.y = y.toFloat()
+
+            x = x + imageSize
+            if (x > physicsLayout.width) {
+                x = 0
+                y = (y + imageSize) % physicsLayout.height
+            }
+            Glide.with(this)
+                    .load(contributor.avatarUrl)
+                    .into(imageView)
+        }
+        physicsLayout.physics.onLayout(true)
+    }
+}

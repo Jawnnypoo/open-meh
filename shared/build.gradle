@@ -22,16 +22,33 @@ android {
     }
 }
 
+ext {
+    retrofitVersion = '2.2.0'
+}
+
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
 
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
+
     compile "com.android.support:appcompat-v7:$supportLibVersion"
-    compile 'com.google.android.gms:play-services-wearable:10.2.1'
+
+    compile 'com.google.android.gms:play-services-wearable:11.0.1'
+
     compile "com.jakewharton:butterknife:$butterknifeVersion"
     compile 'com.jakewharton.timber:timber:4.5.1'
     compile 'com.google.code.gson:gson:2.8.0'
+
     compile 'com.github.Commit451.Easel:easel:2.1.1'
+
+    compile "com.squareup.retrofit2:retrofit:$retrofitVersion"
+    compile "com.squareup.retrofit2:converter-gson:$retrofitVersion"
+    compile "com.squareup.retrofit2:adapter-rxjava2:$retrofitVersion"
+
+    compile 'com.squareup.okhttp3:logging-interceptor:3.7.0'
+
+    compile "io.reactivex.rxjava2:rxjava:2.1.0"
+    compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
 
     androidTestCompile 'com.github.Commit451:ParcelCheck:1.0.2'
 

@@ -1,7 +1,4 @@
-package com.jawnnypoo.openmeh.api
-
-import com.jawnnypoo.openmeh.BuildConfig
-import com.jawnnypoo.openmeh.shared.api.MehResponse
+package com.jawnnypoo.openmeh.shared.api
 
 import io.reactivex.Single
 import okhttp3.OkHttpClient
@@ -17,15 +14,25 @@ import retrofit2.http.GET
 class MehClient private constructor() {
 
     companion object {
-        const val API_KEY_VALUE = BuildConfig.OPEN_MEH_MEH_API_KEY
-        const val API_URL = "https://api.meh.com"
+
+        const val API_URL = "https://api.meh.com/"
         const val PARAM_API_KEY = "apikey"
 
-        fun create(): MehClient {
+        fun create(apiKey: String, debug: Boolean): MehClient {
             val client = MehClient()
             val clientBuilder = OkHttpClient.Builder()
-            if (BuildConfig.DEBUG) {
+            if (debug) {
                 clientBuilder.addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
+            }
+            clientBuilder.addInterceptor { chain ->
+                val url = chain.request().url()
+                        .newBuilder()
+                        .addQueryParameter(PARAM_API_KEY, apiKey)
+                        .build()
+                val request = chain.request().newBuilder()
+                        .url(url)
+                        .build()
+                chain.proceed(request)
             }
             val restAdapter = Retrofit.Builder()
                     .baseUrl(API_URL)
@@ -39,7 +46,7 @@ class MehClient private constructor() {
     }
 
     interface MehService {
-        @GET("/1/current.json?$PARAM_API_KEY=$API_KEY_VALUE")
+        @GET("1/current.json")
         fun getMeh(): Single<MehResponse>
     }
 

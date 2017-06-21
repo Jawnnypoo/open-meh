@@ -1,12 +1,10 @@
 package com.jawnnypoo.openmeh
 
 import android.app.Application
-
 import com.crashlytics.android.Crashlytics
-import com.jawnnypoo.openmeh.api.MehClient
 import com.jawnnypoo.openmeh.github.GitHubClient
+import com.jawnnypoo.openmeh.shared.api.MehClient
 import com.novoda.simplechromecustomtabs.SimpleChromeCustomTabs
-
 import io.fabric.sdk.android.Fabric
 import timber.log.Timber
 
@@ -34,7 +32,7 @@ class App : Application() {
         } else {
             Fabric.with(this, Crashlytics())
         }
-        meh = MehClient.create()
+        meh = MehClient.create(BuildConfig.OPEN_MEH_MEH_API_KEY, BuildConfig.DEBUG)
         GitHubClient.init()
         SimpleChromeCustomTabs.initialize(this)
     }

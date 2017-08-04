@@ -8,7 +8,7 @@ import java.util.ArrayList;
 /**
  * Poll. Hmmm
  */
-public class Poll implements Parcelable {
+public class Poll {
     ArrayList<Answer> answers;
     String id;
     String startDate;
@@ -51,23 +51,5 @@ public class Poll implements Parcelable {
         dest.writeParcelable(this.topic, flags);
     }
 
-    protected Poll(Parcel in) {
-        this.answers = in.createTypedArrayList(Answer.CREATOR);
-        this.id = in.readString();
-        this.startDate = in.readString();
-        this.title = in.readString();
-        this.topic = in.readParcelable(Topic.class.getClassLoader());
-    }
 
-    public static final Creator<Poll> CREATOR = new Creator<Poll>() {
-        @Override
-        public Poll createFromParcel(Parcel source) {
-            return new Poll(source);
-        }
-
-        @Override
-        public Poll[] newArray(int size) {
-            return new Poll[size];
-        }
-    };
 }

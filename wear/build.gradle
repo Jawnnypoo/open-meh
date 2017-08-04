@@ -25,7 +25,7 @@ android {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.google.android.support:wearable:2.0.1'
+    compile 'com.google.android.support:wearable:2.0.4'
     kapt "com.jakewharton:butterknife-compiler:$butterknifeVersion"
     compile project(':shared')
 }

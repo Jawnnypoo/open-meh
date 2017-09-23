@@ -1,26 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.wearable.view.BoxInsetLayout
-    android:id="@+id/root"
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".activity.MehActivity"
-    tools:deviceIds="wear">
-
-    <android.support.wearable.view.GridViewPager
-        android:id="@+id/grid_view_pager"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
-
-    <android.support.wearable.view.DotsPageIndicator
-        android:id="@+id/indicator"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|center_horizontal"
-        android:layout_marginBottom="20dp"
-        app:dotFadeWhenIdle="false"/>
+    android:layout_height="match_parent">
 
     <android.support.wearable.view.ProgressSpinner
         android:id="@+id/progress"
@@ -28,4 +11,4 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"/>
 
-</android.support.wearable.view.BoxInsetLayout>
+</FrameLayout>

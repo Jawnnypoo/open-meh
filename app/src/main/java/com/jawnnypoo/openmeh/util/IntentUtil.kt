@@ -7,7 +7,7 @@ import android.support.design.widget.Snackbar
 import android.view.View
 
 import com.jawnnypoo.openmeh.R
-import com.jawnnypoo.openmeh.shared.api.MehResponse
+import com.jawnnypoo.openmeh.shared.response.MehResponse
 import com.novoda.simplechromecustomtabs.SimpleChromeCustomTabs
 import com.novoda.simplechromecustomtabs.navigation.IntentCustomizer
 import com.novoda.simplechromecustomtabs.navigation.SimpleChromeCustomTabsIntentBuilder
@@ -18,16 +18,17 @@ import com.novoda.simplechromecustomtabs.navigation.SimpleChromeCustomTabsIntent
 object IntentUtil {
 
     fun shareDeal(root: View, mehResponse: MehResponse?) {
-        if (mehResponse == null || mehResponse.deal == null) {
+        val deal = mehResponse?.deal
+        if (deal == null) {
             Snackbar.make(root, R.string.error_nothing_to_share, Snackbar.LENGTH_SHORT)
                     .show()
-            return
+        } else {
+            val shareIntent = Intent(Intent.ACTION_SEND)
+            shareIntent.type = "text/plain"
+            shareIntent.putExtra(Intent.EXTRA_SUBJECT, root.context.getString(R.string.share_subject))
+            shareIntent.putExtra(Intent.EXTRA_TEXT, deal.url)
+            root.context.startActivity(Intent.createChooser(shareIntent, root.context.getString(R.string.share_subject)))
         }
-        val shareIntent = Intent(Intent.ACTION_SEND)
-        shareIntent.type = "text/plain"
-        shareIntent.putExtra(Intent.EXTRA_SUBJECT, root.context.getString(R.string.share_subject))
-        shareIntent.putExtra(Intent.EXTRA_TEXT, mehResponse.deal.url)
-        root.context.startActivity(Intent.createChooser(shareIntent, root.context.getString(R.string.share_subject)))
     }
 
     fun openUrl(activity: Activity, url: String, toolbarColor: Int) {

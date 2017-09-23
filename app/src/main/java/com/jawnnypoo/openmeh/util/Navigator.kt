@@ -26,7 +26,7 @@ object Navigator {
         activity.overridePendingTransition(R.anim.fade_in, R.anim.do_nothing)
     }
 
-    fun navigateToFullScreenImageViewer(activity: AppCompatActivity, image: View, theme: Theme?, images: ArrayList<String>) {
+    fun navigateToFullScreenImageViewer(activity: AppCompatActivity, image: View, theme: Theme?, images: MutableList<String>) {
         val intent = FullScreenImageViewerActivity.newInstance(activity, theme, images)
         val options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity, image, activity.getString(R.string.transition_images))
         activity.startActivity(intent, options.toBundle())

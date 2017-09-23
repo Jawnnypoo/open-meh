@@ -4,14 +4,12 @@ import android.app.IntentService
 import android.content.Intent
 import android.graphics.Bitmap
 import com.bumptech.glide.Glide
-import com.bumptech.glide.request.target.Target
 import com.jawnnypoo.openmeh.App
-import com.jawnnypoo.openmeh.shared.api.MehResponse
+import com.jawnnypoo.openmeh.shared.response.MehResponse
 import com.jawnnypoo.openmeh.util.MehNotificationManager
 import com.jawnnypoo.openmeh.util.Prefs
 import timber.log.Timber
 import java.lang.Exception
-import java.util.concurrent.ExecutionException
 
 /**
  * Service that pretty much just posts a notification then goes away
@@ -51,17 +49,14 @@ class PostReminderService : IntentService(PostReminderService.TAG) {
         //http://graphicdesign.stackexchange.com/questions/15776/issues-with-creating-a-hi-res-large-icon-for-android-notifications-in-jelly-bean
         try {
             icon = Glide.with(applicationContext)
-                    .load(deal.photos[0])
                     .asBitmap()
-                    .centerCrop()
-                    .into(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
+                    .load(deal?.photos?.firstOrNull())
+                    .submit()
                     .get()
-        } catch (e: ExecutionException) {
-            Timber.e(e)
-        } catch (e: InterruptedException) {
+        } catch (e: Exception) {
             Timber.e(e)
         }
 
-        MehNotificationManager.postDailyNotification(applicationContext, response, icon!!)
+        MehNotificationManager.postDailyNotification(applicationContext, response, icon)
     }
 }

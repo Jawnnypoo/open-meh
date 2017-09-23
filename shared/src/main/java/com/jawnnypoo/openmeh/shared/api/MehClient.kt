@@ -1,11 +1,12 @@
 package com.jawnnypoo.openmeh.shared.api
 
+import com.jawnnypoo.openmeh.shared.response.MehResponse
 import io.reactivex.Single
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
-import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.GET
 
 /**
@@ -36,7 +37,7 @@ class MehClient private constructor() {
             }
             val restAdapter = Retrofit.Builder()
                     .baseUrl(API_URL)
-                    .addConverterFactory(GsonConverterFactory.create())
+                    .addConverterFactory(MoshiConverterFactory.create())
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                     .client(clientBuilder.build())
                     .build()

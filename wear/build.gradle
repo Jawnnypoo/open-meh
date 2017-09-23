@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
@@ -24,8 +25,18 @@ android {
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.google.android.support:wearable:2.0.4'
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
+
+    implementation "com.android.support:appcompat-v7:$supportLibVersion"
+    implementation "com.android.support:percent:$supportLibVersion"
+    implementation "com.android.support:recyclerview-v7:$supportLibVersion"
+
+    implementation 'com.google.android.support:wearable:2.0.5'
+    implementation 'com.google.android.wearable:wearable:2.0.5'
+
     kapt "com.jakewharton:butterknife-compiler:$butterknifeVersion"
-    compile project(':shared')
+
+    implementation project(':shared')
 }

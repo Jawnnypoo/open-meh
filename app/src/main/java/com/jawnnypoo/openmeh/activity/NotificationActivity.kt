@@ -2,7 +2,6 @@ package com.jawnnypoo.openmeh.activity
 
 import android.content.Context
 import android.content.Intent
-import android.graphics.Color
 import android.graphics.PorterDuff
 import android.os.Build
 import android.os.Bundle
@@ -15,11 +14,13 @@ import android.widget.TextView
 import butterknife.BindView
 import butterknife.ButterKnife
 import butterknife.OnClick
+import com.commit451.addendum.parceler.getParcelerParcelableExtra
+import com.commit451.addendum.parceler.putParcelerParcelableExtra
 import com.commit451.easel.Easel
 import com.jawnnypoo.openmeh.R
 import com.jawnnypoo.openmeh.shared.model.Theme
-import com.jawnnypoo.openmeh.util.Prefs
 import com.jawnnypoo.openmeh.util.MehReminderManager
+import com.jawnnypoo.openmeh.util.Prefs
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog
 import java.text.SimpleDateFormat
 import java.util.*
@@ -36,9 +37,7 @@ class NotificationActivity : BaseActivity() {
 
         fun newInstance(context: Context, theme: Theme?): Intent {
             val intent = Intent(context, NotificationActivity::class.java)
-            if (theme != null) {
-                intent.putExtra(BaseActivity.Companion.EXTRA_THEME, theme)
-            }
+            intent.putParcelerParcelableExtra(BaseActivity.EXTRA_THEME, theme)
             return intent
         }
     }
@@ -84,7 +83,7 @@ class NotificationActivity : BaseActivity() {
             timePickerDialog = TimePickerDialog.newInstance(onTimeSetListener, timeToAlert.get(Calendar.HOUR_OF_DAY), timeToAlert.get(Calendar.MINUTE), false)
             timePickerDialog!!.vibrate(false)
         }
-        val theme = intent.getParcelableExtra<Theme>(BaseActivity.Companion.EXTRA_THEME)
+        val theme = intent.getParcelerParcelableExtra<Theme>(BaseActivity.Companion.EXTRA_THEME)
         if (theme != null) {
             applyTheme(theme)
         }
@@ -92,26 +91,26 @@ class NotificationActivity : BaseActivity() {
 
     private fun applyTheme(theme: Theme) {
         //Tint widgets
-        val accentColor = theme.accentColor
-        val foreGround = if (theme.foreground == Theme.FOREGROUND_LIGHT) Color.WHITE else Color.BLACK
+        val accentColor = theme.safeAccentColor()
+        val foreGround = theme.safeForegroundColor()
         Easel.tint(switchNotifications, accentColor, foreGround)
         Easel.tint(checkBoxSound, accentColor)
         Easel.tint(checkBoxVibrate, accentColor)
-        toolbarTitle.setTextColor(theme.backgroundColor)
+        toolbarTitle.setTextColor(theme.safeBackgroundColor())
         toolbar.setBackgroundColor(accentColor)
-        toolbar.navigationIcon?.setColorFilter(theme.backgroundColor, PorterDuff.Mode.MULTIPLY)
+        toolbar.navigationIcon?.setColorFilter(theme.safeBackgroundColor(), PorterDuff.Mode.MULTIPLY)
         if (Build.VERSION.SDK_INT >= 21) {
             val darkerAccentColor = Easel.getDarkerColor(accentColor)
             window.statusBarColor = darkerAccentColor
             window.navigationBarColor = darkerAccentColor
         }
-        window.decorView.setBackgroundColor(theme.backgroundColor)
+        window.decorView.setBackgroundColor(theme.safeBackgroundColor())
         labelNotifications.setTextColor(foreGround)
         textNotifyTime.setTextColor(foreGround)
         labelNotifyTime.setTextColor(foreGround)
         labelSound.setTextColor(foreGround)
         labelVibrate.setTextColor(foreGround)
-        timePickerDialog?.accentColor = theme.accentColor
+        timePickerDialog?.accentColor = theme.safeAccentColor()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

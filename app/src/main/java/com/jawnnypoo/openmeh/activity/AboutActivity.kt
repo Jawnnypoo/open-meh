@@ -19,6 +19,8 @@ import butterknife.BindView
 import butterknife.ButterKnife
 import butterknife.OnClick
 import com.bumptech.glide.Glide
+import com.commit451.addendum.parceler.getParcelerParcelableExtra
+import com.commit451.addendum.parceler.putParcelerParcelableExtra
 import com.commit451.easel.Easel
 import com.commit451.gimbal.Gimbal
 import com.commit451.reptar.ComposableSingleObserver
@@ -48,7 +50,7 @@ class AboutActivity : BaseActivity() {
         fun newInstance(context: Context, theme: Theme?): Intent {
             val intent = Intent(context, AboutActivity::class.java)
             if (theme != null) {
-                intent.putExtra(BaseActivity.EXTRA_THEME, theme)
+                intent.putParcelerParcelableExtra(BaseActivity.EXTRA_THEME, theme)
             }
             return intent
         }
@@ -80,7 +82,8 @@ class AboutActivity : BaseActivity() {
 
     @OnClick(R.id.sauce)
     fun onSauceClick() {
-        IntentUtil.openUrl(this, getString(R.string.source_url), if (theme == null) Color.WHITE else theme!!.accentColor)
+        val color = theme?.safeAccentColor() ?: Color.WHITE
+        IntentUtil.openUrl(this, getString(R.string.source_url), color)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -95,7 +98,7 @@ class AboutActivity : BaseActivity() {
         physicsLayout.physics.enableFling()
         sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
         gravitySensor = sensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY)
-        theme = intent.getParcelableExtra<Theme>(BaseActivity.EXTRA_THEME)
+        theme = intent.getParcelerParcelableExtra<Theme>(BaseActivity.EXTRA_THEME)
         theme?.let {
             applyTheme(it)
         }
@@ -133,16 +136,15 @@ class AboutActivity : BaseActivity() {
 
     private fun applyTheme(theme: Theme) {
         //Tint widgets
-        val accentColor = theme.accentColor
-        val foreGround = if (theme.foreground == Theme.FOREGROUND_LIGHT) Color.WHITE else Color.BLACK
-        toolbarTitle.setTextColor(theme.backgroundColor)
-        toolbar.setBackgroundColor(accentColor)
-        toolbar.navigationIcon?.setColorFilter(theme.backgroundColor, PorterDuff.Mode.MULTIPLY)
+        val accentColor = theme.safeAccentColor()
+        toolbarTitle.setTextColor(theme.safeBackgroundColor())
+        toolbar.setBackgroundColor(theme.safeAccentColor())
+        toolbar.navigationIcon?.setColorFilter(theme.safeBackgroundColor(), PorterDuff.Mode.MULTIPLY)
         if (Build.VERSION.SDK_INT >= 21) {
             window.statusBarColor = Easel.getDarkerColor(accentColor)
             window.navigationBarColor = Easel.getDarkerColor(accentColor)
         }
-        window.decorView.setBackgroundColor(theme.backgroundColor)
+        window.decorView.setBackgroundColor(theme.safeBackgroundColor())
     }
 
     private fun addContributors(contributors: List<Contributor>) {

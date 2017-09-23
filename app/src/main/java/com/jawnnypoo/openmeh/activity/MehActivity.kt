@@ -22,6 +22,8 @@ import butterknife.BindView
 import butterknife.ButterKnife
 import butterknife.OnClick
 import com.bumptech.glide.Glide
+import com.commit451.addendum.parceler.getParcelerParcelable
+import com.commit451.addendum.parceler.putParcelerParcelable
 import com.commit451.alakazam.Alakazam
 import com.commit451.bypassglideimagegetter.BypassGlideImageGetter
 import com.commit451.easel.Easel
@@ -30,13 +32,15 @@ import com.commit451.reptar.kotlin.fromIoToMainThread
 import com.google.android.youtube.player.YouTubeInitializationResult
 import com.google.android.youtube.player.YouTubePlayer
 import com.google.android.youtube.player.YouTubePlayerSupportFragment
-import com.google.gson.Gson
 import com.jawnnypoo.openmeh.App
 import com.jawnnypoo.openmeh.BuildConfig
 import com.jawnnypoo.openmeh.R
 import com.jawnnypoo.openmeh.adapter.ImageAdapter
 import com.jawnnypoo.openmeh.service.PostReminderService
-import com.jawnnypoo.openmeh.shared.api.MehResponse
+import com.jawnnypoo.openmeh.shared.extension.getCheckoutUrl
+import com.jawnnypoo.openmeh.shared.extension.getPriceRange
+import com.jawnnypoo.openmeh.shared.extension.isSoldOut
+import com.jawnnypoo.openmeh.shared.response.MehResponse
 import com.jawnnypoo.openmeh.shared.model.Deal
 import com.jawnnypoo.openmeh.shared.model.Theme
 import com.jawnnypoo.openmeh.shared.model.Video
@@ -99,9 +103,9 @@ class MehActivity : BaseActivity() {
     private val mMenuItemClickListener = Toolbar.OnMenuItemClickListener { item ->
         var theme: Theme? = null
         if (savedMehResponse != null && savedMehResponse!!.deal != null) {
-            theme = savedMehResponse!!.deal.theme
+            theme = savedMehResponse!!.deal?.theme
         }
-        val accentColor = if (theme == null) Color.WHITE else theme.accentColor
+        val accentColor = if (theme == null) Color.WHITE else theme.safeAccentColor()
         when (item.itemId) {
             R.id.nav_notifications -> {
                 Navigator.navigateToNotifications(this@MehActivity, theme)
@@ -138,9 +142,10 @@ class MehActivity : BaseActivity() {
     @OnClick(R.id.deal_full_specs)
     fun onFullSpecsClick() {
         if (savedMehResponse != null && savedMehResponse!!.deal != null) {
-            val topic = savedMehResponse!!.deal.topic
-            if (topic != null && !TextUtils.isEmpty(topic.url)) {
-                IntentUtil.openUrl(this, topic.url, savedMehResponse!!.deal.theme.accentColor)
+            val topicUrl = savedMehResponse?.deal?.topic?.url
+            if (topicUrl != null) {
+                val color = safeAccentColor(savedMehResponse)
+                IntentUtil.openUrl(this, topicUrl, color)
             }
         }
     }
@@ -162,8 +167,9 @@ class MehActivity : BaseActivity() {
         swipeRefreshLayout.setProgressViewOffset(false, 0, resources.getDimensionPixelOffset(R.dimen.swipe_refresh_offset))
         imagePagerAdapter = ImageAdapter(false, object : ImageAdapter.Listener {
             override fun onImageClicked(view: View, position: Int) {
-                if (savedMehResponse != null && savedMehResponse!!.deal != null) {
-                    Navigator.navigateToFullScreenImageViewer(this@MehActivity, view, savedMehResponse!!.deal.theme, savedMehResponse!!.deal.photos)
+                val photos = savedMehResponse?.deal?.photos
+                if (photos != null) {
+                    Navigator.navigateToFullScreenImageViewer(this@MehActivity, view, savedMehResponse?.deal?.theme, photos)
                 }
             }
         })
@@ -174,17 +180,18 @@ class MehActivity : BaseActivity() {
                 .replace(R.id.video_root, youTubeFragment)
                 .commit()
         if (savedInstanceState != null) {
-            savedMehResponse = savedInstanceState.getParcelable<MehResponse>(STATE_MEH_RESPONSE)
-            if (savedMehResponse != null) {
+            savedMehResponse = savedInstanceState.getParcelerParcelable<MehResponse>(STATE_MEH_RESPONSE)
+            val response = savedMehResponse
+            if (response != null) {
                 Timber.d("Restored from savedInstanceState")
-                bindDeal(savedMehResponse!!.deal, false)
+                response.deal?.let {
+                    bindDeal(it, false)
+                }
             }
         } else {
             buyOnLoad = intent.getBooleanExtra(EXTRA_BUY_NOW, false)
             loadMeh()
         }
-        //testMeh();
-        //testNotification();
     }
 
     override fun onNewIntent(intent: Intent) {
@@ -224,7 +231,7 @@ class MehActivity : BaseActivity() {
                             return
                         }
                         savedMehResponse = response
-                        bindDeal(response.deal, true)
+                        bindDeal(response.deal!!, true)
                         if (buyOnLoad) {
                             buttonBuy.callOnClick()
                             buyOnLoad = false
@@ -245,14 +252,17 @@ class MehActivity : BaseActivity() {
         swipeRefreshLayout.isRefreshing = false
         failedView.visibility = View.GONE
         imagePagerAdapter.setData(deal.photos)
-        indicator.setIndicatorColor(deal.theme.foregroundColor)
+        indicator.setIndicatorColor(deal.theme!!.safeForegroundColor())
         indicator.setViewPager(viewPager)
-        if (deal.isSoldOut) {
+        if (deal.isSoldOut()) {
             buttonBuy.isEnabled = false
             buttonBuy.setText(R.string.sold_out)
         } else {
-            buttonBuy.text = deal.priceRange + "\n" + getString(R.string.buy_it)
-            buttonBuy.setOnClickListener { IntentUtil.openUrl(this@MehActivity, deal.checkoutUrl, deal.theme.accentColor) }
+            buttonBuy.text = deal.getPriceRange() + "\n" + getString(R.string.buy_it)
+            buttonBuy.setOnClickListener {
+                val color = safeAccentColor(savedMehResponse)
+                IntentUtil.openUrl(this@MehActivity, deal.getCheckoutUrl(), color)
+            }
         }
         root.visibility = View.VISIBLE
         imageBackground.visibility = View.VISIBLE
@@ -263,22 +273,23 @@ class MehActivity : BaseActivity() {
             imageBackground.animate().alpha(1.0f).setStartDelay(ANIMATION_TIME.toLong()).setDuration(ANIMATION_TIME.toLong()).startDelay = ANIMATION_TIME.toLong()
         }
         textTitle.text = deal.title
-        textDescription.text = markdownToCharSequence(textDescription, deal.features)
+        textDescription.text = markdownToCharSequence(textDescription, deal.features!!)
         textDescription.movementMethod = LinkMovementMethod.getInstance()
         if (deal.story != null) {
-            textStoryTitle.text = deal.story.title
-            textStoryBody.text = markdownToCharSequence(textStoryBody, deal.story.body)
+            textStoryTitle.text = deal.story!!.title
+            textStoryBody.text = markdownToCharSequence(textStoryBody, deal.story!!.body!!)
             textStoryBody.movementMethod = LinkMovementMethod.getInstance()
         }
-        if (savedMehResponse!!.video != null) {
-            bindVideo(savedMehResponse!!.video)
+        val video = savedMehResponse?.video
+        if (video != null) {
+            bindVideo(video)
         }
         bindTheme(deal, animate)
     }
 
     fun bindVideo(video: Video) {
         val videoUrl = video.url
-        if (MehUtil.isYouTubeInstalled(this)) {
+        if (MehUtil.isYouTubeInstalled(this) && videoUrl != null) {
             val videoId = MehUtil.getYouTubeIdFromUrl(videoUrl)
             Timber.d("videoId: " + videoId!!)
             if (!TextUtils.isEmpty(videoId)) {
@@ -306,8 +317,13 @@ class MehActivity : BaseActivity() {
 
             override fun onInitializationFailure(provider: YouTubePlayer.Provider, youTubeInitializationResult: YouTubeInitializationResult) {
                 Timber.d("onInitializationFailure")
-                supportFragmentManager.beginTransaction().remove(youTubeFragment).commit()
-                bindVideoLink(savedMehResponse!!.video)
+                supportFragmentManager
+                        .beginTransaction()
+                        .remove(youTubeFragment)
+                        .commit()
+                savedMehResponse?.video?.let {
+                    bindVideoLink(it)
+                }
             }
         })
     }
@@ -316,31 +332,37 @@ class MehActivity : BaseActivity() {
         Timber.d("YouTube didn't work. Just link it")
         supportFragmentManager.beginTransaction().remove(youTubeFragment).commitAllowingStateLoss()
         layoutInflater.inflate(R.layout.view_link_video, rootVideo)
-        rootVideo.setOnClickListener { IntentUtil.openUrl(this@MehActivity, video.url, savedMehResponse!!.deal.theme.accentColor) }
-        val playIcon = rootVideo.findViewById(R.id.video_play) as ImageView
-        val title = rootVideo.findViewById(R.id.video_title) as TextView
+        rootVideo.setOnClickListener {
+            video.url?.let {
+                val color = savedMehResponse?.deal?.theme?.safeAccentColor() ?: Color.WHITE
+                IntentUtil.openUrl(this@MehActivity, it, color)
+            }
+        }
+        val playIcon = rootVideo.findViewById<ImageView>(R.id.video_play)
+        val title = rootVideo.findViewById<TextView>(R.id.video_title)
         title.text = video.title
-        playIcon.drawable.setColorFilter(savedMehResponse!!.deal.theme.accentColor, PorterDuff.Mode.MULTIPLY)
+        val color = savedMehResponse?.deal?.theme?.safeAccentColor() ?: Color.WHITE
+        playIcon.drawable.setColorFilter(color, PorterDuff.Mode.MULTIPLY)
     }
 
     fun bindTheme(deal: Deal, animate: Boolean) {
-        val theme = deal.theme
-        val accentColor = theme.accentColor
+        val theme = deal.theme!!
+        val accentColor = theme.safeAccentColor()
         val darkerAccentColor = Easel.getDarkerColor(accentColor)
-        val backgroundColor = theme.backgroundColor
-        val foreGround = if (theme.foreground == Theme.FOREGROUND_LIGHT) Color.WHITE else Color.BLACK
-        val foreGroundInverse = if (theme.foreground == Theme.FOREGROUND_LIGHT) Color.BLACK else Color.WHITE
+        val backgroundColor = theme.safeBackgroundColor()
+        val foreGround = theme.safeForegroundColor()
+        val foreGroundInverse = theme.safeForegroundColorInverse()
 
         textTitle.setTextColor(foreGround)
         textDescription.setTextColor(foreGround)
         textDescription.setLinkTextColor(foreGround)
 
-        if (deal.isSoldOut) {
+        if (deal.isSoldOut()) {
             buttonBuy.background.setColorFilter(foreGround, PorterDuff.Mode.MULTIPLY)
             buttonBuy.setTextColor(foreGroundInverse)
         } else {
             buttonBuy.supportBackgroundTintList = ColorUtil.createColorStateList(accentColor, Easel.getDarkerColor(accentColor))
-            buttonBuy.setTextColor(theme.backgroundColor)
+            buttonBuy.setTextColor(theme.safeBackgroundColor())
         }
         textFullSpecs.setTextColor(foreGround)
         textStoryTitle.setTextColor(accentColor)
@@ -385,9 +407,7 @@ class MehActivity : BaseActivity() {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        if (savedMehResponse != null) {
-            outState.putParcelable(STATE_MEH_RESPONSE, savedMehResponse)
-        }
+        outState.putParcelerParcelable(STATE_MEH_RESPONSE, savedMehResponse)
     }
 
     override fun onBackPressed() {
@@ -404,17 +424,7 @@ class MehActivity : BaseActivity() {
                 .show()
     }
 
-    fun testNotification() {
-        startService(Intent(this, PostReminderService::class.java))
-    }
-
-    /**
-     * Parse a fake API response, for testing
-     */
-    fun testMeh() {
-        savedMehResponse = Gson().fromJson(
-                AssetUtil.loadJSONFromAsset(this, "4-23-2015.json"), MehResponse::class.java)
-        Timber.d(savedMehResponse!!.toString())
-        bindDeal(savedMehResponse!!.deal, true)
+    fun safeAccentColor(response: MehResponse?): Int {
+        return response?.deal?.theme?.safeAccentColor() ?: Color.WHITE
     }
 }

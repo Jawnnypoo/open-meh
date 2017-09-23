@@ -23,7 +23,7 @@ class ImageAdapter(private val allowZoom: Boolean, private val listener: ImageAd
         } else {
             v = LayoutInflater.from(collection.context).inflate(R.layout.item_deal_image, collection, false)
         }
-        val imageView = v.findViewById(R.id.imageView) as ImageView
+        val imageView = v.findViewById<ImageView>(R.id.imageView)
         Glide.with(collection.context)
                 .load(data[position])
                 .into(imageView)

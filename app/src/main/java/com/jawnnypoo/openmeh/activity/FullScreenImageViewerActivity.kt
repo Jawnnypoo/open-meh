@@ -11,13 +11,14 @@ import android.widget.ImageView
 import butterknife.BindView
 import butterknife.ButterKnife
 import butterknife.OnClick
+import com.commit451.addendum.parceler.getParcelerParcelableExtra
+import com.commit451.addendum.parceler.putParcelerParcelableExtra
 import com.commit451.elasticdragdismisslayout.ElasticDragDismissFrameLayout
 import com.commit451.elasticdragdismisslayout.ElasticDragDismissListener
 import com.jawnnypoo.openmeh.R
 import com.jawnnypoo.openmeh.adapter.ImageAdapter
 import com.jawnnypoo.openmeh.shared.model.Theme
 import me.relex.circleindicator.CircleIndicator
-import java.util.*
 
 /**
  * Shows the full screen images
@@ -28,12 +29,12 @@ class FullScreenImageViewerActivity : BaseActivity() {
 
         private val EXTRA_IMAGES = "images"
 
-        fun newInstance(context: Context, theme: Theme?, images: ArrayList<String>): Intent {
+        fun newInstance(context: Context, theme: Theme?, images: MutableList<String>): Intent {
             val intent = Intent(context, FullScreenImageViewerActivity::class.java)
             if (theme != null) {
-                intent.putExtra(BaseActivity.Companion.EXTRA_THEME, theme)
+                intent.putParcelerParcelableExtra(BaseActivity.EXTRA_THEME, theme)
             }
-            intent.putExtra(EXTRA_IMAGES, images)
+            intent.putParcelerParcelableExtra(EXTRA_IMAGES, images)
             return intent
         }
     }
@@ -57,7 +58,7 @@ class FullScreenImageViewerActivity : BaseActivity() {
 
         val images = intent.getStringArrayListExtra(EXTRA_IMAGES)
 
-        val theme = intent.getParcelableExtra<Theme>(BaseActivity.Companion.EXTRA_THEME)
+        val theme = intent.getParcelerParcelableExtra<Theme>(BaseActivity.Companion.EXTRA_THEME)
 
         pagerAdapter = ImageAdapter(true, object : ImageAdapter.Listener {
             override fun onImageClicked(v: View, position: Int) {
@@ -68,9 +69,9 @@ class FullScreenImageViewerActivity : BaseActivity() {
         imageViewPager.adapter = pagerAdapter
         pagerAdapter.setData(images)
         if (theme != null) {
-            buttonClose.drawable.colorFilter = PorterDuffColorFilter(theme.foregroundColor, PorterDuff.Mode.MULTIPLY)
-            draggableFrame.setBackgroundColor(theme.backgroundColor)
-            indicator.setIndicatorColor(theme.foregroundColor)
+            buttonClose.drawable.colorFilter = PorterDuffColorFilter(theme.safeForegroundColor(), PorterDuff.Mode.MULTIPLY)
+            draggableFrame.setBackgroundColor(theme.safeBackgroundColor())
+            indicator.setIndicatorColor(theme.safeForegroundColor())
         }
         indicator.setViewPager(imageViewPager)
         draggableFrame.addListener(object : ElasticDragDismissListener {

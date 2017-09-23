@@ -1,6 +1,6 @@
 package com.jawnnypoo.openmeh.github
 
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
 
 /**
  * GitHub contributor
@@ -8,6 +8,6 @@ import com.google.gson.annotations.SerializedName
 class Contributor {
     var login: String? = null
     var contributions: Int = 0
-    @SerializedName("avatar_url")
+    @field:Json(name = "avatar_url")
     var avatarUrl: String? = null
 }

@@ -63,7 +63,7 @@ class AboutActivity : BaseActivity() {
     @BindView(R.id.physics_layout) lateinit var physicsLayout: PhysicsFrameLayout
 
     lateinit var sensorManager: SensorManager
-    lateinit var gravitySensor: Sensor
+    var gravitySensor: Sensor? = null
     lateinit var gimbal: Gimbal
     var theme: Theme? = null
 

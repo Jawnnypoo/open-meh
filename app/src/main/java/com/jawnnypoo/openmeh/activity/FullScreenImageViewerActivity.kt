@@ -70,7 +70,7 @@ class FullScreenImageViewerActivity : BaseActivity() {
         if (theme != null) {
             buttonClose.drawable.colorFilter = PorterDuffColorFilter(theme.safeForegroundColor(), PorterDuff.Mode.MULTIPLY)
             root.setBackgroundColor(theme.safeBackgroundColor())
-            indicator.setIndicatorColor(theme.safeForegroundColor())
+            indicator.setIndicatorBackgroundTint(theme.safeForegroundColor())
         }
         indicator.setViewPager(imageViewPager)
     }

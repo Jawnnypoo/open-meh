@@ -254,7 +254,8 @@ class MehActivity : BaseActivity() {
         swipeRefreshLayout.isRefreshing = false
         failedView.visibility = View.GONE
         imagePagerAdapter.setData(deal.photos)
-        indicator.setIndicatorColor(deal.theme!!.safeForegroundColor())
+        val color = deal.theme?.safeForegroundColor() ?: Color.WHITE
+        indicator.setIndicatorBackgroundTint(color)
         indicator.setViewPager(viewPager)
         if (deal.isSoldOut()) {
             buttonBuy.isEnabled = false

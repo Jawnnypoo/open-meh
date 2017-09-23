@@ -18,8 +18,8 @@ import com.commit451.addendum.parceler.getParcelerParcelableExtra
 import com.commit451.addendum.parceler.putParcelerParcelableExtra
 import com.commit451.easel.Easel
 import com.jawnnypoo.openmeh.R
+import com.jawnnypoo.openmeh.job.ReminderJob
 import com.jawnnypoo.openmeh.shared.model.Theme
-import com.jawnnypoo.openmeh.util.MehReminderManager
 import com.jawnnypoo.openmeh.util.Prefs
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog
 import java.text.SimpleDateFormat
@@ -62,7 +62,7 @@ class NotificationActivity : BaseActivity() {
         textNotifyTime.text = TIME_FORMAT.format(timeToAlert.time)
         Prefs.setNotificationPreferenceHour(this@NotificationActivity, hourOfDay)
         Prefs.setNotificationPreferenceMinute(this@NotificationActivity, minute)
-        MehReminderManager.scheduleDailyReminder(this@NotificationActivity, hourOfDay, minute)
+        ReminderJob.schedule(hourOfDay, minute)
         //Recreate for next time, starting with the newly set time
         timePickerDialog?.setStartTime(hourOfDay, minute)
     }
@@ -78,7 +78,7 @@ class NotificationActivity : BaseActivity() {
         timeToAlert.set(Calendar.HOUR_OF_DAY, Prefs.getNotificationPreferenceHour(this))
         timeToAlert.set(Calendar.MINUTE, Prefs.getNotificationPreferenceMinute(this))
         setupUi()
-        timePickerDialog = fragmentManager.findFragmentByTag(TAG_TIME_PICKER) as TimePickerDialog
+        timePickerDialog = fragmentManager.findFragmentByTag(TAG_TIME_PICKER) as? TimePickerDialog
         if (timePickerDialog == null) {
             timePickerDialog = TimePickerDialog.newInstance(onTimeSetListener, timeToAlert.get(Calendar.HOUR_OF_DAY), timeToAlert.get(Calendar.MINUTE), false)
             timePickerDialog!!.vibrate(false)
@@ -134,12 +134,14 @@ class NotificationActivity : BaseActivity() {
         switchNotifications.isChecked = Prefs.getNotificationsPreference(this)
         checkBoxSound.isChecked = Prefs.getNotificationSound(this)
         checkBoxVibrate.isChecked = Prefs.getNotificationVibrate(this)
-        switchNotifications.setOnCheckedChangeListener { buttonView, isChecked ->
+        switchNotifications.setOnCheckedChangeListener { _, isChecked ->
             Prefs.setNotificationsPreference(this@NotificationActivity, isChecked)
             if (isChecked) {
-                MehReminderManager.restoreReminderPreference(this@NotificationActivity)
+                val hourOfDay = Prefs.getNotificationPreferenceHour(this)
+                val minuteOfDay = Prefs.getNotificationPreferenceMinute(this)
+                ReminderJob.schedule(hourOfDay, minuteOfDay)
             } else {
-                MehReminderManager.cancelPendingReminders(this@NotificationActivity)
+                ReminderJob.cancel()
             }
         }
 

@@ -22,7 +22,7 @@ import com.jawnnypoo.openmeh.shared.response.MehResponse
  */
 object MehNotificationManager {
 
-    private val UNIQUE_ID = 42
+    private const val UNIQUE_ID = 42
 
     fun postDailyNotification(context: Context, response: MehResponse, icon: Bitmap?) {
         postIt(context, response, icon)
@@ -37,7 +37,7 @@ object MehNotificationManager {
                 context.getString(R.string.sold_out)
             else
                 deal.getPriceRange()
-            val notificationBuilder = NotificationCompat.Builder(context)
+            val notificationBuilder = NotificationCompat.Builder(context, context.getString(R.string.notification_channel_reminders))
                     .setContentTitle(deal.title)
                     .setTicker(priceString)
                     .setContentText(priceString)
@@ -71,9 +71,6 @@ object MehNotificationManager {
             // Creates an explicit intent for an Activity in your app
             val resultIntent = Intent(context, MehActivity::class.java)
             val stackBuilder = TaskStackBuilder.create(context)
-            // Adds the back stack
-            //stackBuilder.addParentStack(JournalActivity.class);
-            // Adds the Intent to the top of the stack
             stackBuilder.addNextIntent(resultIntent)
             val resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT)
             notificationBuilder.setContentIntent(resultPendingIntent)

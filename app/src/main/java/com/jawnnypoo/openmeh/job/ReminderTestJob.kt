@@ -1,34 +1,33 @@
-package com.jawnnypoo.openmeh.service
+package com.jawnnypoo.openmeh.job
 
-import android.app.IntentService
-import android.content.Intent
 import android.graphics.Bitmap
 import com.bumptech.glide.Glide
+import com.evernote.android.job.Job
+import com.evernote.android.job.JobRequest
 import com.jawnnypoo.openmeh.App
 import com.jawnnypoo.openmeh.shared.response.MehResponse
 import com.jawnnypoo.openmeh.util.MehNotificationManager
-import com.jawnnypoo.openmeh.util.Prefs
 import timber.log.Timber
 import java.lang.Exception
 
 /**
- * Service that pretty much just posts a notification then goes away
+ * Just to test reminders posting as a job
  */
-class PostReminderService : IntentService(PostReminderService.TAG) {
+class ReminderTestJob : Job() {
 
     companion object {
-        private val TAG = PostReminderService::class.java.simpleName
-    }
+        const val TAG = "ReminderTestJob"
 
-    override fun onHandleIntent(intent: Intent?) {
-        postNotification()
-    }
-
-    private fun postNotification() {
-        if (!Prefs.getNotificationsPreference(applicationContext)) {
-            //Notifications disabled, go away
-            return
+        fun scheduleNow() {
+            JobRequest.Builder(TAG)
+                    .setRequiredNetworkType(JobRequest.NetworkType.ANY)
+                    .startNow()
+                    .build()
+                    .schedule()
         }
+    }
+
+    override fun onRunJob(params: Params?): Result {
         var response: MehResponse? = null
         try {
             response = App.get().meh.getMeh()
@@ -39,7 +38,7 @@ class PostReminderService : IntentService(PostReminderService.TAG) {
 
         if (response == null || response.deal == null) {
             Timber.e("Response was null or deal was null. Will not notify")
-            return
+            return Result.FAILURE
         }
 
 
@@ -48,7 +47,7 @@ class PostReminderService : IntentService(PostReminderService.TAG) {
         //Shoot for the highest resolution
         //http://graphicdesign.stackexchange.com/questions/15776/issues-with-creating-a-hi-res-large-icon-for-android-notifications-in-jelly-bean
         try {
-            icon = Glide.with(applicationContext)
+            icon = Glide.with(context)
                     .asBitmap()
                     .load(deal?.photos?.firstOrNull())
                     .submit()
@@ -57,6 +56,8 @@ class PostReminderService : IntentService(PostReminderService.TAG) {
             Timber.e(e)
         }
 
-        MehNotificationManager.postDailyNotification(applicationContext, response, icon)
+        MehNotificationManager.postDailyNotification(context, response, icon)
+        return Result.SUCCESS
     }
+
 }

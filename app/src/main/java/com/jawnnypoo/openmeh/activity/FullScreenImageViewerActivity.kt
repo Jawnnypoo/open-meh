@@ -7,14 +7,13 @@ import android.graphics.PorterDuffColorFilter
 import android.os.Bundle
 import android.support.v4.view.ViewPager
 import android.view.View
+import android.widget.FrameLayout
 import android.widget.ImageView
 import butterknife.BindView
 import butterknife.ButterKnife
 import butterknife.OnClick
 import com.commit451.addendum.parceler.getParcelerParcelableExtra
 import com.commit451.addendum.parceler.putParcelerParcelableExtra
-import com.commit451.elasticdragdismisslayout.ElasticDragDismissFrameLayout
-import com.commit451.elasticdragdismisslayout.ElasticDragDismissListener
 import com.jawnnypoo.openmeh.R
 import com.jawnnypoo.openmeh.adapter.ImageAdapter
 import com.jawnnypoo.openmeh.shared.model.Theme
@@ -42,7 +41,7 @@ class FullScreenImageViewerActivity : BaseActivity() {
     @BindView(R.id.close) lateinit var buttonClose: ImageView
     @BindView(R.id.images) lateinit var imageViewPager: ViewPager
     @BindView(R.id.indicator) lateinit var indicator: CircleIndicator
-    @BindView(R.id.draggable_frame) lateinit var draggableFrame: ElasticDragDismissFrameLayout
+    @BindView(R.id.root) lateinit var root: FrameLayout
 
     lateinit var pagerAdapter: ImageAdapter
 
@@ -70,18 +69,10 @@ class FullScreenImageViewerActivity : BaseActivity() {
         pagerAdapter.setData(images)
         if (theme != null) {
             buttonClose.drawable.colorFilter = PorterDuffColorFilter(theme.safeForegroundColor(), PorterDuff.Mode.MULTIPLY)
-            draggableFrame.setBackgroundColor(theme.safeBackgroundColor())
+            root.setBackgroundColor(theme.safeBackgroundColor())
             indicator.setIndicatorColor(theme.safeForegroundColor())
         }
         indicator.setViewPager(imageViewPager)
-        draggableFrame.addListener(object : ElasticDragDismissListener {
-            override fun onDrag(elasticOffset: Float, elasticOffsetPixels: Float, rawOffset: Float, rawOffsetPixels: Float) {}
-
-            override fun onDragDismissed() {
-                //if you are targeting 21+ you might want to finish after transition
-                onBackPressed()
-            }
-        })
     }
 
     override fun onBackPressed() {

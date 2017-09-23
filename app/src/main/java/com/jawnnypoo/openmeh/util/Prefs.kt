@@ -1,58 +1,25 @@
 package com.jawnnypoo.openmeh.util
 
-import android.app.AlarmManager
-import android.app.PendingIntent
 import android.content.Context
-import android.content.Intent
 import android.content.SharedPreferences
-import com.jawnnypoo.openmeh.service.PostReminderService
-import java.util.*
 
 /**
  * Manager to manage access to all of the preferences in the app
  */
 object Prefs {
 
-    val SHARED_PREFS = "meh_shared_prefs"
-    private val SHARED_PREFS_NOTIFICATION_STATUS = "notification_status"
-    private val SHARED_PREFS_NOTIFICATION_HOUR = "notification_hour"
-    private val SHARED_PREFS_NOTIFICATION_MINUTE = "notification_minute"
-    private val SHARED_PREFS_NOTIFICATION_VIBRATE = "notification_vibrate"
-    private val SHARED_PREFS_NOTIFICATION_SOUND = "notification_sound"
+    const val SHARED_PREFS = "meh_shared_prefs"
+    private const val SHARED_PREFS_NOTIFICATION_STATUS = "notification_status"
+    private const val SHARED_PREFS_NOTIFICATION_HOUR = "notification_hour"
+    private const val SHARED_PREFS_NOTIFICATION_MINUTE = "notification_minute"
+    private const val SHARED_PREFS_NOTIFICATION_VIBRATE = "notification_vibrate"
+    private const val SHARED_PREFS_NOTIFICATION_SOUND = "notification_sound"
 
-    private val DEFAULT_HOUR = 18
-    private val DEFAULT_MINUTE = 30
+    private const val DEFAULT_HOUR = 18
+    private const val DEFAULT_MINUTE = 30
 
     private fun getSharedPreferences(context: Context): SharedPreferences {
         return context.getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE)
-    }
-
-    fun turnOnDefaultReminder(context: Context) {
-        val myIntent = Intent(context, PostReminderService::class.java)
-        val pendingIntent = PendingIntent.getService(context, 0, myIntent, 0)
-        setReminder(context, DEFAULT_HOUR, DEFAULT_MINUTE, pendingIntent)
-    }
-
-    fun setReminder(context: Context, hour: Int, minute: Int, pendingIntent: PendingIntent) {
-        val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-
-        val alarmTime = Calendar.getInstance()
-        val currentTime = Calendar.getInstance()
-        alarmTime.timeInMillis = System.currentTimeMillis()
-        currentTime.timeInMillis = System.currentTimeMillis()
-
-        //Repeat once a day, at a certain time
-        alarmTime.set(Calendar.HOUR_OF_DAY, hour)
-        alarmTime.set(Calendar.MINUTE, minute)
-        //Add another day if the time has already happened
-        if (alarmTime.before(currentTime)) {
-            alarmTime.add(Calendar.DATE, 1)
-        }
-        alarmManager.setInexactRepeating(AlarmManager.RTC, alarmTime.timeInMillis, AlarmManager.INTERVAL_DAY, pendingIntent)
-
-        //Repeat ever 10 seconds, for testing
-        //alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), 10000, mPendingIntent);
-        setNotificationsPreference(context, true, hour, minute)
     }
 
     fun setNotificationPreferenceHour(context: Context, hour: Int) {

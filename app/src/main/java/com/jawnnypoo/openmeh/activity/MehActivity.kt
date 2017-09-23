@@ -8,6 +8,7 @@ import android.graphics.PorterDuff
 import android.os.Build
 import android.os.Bundle
 import android.support.design.widget.Snackbar
+import android.support.v4.view.ViewCompat
 import android.support.v4.view.ViewPager
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.AppCompatButton
@@ -36,15 +37,14 @@ import com.jawnnypoo.openmeh.App
 import com.jawnnypoo.openmeh.BuildConfig
 import com.jawnnypoo.openmeh.R
 import com.jawnnypoo.openmeh.adapter.ImageAdapter
-import com.jawnnypoo.openmeh.service.PostReminderService
+import com.jawnnypoo.openmeh.job.ReminderTestJob
 import com.jawnnypoo.openmeh.shared.extension.getCheckoutUrl
 import com.jawnnypoo.openmeh.shared.extension.getPriceRange
 import com.jawnnypoo.openmeh.shared.extension.isSoldOut
-import com.jawnnypoo.openmeh.shared.response.MehResponse
 import com.jawnnypoo.openmeh.shared.model.Deal
 import com.jawnnypoo.openmeh.shared.model.Theme
 import com.jawnnypoo.openmeh.shared.model.Video
-import com.jawnnypoo.openmeh.shared.util.AssetUtil
+import com.jawnnypoo.openmeh.shared.response.MehResponse
 import com.jawnnypoo.openmeh.util.ColorUtil
 import com.jawnnypoo.openmeh.util.IntentUtil
 import com.jawnnypoo.openmeh.util.MehUtil
@@ -100,45 +100,6 @@ class MehActivity : BaseActivity() {
     var fullScreen = false
     var buyOnLoad = false
 
-    private val mMenuItemClickListener = Toolbar.OnMenuItemClickListener { item ->
-        var theme: Theme? = null
-        if (savedMehResponse != null && savedMehResponse!!.deal != null) {
-            theme = savedMehResponse!!.deal?.theme
-        }
-        val accentColor = if (theme == null) Color.WHITE else theme.safeAccentColor()
-        when (item.itemId) {
-            R.id.nav_notifications -> {
-                Navigator.navigateToNotifications(this@MehActivity, theme)
-                return@OnMenuItemClickListener true
-            }
-            R.id.action_share -> {
-                IntentUtil.shareDeal(root, savedMehResponse)
-                return@OnMenuItemClickListener true
-            }
-            R.id.action_refresh -> {
-                loadMeh()
-                return@OnMenuItemClickListener true
-            }
-            R.id.nav_about -> {
-                Navigator.navigateToAbout(this@MehActivity, theme)
-                return@OnMenuItemClickListener true
-            }
-            R.id.nav_account -> {
-                IntentUtil.openUrl(this@MehActivity, getString(R.string.url_account), accentColor)
-                return@OnMenuItemClickListener true
-            }
-            R.id.nav_forum -> {
-                IntentUtil.openUrl(this@MehActivity, getString(R.string.url_forum), accentColor)
-                return@OnMenuItemClickListener true
-            }
-            R.id.nav_orders -> {
-                IntentUtil.openUrl(this@MehActivity, getString(R.string.url_orders), accentColor)
-                return@OnMenuItemClickListener true
-            }
-        }
-        false
-    }
-
     @OnClick(R.id.deal_full_specs)
     fun onFullSpecsClick() {
         if (savedMehResponse != null && savedMehResponse!!.deal != null) {
@@ -163,7 +124,48 @@ class MehActivity : BaseActivity() {
         bypass = Bypass(this)
         toolbar.setTitle(R.string.app_name)
         toolbar.inflateMenu(R.menu.menu_main)
-        toolbar.setOnMenuItemClickListener(mMenuItemClickListener)
+        if (BuildConfig.DEBUG) {
+            toolbar.inflateMenu(R.menu.post_notification)
+        }
+        toolbar.setOnMenuItemClickListener{ item->
+            var theme: Theme? = null
+            if (savedMehResponse != null && savedMehResponse!!.deal != null) {
+                theme = savedMehResponse!!.deal?.theme
+            }
+            val accentColor = if (theme == null) Color.WHITE else theme.safeAccentColor()
+            when (item.itemId) {
+                R.id.nav_notifications -> {
+                    Navigator.navigateToNotifications(this@MehActivity, theme)
+                    return@setOnMenuItemClickListener true
+                }
+                R.id.action_share -> {
+                    IntentUtil.shareDeal(root, savedMehResponse)
+                    return@setOnMenuItemClickListener true
+                }
+                R.id.action_refresh -> {
+                    loadMeh()
+                    return@setOnMenuItemClickListener true
+                }
+                R.id.action_post_notification -> ReminderTestJob.scheduleNow()
+                R.id.nav_about -> {
+                    Navigator.navigateToAbout(this@MehActivity, theme)
+                    return@setOnMenuItemClickListener true
+                }
+                R.id.nav_account -> {
+                    IntentUtil.openUrl(this@MehActivity, getString(R.string.url_account), accentColor)
+                    return@setOnMenuItemClickListener true
+                }
+                R.id.nav_forum -> {
+                    IntentUtil.openUrl(this@MehActivity, getString(R.string.url_forum), accentColor)
+                    return@setOnMenuItemClickListener true
+                }
+                R.id.nav_orders -> {
+                    IntentUtil.openUrl(this@MehActivity, getString(R.string.url_orders), accentColor)
+                    return@setOnMenuItemClickListener true
+                }
+            }
+            false
+        }
         swipeRefreshLayout.setProgressViewOffset(false, 0, resources.getDimensionPixelOffset(R.dimen.swipe_refresh_offset))
         imagePagerAdapter = ImageAdapter(false, object : ImageAdapter.Listener {
             override fun onImageClicked(view: View, position: Int) {
@@ -361,7 +363,7 @@ class MehActivity : BaseActivity() {
             buttonBuy.background.setColorFilter(foreGround, PorterDuff.Mode.MULTIPLY)
             buttonBuy.setTextColor(foreGroundInverse)
         } else {
-            buttonBuy.supportBackgroundTintList = ColorUtil.createColorStateList(accentColor, Easel.getDarkerColor(accentColor))
+            ViewCompat.setBackgroundTintList(buttonBuy, ColorUtil.createColorStateList(accentColor, Easel.getDarkerColor(accentColor)))
             buttonBuy.setTextColor(theme.safeBackgroundColor())
         }
         textFullSpecs.setTextColor(foreGround)

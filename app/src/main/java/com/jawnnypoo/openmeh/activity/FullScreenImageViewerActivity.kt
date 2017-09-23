@@ -28,11 +28,9 @@ class FullScreenImageViewerActivity : BaseActivity() {
 
         private val EXTRA_IMAGES = "images"
 
-        fun newInstance(context: Context, theme: Theme?, images: MutableList<String>): Intent {
+        fun newInstance(context: Context, theme: Theme?, images: List<String>): Intent {
             val intent = Intent(context, FullScreenImageViewerActivity::class.java)
-            if (theme != null) {
-                intent.putParcelerParcelableExtra(BaseActivity.EXTRA_THEME, theme)
-            }
+            intent.putParcelerParcelableExtra(BaseActivity.EXTRA_THEME, theme)
             intent.putParcelerParcelableExtra(EXTRA_IMAGES, images)
             return intent
         }
@@ -55,7 +53,7 @@ class FullScreenImageViewerActivity : BaseActivity() {
         setContentView(R.layout.activity_full_screen_image_viewer)
         ButterKnife.bind(this)
 
-        val images = intent.getStringArrayListExtra(EXTRA_IMAGES)
+        val images = intent.getParcelerParcelableExtra<List<String>>(EXTRA_IMAGES)
 
         val theme = intent.getParcelerParcelableExtra<Theme>(BaseActivity.Companion.EXTRA_THEME)
 

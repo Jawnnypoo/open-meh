@@ -9,7 +9,6 @@ import com.jawnnypoo.openmeh.activity.AboutActivity
 import com.jawnnypoo.openmeh.activity.FullScreenImageViewerActivity
 import com.jawnnypoo.openmeh.activity.NotificationActivity
 import com.jawnnypoo.openmeh.shared.model.Theme
-import java.util.*
 
 /**
  * Manages all navigation
@@ -26,7 +25,7 @@ object Navigator {
         activity.overridePendingTransition(R.anim.fade_in, R.anim.do_nothing)
     }
 
-    fun navigateToFullScreenImageViewer(activity: AppCompatActivity, image: View, theme: Theme?, images: MutableList<String>) {
+    fun navigateToFullScreenImageViewer(activity: AppCompatActivity, image: View, theme: Theme?, images: List<String>) {
         val intent = FullScreenImageViewerActivity.newInstance(activity, theme, images)
         val options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity, image, activity.getString(R.string.transition_images))
         activity.startActivity(intent, options.toBundle())

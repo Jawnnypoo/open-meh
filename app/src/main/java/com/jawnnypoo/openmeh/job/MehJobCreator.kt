@@ -8,7 +8,7 @@ import com.evernote.android.job.JobCreator
  */
 class MehJobCreator: JobCreator {
 
-    override fun create(tag: String?): Job? {
+    override fun create(tag: String): Job? {
         when(tag) {
             ReminderJob.TAG -> return ReminderJob()
             ReminderTestJob.TAG -> return ReminderTestJob()

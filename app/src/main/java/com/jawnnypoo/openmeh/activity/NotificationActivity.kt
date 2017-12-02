@@ -17,6 +17,7 @@ import butterknife.OnClick
 import com.commit451.addendum.parceler.getParcelerParcelableExtra
 import com.commit451.addendum.parceler.putParcelerParcelableExtra
 import com.commit451.easel.Easel
+import com.commit451.easel.tint
 import com.jawnnypoo.openmeh.R
 import com.jawnnypoo.openmeh.job.ReminderJob
 import com.jawnnypoo.openmeh.shared.model.Theme
@@ -24,6 +25,7 @@ import com.jawnnypoo.openmeh.util.Prefs
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.math.min
 
 /**
  * Notify all the things!
@@ -64,7 +66,7 @@ class NotificationActivity : BaseActivity() {
         Prefs.setNotificationPreferenceMinute(this@NotificationActivity, minute)
         ReminderJob.schedule(hourOfDay, minute)
         //Recreate for next time, starting with the newly set time
-        timePickerDialog?.setStartTime(hourOfDay, minute)
+        timePickerDialog?.setInitialSelection(hourOfDay, minute)
     }
 
     public override fun onCreate(savedInstanceState: Bundle?) {
@@ -93,14 +95,14 @@ class NotificationActivity : BaseActivity() {
         //Tint widgets
         val accentColor = theme.safeAccentColor()
         val foreGround = theme.safeForegroundColor()
-        Easel.tint(switchNotifications, accentColor, foreGround)
-        Easel.tint(checkBoxSound, accentColor)
-        Easel.tint(checkBoxVibrate, accentColor)
+        switchNotifications.tint(accentColor, foreGround)
+        checkBoxSound.tint(accentColor)
+        checkBoxVibrate.tint(accentColor)
         toolbarTitle.setTextColor(theme.safeBackgroundColor())
         toolbar.setBackgroundColor(accentColor)
         toolbar.navigationIcon?.setColorFilter(theme.safeBackgroundColor(), PorterDuff.Mode.MULTIPLY)
         if (Build.VERSION.SDK_INT >= 21) {
-            val darkerAccentColor = Easel.getDarkerColor(accentColor)
+            val darkerAccentColor = Easel.darkerColor(accentColor)
             window.statusBarColor = darkerAccentColor
             window.navigationBarColor = darkerAccentColor
         }

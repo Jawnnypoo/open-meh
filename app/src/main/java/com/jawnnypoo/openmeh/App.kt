@@ -15,7 +15,7 @@ import io.fabric.sdk.android.Fabric
 import timber.log.Timber
 
 /**
- * MehService
+ * Meh
  */
 class App : Application() {
 

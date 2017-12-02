@@ -28,6 +28,8 @@ import com.commit451.addendum.parceler.putParcelerParcelable
 import com.commit451.alakazam.Alakazam
 import com.commit451.bypassglideimagegetter.BypassGlideImageGetter
 import com.commit451.easel.Easel
+import com.commit451.easel.tint
+import com.commit451.easel.tintOverflow
 import com.commit451.reptar.ComposableSingleObserver
 import com.commit451.reptar.kotlin.fromIoToMainThread
 import com.google.android.youtube.player.YouTubeInitializationResult
@@ -263,8 +265,8 @@ class MehActivity : BaseActivity() {
         } else {
             buttonBuy.text = deal.getPriceRange() + "\n" + getString(R.string.buy_it)
             buttonBuy.setOnClickListener {
-                val color = safeAccentColor(savedMehResponse)
-                IntentUtil.openUrl(this@MehActivity, deal.getCheckoutUrl(), color)
+                val accentColor = safeAccentColor(savedMehResponse)
+                IntentUtil.openUrl(this@MehActivity, deal.getCheckoutUrl(), accentColor)
             }
         }
         root.visibility = View.VISIBLE
@@ -351,7 +353,7 @@ class MehActivity : BaseActivity() {
     fun bindTheme(deal: Deal, animate: Boolean) {
         val theme = deal.theme!!
         val accentColor = theme.safeAccentColor()
-        val darkerAccentColor = Easel.getDarkerColor(accentColor)
+        val darkerAccentColor = Easel.darkerColor(accentColor)
         val backgroundColor = theme.safeBackgroundColor()
         val foreGround = theme.safeForegroundColor()
         val foreGroundInverse = theme.safeForegroundColorInverse()
@@ -364,7 +366,7 @@ class MehActivity : BaseActivity() {
             buttonBuy.background.setColorFilter(foreGround, PorterDuff.Mode.MULTIPLY)
             buttonBuy.setTextColor(foreGroundInverse)
         } else {
-            ViewCompat.setBackgroundTintList(buttonBuy, ColorUtil.createColorStateList(accentColor, Easel.getDarkerColor(accentColor)))
+            ViewCompat.setBackgroundTintList(buttonBuy, ColorUtil.createColorStateList(accentColor, Easel.darkerColor(accentColor)))
             buttonBuy.setTextColor(theme.safeBackgroundColor())
         }
         textFullSpecs.setTextColor(foreGround)
@@ -397,8 +399,8 @@ class MehActivity : BaseActivity() {
             }
             decorView.setBackgroundColor(backgroundColor)
         }
-        Easel.tint(toolbar.menu, backgroundColor)
-        Easel.tintOverflow(toolbar, backgroundColor)
+        toolbar.menu.tint(backgroundColor)
+        toolbar.tintOverflow(backgroundColor)
         Glide.with(this)
                 .load(theme.backgroundImage)
                 .into(imageBackground)

@@ -141,8 +141,8 @@ class AboutActivity : BaseActivity() {
         toolbar.setBackgroundColor(theme.safeAccentColor())
         toolbar.navigationIcon?.setColorFilter(theme.safeBackgroundColor(), PorterDuff.Mode.MULTIPLY)
         if (Build.VERSION.SDK_INT >= 21) {
-            window.statusBarColor = Easel.getDarkerColor(accentColor)
-            window.navigationBarColor = Easel.getDarkerColor(accentColor)
+            window.statusBarColor = Easel.darkerColor(accentColor)
+            window.navigationBarColor = Easel.darkerColor(accentColor)
         }
         window.decorView.setBackgroundColor(theme.safeBackgroundColor())
     }

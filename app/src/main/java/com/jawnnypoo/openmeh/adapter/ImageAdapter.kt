@@ -29,7 +29,7 @@ class ImageAdapter(private val allowZoom: Boolean, private val listener: ImageAd
                 .into(imageView)
 
         collection.addView(v, 0)
-        v.setOnClickListener { v -> listener.onImageClicked(v, position) }
+        v.setOnClickListener { view -> listener.onImageClicked(view, position) }
         return v
     }
 

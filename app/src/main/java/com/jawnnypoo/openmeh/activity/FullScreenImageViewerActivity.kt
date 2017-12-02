@@ -58,7 +58,7 @@ class FullScreenImageViewerActivity : BaseActivity() {
         val theme = intent.getParcelerParcelableExtra<Theme>(BaseActivity.Companion.EXTRA_THEME)
 
         pagerAdapter = ImageAdapter(true, object : ImageAdapter.Listener {
-            override fun onImageClicked(v: View, position: Int) {
+            override fun onImageClicked(view: View, position: Int) {
                 //nothing yet
             }
 

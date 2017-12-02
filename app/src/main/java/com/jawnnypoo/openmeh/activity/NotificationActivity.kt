@@ -115,18 +115,6 @@ class NotificationActivity : BaseActivity() {
         timePickerDialog?.accentColor = theme.safeAccentColor()
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == android.R.id.home) {
-            finish()
-            return true
-        }
-        return super.onOptionsItemSelected(item)
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        return super.onCreateOptionsMenu(menu)
-    }
-
     override fun finish() {
         super.finish()
         overridePendingTransition(R.anim.do_nothing, R.anim.fade_out)

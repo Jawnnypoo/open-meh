@@ -296,8 +296,8 @@ class MehActivity : BaseActivity() {
         val videoUrl = video.url
         if (MehUtil.isYouTubeInstalled(this) && videoUrl != null) {
             val videoId = MehUtil.getYouTubeIdFromUrl(videoUrl)
-            Timber.d("videoId: " + videoId!!)
-            if (!TextUtils.isEmpty(videoId)) {
+            if (videoId != null) {
+                Timber.d("videoId: $videoId")
                 bindYouTubeVideo(videoId)
                 return
             }

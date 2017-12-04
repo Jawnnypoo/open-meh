@@ -12,13 +12,12 @@ object MehUtil {
 
     fun isYouTubeInstalled(context: Context): Boolean {
         val pm = context.packageManager
-        try {
+        return try {
             pm.getPackageInfo("com.google.android.youtube", PackageManager.GET_ACTIVITIES)
-            return true
-        } catch (e: PackageManager.NameNotFoundException) {
-            return false
+            true
+        } catch (e: Exception) {
+            false
         }
-
     }
 
     fun getQueryMap(url: String): Map<String, String> {

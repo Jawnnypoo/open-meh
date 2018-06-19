@@ -89,3 +89,5 @@ hs_err_pid*
 
 # Custom
 app/gradle.properties
+
+*.jks

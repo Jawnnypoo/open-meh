@@ -47,7 +47,7 @@ class ReminderJob : DailyJob() {
         }
     }
 
-    override fun onRunDailyJob(params: Params?): DailyJobResult {
+    override fun onRunDailyJob(params: Params): DailyJobResult {
         if (!Prefs.getNotificationsPreference(context)) {
             //Notifications disabled, go away
             return DailyJobResult.CANCEL
@@ -61,7 +61,7 @@ class ReminderJob : DailyJob() {
             Timber.e(error)
         }
 
-        if (response == null || response.deal == null) {
+        if (response?.deal == null) {
             Timber.e("Response was null or deal was null. Will not notify")
             return DailyJobResult.SUCCESS
         }

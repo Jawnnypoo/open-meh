@@ -27,7 +27,7 @@ class ReminderTestJob : Job() {
         }
     }
 
-    override fun onRunJob(params: Params?): Result {
+    override fun onRunJob(params: Params): Result {
         var response: MehResponse? = null
         try {
             response = App.get().meh.getMeh()
@@ -36,7 +36,7 @@ class ReminderTestJob : Job() {
             Timber.e(error)
         }
 
-        if (response == null || response.deal == null) {
+        if (response?.deal == null) {
             Timber.e("Response was null or deal was null. Will not notify")
             return Result.FAILURE
         }

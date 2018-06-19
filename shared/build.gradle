@@ -1,9 +1,11 @@
 apply plugin: 'com.android.library'
+
 apply plugin: 'kotlin-android'
+
+apply plugin: 'kotlin-kapt'
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
-    buildToolsVersion rootProject.ext.buildToolsVersion
 
     defaultConfig {
         minSdkVersion 16
@@ -23,7 +25,7 @@ android {
 }
 
 ext {
-    retrofitVersion = '2.3.0'
+    retrofitVersion = '2.4.0'
 }
 
 dependencies {
@@ -32,24 +34,21 @@ dependencies {
     api "com.android.support:appcompat-v7:$supportLibVersion"
 
     api "com.jakewharton:butterknife:$butterknifeVersion"
-    api 'com.jakewharton.timber:timber:4.6.0'
-    api 'com.squareup.moshi:moshi:1.5.0'
+    api 'com.jakewharton.timber:timber:4.7.0'
 
     api 'com.github.Commit451:Easel:3.0.0'
 
     api "com.squareup.retrofit2:retrofit:$retrofitVersion"
     api "com.squareup.retrofit2:converter-moshi:$retrofitVersion"
     api "com.squareup.retrofit2:adapter-rxjava2:$retrofitVersion"
+    api 'com.squareup.moshi:moshi:1.6.0'
+    api 'com.squareup.okhttp3:logging-interceptor:3.10.0'
 
-    api 'com.squareup.moshi:moshi:1.5.0'
+    api "io.reactivex.rxjava2:rxjava:2.1.14"
+    api 'io.reactivex.rxjava2:rxandroid:2.0.2'
 
-    api 'com.squareup.okhttp3:logging-interceptor:3.9.1'
-
-    api "io.reactivex.rxjava2:rxjava:2.1.7"
-    api 'io.reactivex.rxjava2:rxandroid:2.0.1'
-
-    api 'org.parceler:parceler-api:1.1.9'
-    kapt 'org.parceler:parceler:1.1.9'
+    api 'org.parceler:parceler-api:1.1.10'
+    kapt 'org.parceler:parceler:1.1.10'
 
     testImplementation 'junit:junit:4.12'
 }

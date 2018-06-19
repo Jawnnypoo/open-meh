@@ -13,7 +13,6 @@ import android.support.v4.view.ViewPager
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.AppCompatButton
 import android.support.v7.widget.Toolbar
-import android.text.TextUtils
 import android.text.method.LinkMovementMethod
 import android.view.View
 import android.view.ViewGroup
@@ -25,7 +24,9 @@ import butterknife.OnClick
 import com.bumptech.glide.Glide
 import com.commit451.addendum.parceler.getParcelerParcelable
 import com.commit451.addendum.parceler.putParcelerParcelable
-import com.commit451.alakazam.Alakazam
+import com.commit451.alakazam.backgroundColorAnimator
+import com.commit451.alakazam.navigationBarColorAnimator
+import com.commit451.alakazam.statusBarColorAnimator
 import com.commit451.bypassglideimagegetter.BypassGlideImageGetter
 import com.commit451.easel.Easel
 import com.commit451.easel.tint
@@ -62,9 +63,9 @@ class MehActivity : BaseActivity() {
 
     companion object {
 
-        private val STATE_MEH_RESPONSE = "STATE_MEH_RESPONSE"
-        private val EXTRA_BUY_NOW = "key_meh_response"
-        private val ANIMATION_TIME = 800
+        private const val STATE_MEH_RESPONSE = "STATE_MEH_RESPONSE"
+        private const val EXTRA_BUY_NOW = "key_meh_response"
+        private const val ANIMATION_TIME = 800
 
         fun newIntent(context: Context): Intent {
             val intent = Intent(context, MehActivity::class.java)
@@ -78,29 +79,43 @@ class MehActivity : BaseActivity() {
         }
     }
 
-    @BindView(R.id.toolbar) lateinit var toolbar: Toolbar
-    @BindView(R.id.activity_root) lateinit var root: View
-    @BindView(R.id.swipe_refresh) lateinit var swipeRefreshLayout: SwipeRefreshLayout
-    @BindView(R.id.failed) lateinit var failedView: View
-    @BindView(R.id.indicator) lateinit var indicator: CircleIndicator
-    @BindView(R.id.deal_image_background) lateinit var imageBackground: ImageView
-    @BindView(R.id.deal_image_view_pager) lateinit var viewPager: ViewPager
-    @BindView(R.id.deal_buy_button) lateinit var buttonBuy: AppCompatButton
-    @BindView(R.id.deal_title) lateinit var textTitle: TextView
-    @BindView(R.id.deal_description) lateinit var textDescription: TextView
-    @BindView(R.id.deal_full_specs) lateinit var textFullSpecs: TextView
-    @BindView(R.id.story_title) lateinit var textStoryTitle: TextView
-    @BindView(R.id.story_body) lateinit var textStoryBody: TextView
-    @BindView(R.id.video_root) lateinit var rootVideo: ViewGroup
+    @BindView(R.id.toolbar)
+    lateinit var toolbar: Toolbar
+    @BindView(R.id.activity_root)
+    lateinit var root: View
+    @BindView(R.id.swipe_refresh)
+    lateinit var swipeRefreshLayout: SwipeRefreshLayout
+    @BindView(R.id.failed)
+    lateinit var failedView: View
+    @BindView(R.id.indicator)
+    lateinit var indicator: CircleIndicator
+    @BindView(R.id.deal_image_background)
+    lateinit var imageBackground: ImageView
+    @BindView(R.id.deal_image_view_pager)
+    lateinit var viewPager: ViewPager
+    @BindView(R.id.deal_buy_button)
+    lateinit var buttonBuy: AppCompatButton
+    @BindView(R.id.deal_title)
+    lateinit var textTitle: TextView
+    @BindView(R.id.deal_description)
+    lateinit var textDescription: TextView
+    @BindView(R.id.deal_full_specs)
+    lateinit var textFullSpecs: TextView
+    @BindView(R.id.story_title)
+    lateinit var textStoryTitle: TextView
+    @BindView(R.id.story_body)
+    lateinit var textStoryBody: TextView
+    @BindView(R.id.video_root)
+    lateinit var rootVideo: ViewGroup
 
-    lateinit var imagePagerAdapter: ImageAdapter
-    var youTubeFragment: YouTubePlayerSupportFragment? = null
-    var youTubePlayer: YouTubePlayer? = null
+    private lateinit var imagePagerAdapter: ImageAdapter
+    private var youTubeFragment: YouTubePlayerSupportFragment? = null
+    private var youTubePlayer: YouTubePlayer? = null
 
-    lateinit var bypass: Bypass
-    var savedMehResponse: MehResponse? = null
-    var fullScreen = false
-    var buyOnLoad = false
+    private lateinit var bypass: Bypass
+    private var savedMehResponse: MehResponse? = null
+    private var fullScreen = false
+    private var buyOnLoad = false
 
     @OnClick(R.id.deal_full_specs)
     fun onFullSpecsClick() {
@@ -129,7 +144,7 @@ class MehActivity : BaseActivity() {
         if (BuildConfig.DEBUG) {
             toolbar.inflateMenu(R.menu.post_notification)
         }
-        toolbar.setOnMenuItemClickListener{ item->
+        toolbar.setOnMenuItemClickListener { item ->
             var theme: Theme? = null
             if (savedMehResponse != null && savedMehResponse!!.deal != null) {
                 theme = savedMehResponse!!.deal?.theme
@@ -216,7 +231,7 @@ class MehActivity : BaseActivity() {
         super.onPause()
     }
 
-    fun loadMeh() {
+    private fun loadMeh() {
         swipeRefreshLayout.isEnabled = true
         swipeRefreshLayout.isRefreshing = true
         failedView.visibility = View.GONE
@@ -251,7 +266,7 @@ class MehActivity : BaseActivity() {
                 })
     }
 
-    fun bindDeal(deal: Deal, animate: Boolean) {
+    private fun bindDeal(deal: Deal, animate: Boolean) {
         swipeRefreshLayout.isEnabled = false
         swipeRefreshLayout.isRefreshing = false
         failedView.visibility = View.GONE
@@ -292,7 +307,7 @@ class MehActivity : BaseActivity() {
         bindTheme(deal, animate)
     }
 
-    fun bindVideo(video: Video) {
+    private fun bindVideo(video: Video) {
         val videoUrl = video.url
         if (MehUtil.isYouTubeInstalled(this) && videoUrl != null) {
             val videoId = MehUtil.getYouTubeIdFromUrl(videoUrl)
@@ -305,19 +320,19 @@ class MehActivity : BaseActivity() {
         bindVideoLink(video)
     }
 
-    fun bindYouTubeVideo(videoId: String) {
+    private fun bindYouTubeVideo(videoId: String) {
         Timber.d("bindingYouTubeVideo")
 
-        youTubeFragment?.initialize(BuildConfig.OPEN_MEH_GOOGLE_API_KEY, object : YouTubePlayer.OnInitializedListener {
+        youTubeFragment?.initialize(BuildConfig.GOOGLE_API_KEY, object : YouTubePlayer.OnInitializedListener {
             override fun onInitializationSuccess(provider: YouTubePlayer.Provider, youTubePlayer: YouTubePlayer, wasRestored: Boolean) {
                 Timber.d("onInitializationSuccess")
                 this@MehActivity.youTubePlayer = youTubePlayer
                 if (!wasRestored) {
                     youTubePlayer.cueVideo(videoId)
                 }
-                youTubePlayer.setOnFullscreenListener({ b ->
+                youTubePlayer.setOnFullscreenListener { b ->
                     fullScreen = b
-                })
+                }
             }
 
             override fun onInitializationFailure(provider: YouTubePlayer.Provider, youTubeInitializationResult: YouTubeInitializationResult) {
@@ -333,7 +348,7 @@ class MehActivity : BaseActivity() {
         })
     }
 
-    fun bindVideoLink(video: Video) {
+    private fun bindVideoLink(video: Video) {
         Timber.d("YouTube didn't work. Just link it")
         supportFragmentManager.beginTransaction().remove(youTubeFragment).commitAllowingStateLoss()
         layoutInflater.inflate(R.layout.view_link_video, rootVideo)
@@ -350,7 +365,7 @@ class MehActivity : BaseActivity() {
         playIcon.drawable.setColorFilter(color, PorterDuff.Mode.MULTIPLY)
     }
 
-    fun bindTheme(deal: Deal, animate: Boolean) {
+    private fun bindTheme(deal: Deal, animate: Boolean) {
         val theme = deal.theme!!
         val accentColor = theme.safeAccentColor()
         val darkerAccentColor = Easel.darkerColor(accentColor)
@@ -377,18 +392,18 @@ class MehActivity : BaseActivity() {
 
         val decorView = window.decorView
         if (animate) {
-            Alakazam.backgroundColorAnimator(toolbar, accentColor)
+            toolbar.backgroundColorAnimator(accentColor)
                     .setDuration(ANIMATION_TIME.toLong())
                     .start()
             if (Build.VERSION.SDK_INT >= 21) {
-                Alakazam.statusBarColorAnimator(window, darkerAccentColor)
+                window.statusBarColorAnimator(darkerAccentColor)
                         .setDuration(ANIMATION_TIME.toLong())
                         .start()
-                Alakazam.navigationBarColorAnimator(window, darkerAccentColor)
+                window.navigationBarColorAnimator(darkerAccentColor)
                         .setDuration(ANIMATION_TIME.toLong())
                         .start()
             }
-            Alakazam.backgroundColorAnimator(decorView, backgroundColor)
+            decorView.backgroundColorAnimator(backgroundColor)
                     .setDuration(ANIMATION_TIME.toLong())
                     .start()
         } else {
@@ -406,7 +421,7 @@ class MehActivity : BaseActivity() {
                 .into(imageBackground)
     }
 
-    fun markdownToCharSequence(textView: TextView, markdownString: String): CharSequence {
+    private fun markdownToCharSequence(textView: TextView, markdownString: String): CharSequence {
         return bypass.markdownToSpannable(markdownString, BypassGlideImageGetter(textView, Glide.with(this)))
     }
 
@@ -423,13 +438,13 @@ class MehActivity : BaseActivity() {
         }
     }
 
-    fun showError() {
+    private fun showError() {
         failedView.visibility = View.VISIBLE
         Snackbar.make(root, R.string.error_with_server, Snackbar.LENGTH_SHORT)
                 .show()
     }
 
-    fun safeAccentColor(response: MehResponse?): Int {
+    private fun safeAccentColor(response: MehResponse?): Int {
         return response?.deal?.theme?.safeAccentColor() ?: Color.WHITE
     }
 }

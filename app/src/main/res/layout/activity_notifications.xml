@@ -15,7 +15,7 @@
             android:paddingTop="?attr/actionBarSize">
 
             <FrameLayout
-                android:id="@+id/notification_switch_root"
+                android:id="@+id/rootNotifications"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="?attr/selectableItemBackground"
@@ -26,7 +26,7 @@
                 android:paddingTop="@dimen/activity_vertical_margin">
 
                 <TextView
-                    android:id="@+id/notification_switch_label"
+                    android:id="@+id/textLabelNotifications"
                     style="?android:attr/textAppearanceMedium"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -35,7 +35,7 @@
                     android:text="@string/notifications" />
 
                 <android.support.v7.widget.SwitchCompat
-                    android:id="@+id/notification_switch"
+                    android:id="@+id/switchNotifications"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="right" />
@@ -43,7 +43,7 @@
             </FrameLayout>
 
             <FrameLayout
-                android:id="@+id/notification_time_root"
+                android:id="@+id/rootNotificationTime"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="?attr/selectableItemBackground"
@@ -54,14 +54,14 @@
                 android:paddingTop="@dimen/activity_vertical_margin">
 
                 <TextView
-                    android:id="@+id/notification_time_label"
+                    android:id="@+id/textLabelTime"
                     style="?android:attr/textAppearanceMedium"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/time_to_notify" />
 
                 <TextView
-                    android:id="@+id/notification_time"
+                    android:id="@+id/textTime"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="right"
@@ -70,7 +70,7 @@
             </FrameLayout>
 
             <FrameLayout
-                android:id="@+id/notification_sound_root"
+                android:id="@+id/rootNotificationSound"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="?attr/selectableItemBackground"
@@ -81,14 +81,14 @@
                 android:paddingTop="@dimen/activity_vertical_margin">
 
                 <TextView
-                    android:id="@+id/notification_sound_label"
+                    android:id="@+id/textLabelSound"
                     style="?android:attr/textAppearanceMedium"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/sound" />
 
                 <CheckBox
-                    android:id="@+id/notification_sound"
+                    android:id="@+id/checkBoxSound"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="right" />
@@ -96,7 +96,7 @@
             </FrameLayout>
 
             <FrameLayout
-                android:id="@+id/notification_vibrate_root"
+                android:id="@+id/rootVibrate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="?attr/selectableItemBackground"
@@ -107,14 +107,14 @@
                 android:paddingTop="@dimen/activity_vertical_margin">
 
                 <TextView
-                    android:id="@+id/notification_vibrate_label"
+                    android:id="@+id/textLabelVibrate"
                     style="?android:attr/textAppearanceMedium"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/vibrate" />
 
                 <CheckBox
-                    android:id="@+id/notification_vibrate"
+                    android:id="@+id/checkBoxVibrate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="right" />
@@ -137,7 +137,7 @@
             android:background="?attr/colorPrimary">
 
             <TextView
-                android:id="@+id/toolbar_title"
+                android:id="@+id/textToolbarTitle"
                 style="@style/TextAppearance.Widget.AppCompat.Toolbar.Title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

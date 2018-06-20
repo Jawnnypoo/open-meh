@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -20,13 +20,13 @@
     </android.support.design.widget.AppBarLayout>
 
     <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/swipe_refresh"
+        android:id="@+id/swipeRefreshLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <android.support.v4.widget.NestedScrollView
-            android:id="@+id/activity_root"
+            android:id="@+id/rootContent"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:visibility="gone">
@@ -36,14 +36,13 @@
                 android:layout_height="wrap_content">
 
                 <ImageView
-                    android:id="@+id/deal_image_background"
+                    android:id="@+id/imageDealBackground"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:contentDescription="@null"
                     android:visibility="gone"
-                    tools:src="@drawable/ic_about_24dp"/>
-
+                    tools:src="@drawable/ic_about_24dp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -53,7 +52,7 @@
                     android:paddingTop="?attr/actionBarSize">
 
                     <android.support.v4.view.ViewPager
-                        android:id="@+id/deal_image_view_pager"
+                        android:id="@+id/viewPager"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/image_size" />
 
@@ -63,7 +62,7 @@
                         android:layout_height="40dp" />
 
                     <android.support.v7.widget.AppCompatButton
-                        android:id="@+id/deal_buy_button"
+                        android:id="@+id/buttonBuy"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/activity_horizontal_margin"
@@ -71,7 +70,7 @@
                         android:text="@string/buy_it" />
 
                     <TextView
-                        android:id="@+id/deal_title"
+                        android:id="@+id/textTitle"
                         style="@style/Base.TextAppearance.AppCompat.Headline"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -81,14 +80,14 @@
                         android:paddingTop="@dimen/activity_vertical_margin" />
 
                     <TextView
-                        android:id="@+id/deal_description"
+                        android:id="@+id/textDescription"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:paddingLeft="@dimen/activity_horizontal_margin"
                         android:paddingRight="@dimen/activity_horizontal_margin" />
 
                     <TextView
-                        android:id="@+id/deal_full_specs"
+                        android:id="@+id/textFullSpecs"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="@dimen/activity_vertical_margin"
@@ -97,7 +96,7 @@
                         android:text="@string/full_product_specs" />
 
                     <TextView
-                        android:id="@+id/story_title"
+                        android:id="@+id/textStoryTitle"
                         style="@style/Text.Huge"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -111,14 +110,14 @@
                         android:shadowRadius="1" />
 
                     <TextView
-                        android:id="@+id/story_body"
+                        android:id="@+id/textStoryBody"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:paddingLeft="@dimen/activity_horizontal_margin"
                         android:paddingRight="@dimen/activity_horizontal_margin" />
 
                     <FrameLayout
-                        android:id="@+id/video_root"
+                        android:id="@+id/rootVideo"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="@dimen/activity_vertical_margin"
@@ -133,7 +132,7 @@
     </android.support.v4.widget.SwipeRefreshLayout>
 
     <LinearLayout
-        android:id="@+id/failed"
+        android:id="@+id/rootFailed"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"

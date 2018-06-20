@@ -30,7 +30,5 @@ dependencies {
     implementation "com.android.support:appcompat-v7:$supportLibVersion"
     implementation "com.android.support:recyclerview-v7:$supportLibVersion"
 
-    kapt "com.jakewharton:butterknife-compiler:$butterknifeVersion"
-
     implementation project(':shared')
 }

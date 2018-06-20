@@ -33,7 +33,6 @@ dependencies {
 
     api "com.android.support:appcompat-v7:$supportLibVersion"
 
-    api "com.jakewharton:butterknife:$butterknifeVersion"
     api 'com.jakewharton.timber:timber:4.7.0'
 
     api 'com.github.Commit451:Easel:3.0.0'

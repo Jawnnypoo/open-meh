@@ -11,13 +11,7 @@ import android.hardware.SensorManager
 import android.os.Build
 import android.os.Bundle
 import android.support.design.widget.Snackbar
-import android.support.v7.widget.Toolbar
-import android.view.View
 import android.widget.FrameLayout
-import android.widget.TextView
-import butterknife.BindView
-import butterknife.ButterKnife
-import butterknife.OnClick
 import com.bumptech.glide.Glide
 import com.commit451.addendum.parceler.getParcelerParcelableExtra
 import com.commit451.addendum.parceler.putParcelerParcelableExtra
@@ -34,6 +28,7 @@ import com.jawnnypoo.physicslayout.Physics
 import com.jawnnypoo.physicslayout.PhysicsConfig
 import com.jawnnypoo.physicslayout.PhysicsFrameLayout
 import de.hdodenhof.circleimageview.CircleImageView
+import kotlinx.android.synthetic.main.activity_about.*
 import org.jbox2d.common.Vec2
 import timber.log.Timber
 
@@ -44,8 +39,8 @@ class AboutActivity : BaseActivity() {
 
     companion object {
 
-        private val REPO_USER = "Jawnnypoo"
-        private val REPO_NAME = "open-meh"
+        private const val REPO_USER = "Jawnnypoo"
+        private const val REPO_NAME = "open-meh"
 
         fun newInstance(context: Context, theme: Theme?): Intent {
             val intent = Intent(context, AboutActivity::class.java)
@@ -55,12 +50,6 @@ class AboutActivity : BaseActivity() {
             return intent
         }
     }
-
-    @BindView(R.id.root) lateinit var root: View
-    @BindView(R.id.toolbar) lateinit var toolbar: Toolbar
-    @BindView(R.id.toolbar_title) lateinit var toolbarTitle: TextView
-    @BindView(R.id.contributors) lateinit var textContributors: TextView
-    @BindView(R.id.physics_layout) lateinit var physicsLayout: PhysicsFrameLayout
 
     lateinit var sensorManager: SensorManager
     var gravitySensor: Sensor? = null
@@ -80,21 +69,14 @@ class AboutActivity : BaseActivity() {
         override fun onAccuracyChanged(sensor: Sensor, accuracy: Int) {}
     }
 
-    @OnClick(R.id.sauce)
-    fun onSauceClick() {
-        val color = theme?.safeAccentColor() ?: Color.WHITE
-        IntentUtil.openUrl(this, getString(R.string.source_url), color)
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         gimbal = Gimbal(this)
         gimbal.lock()
         setContentView(R.layout.activity_about)
-        ButterKnife.bind(this)
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back_24dp)
         toolbar.setNavigationOnClickListener { onBackPressed() }
-        toolbarTitle.setText(R.string.about)
+        textToolbarTitle.setText(R.string.about)
         physicsLayout.physics.enableFling()
         sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
         gravitySensor = sensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY)
@@ -117,6 +99,11 @@ class AboutActivity : BaseActivity() {
                                 .show()
                     }
                 })
+
+        rootSource.setOnClickListener {
+            val color = theme?.safeAccentColor() ?: Color.WHITE
+            IntentUtil.openUrl(this, getString(R.string.source_url), color)
+        }
     }
 
     override fun onResume() {
@@ -137,7 +124,7 @@ class AboutActivity : BaseActivity() {
     private fun applyTheme(theme: Theme) {
         //Tint widgets
         val accentColor = theme.safeAccentColor()
-        toolbarTitle.setTextColor(theme.safeBackgroundColor())
+        textToolbarTitle.setTextColor(theme.safeBackgroundColor())
         toolbar.setBackgroundColor(theme.safeAccentColor())
         toolbar.navigationIcon?.setColorFilter(theme.safeBackgroundColor(), PorterDuff.Mode.MULTIPLY)
         if (Build.VERSION.SDK_INT >= 21) {
@@ -168,7 +155,7 @@ class AboutActivity : BaseActivity() {
             imageView.x = x.toFloat()
             imageView.y = y.toFloat()
 
-            x = x + imageSize
+            x += imageSize
             if (x > physicsLayout.width) {
                 x = 0
                 y = (y + imageSize) % physicsLayout.height

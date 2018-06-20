@@ -18,9 +18,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import butterknife.BindView
-import butterknife.ButterKnife
-import butterknife.OnClick
 import com.bumptech.glide.Glide
 import com.commit451.addendum.parceler.getParcelerParcelable
 import com.commit451.addendum.parceler.putParcelerParcelable
@@ -53,6 +50,7 @@ import com.jawnnypoo.openmeh.util.IntentUtil
 import com.jawnnypoo.openmeh.util.MehUtil
 import com.jawnnypoo.openmeh.util.Navigator
 import com.novoda.simplechromecustomtabs.SimpleChromeCustomTabs
+import kotlinx.android.synthetic.main.activity_meh.*
 import me.relex.circleindicator.CircleIndicator
 import timber.log.Timber
 
@@ -79,35 +77,6 @@ class MehActivity : BaseActivity() {
         }
     }
 
-    @BindView(R.id.toolbar)
-    lateinit var toolbar: Toolbar
-    @BindView(R.id.activity_root)
-    lateinit var root: View
-    @BindView(R.id.swipe_refresh)
-    lateinit var swipeRefreshLayout: SwipeRefreshLayout
-    @BindView(R.id.failed)
-    lateinit var failedView: View
-    @BindView(R.id.indicator)
-    lateinit var indicator: CircleIndicator
-    @BindView(R.id.deal_image_background)
-    lateinit var imageBackground: ImageView
-    @BindView(R.id.deal_image_view_pager)
-    lateinit var viewPager: ViewPager
-    @BindView(R.id.deal_buy_button)
-    lateinit var buttonBuy: AppCompatButton
-    @BindView(R.id.deal_title)
-    lateinit var textTitle: TextView
-    @BindView(R.id.deal_description)
-    lateinit var textDescription: TextView
-    @BindView(R.id.deal_full_specs)
-    lateinit var textFullSpecs: TextView
-    @BindView(R.id.story_title)
-    lateinit var textStoryTitle: TextView
-    @BindView(R.id.story_body)
-    lateinit var textStoryBody: TextView
-    @BindView(R.id.video_root)
-    lateinit var rootVideo: ViewGroup
-
     private lateinit var imagePagerAdapter: ImageAdapter
     private var youTubeFragment: YouTubePlayerSupportFragment? = null
     private var youTubePlayer: YouTubePlayer? = null
@@ -117,27 +86,10 @@ class MehActivity : BaseActivity() {
     private var fullScreen = false
     private var buyOnLoad = false
 
-    @OnClick(R.id.deal_full_specs)
-    fun onFullSpecsClick() {
-        if (savedMehResponse != null && savedMehResponse!!.deal != null) {
-            val topicUrl = savedMehResponse?.deal?.topic?.url
-            if (topicUrl != null) {
-                val color = safeAccentColor(savedMehResponse)
-                IntentUtil.openUrl(this, topicUrl, color)
-            }
-        }
-    }
-
-    @OnClick(R.id.failed)
-    fun onErrorClick() {
-        loadMeh()
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         layoutInflater.factory = this
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_meh)
-        ButterKnife.bind(this)
         bypass = Bypass(this)
         toolbar.setTitle(R.string.app_name)
         toolbar.inflateMenu(R.menu.menu_main)
@@ -188,15 +140,25 @@ class MehActivity : BaseActivity() {
             override fun onImageClicked(view: View, position: Int) {
                 val photos = savedMehResponse?.deal?.photos
                 if (photos != null) {
-                    Navigator.navigateToFullScreenImageViewer(this@MehActivity, view, savedMehResponse?.deal?.theme, photos)
+                    Navigator.navigateToFullScreenImageViewer(this@MehActivity, view, savedMehResponse?.deal?.theme, photos, viewPager.currentItem)
                 }
             }
         })
         viewPager.adapter = imagePagerAdapter
 
+        rootFailed.setOnClickListener {
+            loadMeh()
+        }
+        textFullSpecs.setOnClickListener {
+            val topicUrl = savedMehResponse?.deal?.topic?.url
+            if (topicUrl != null) {
+                val color = safeAccentColor(savedMehResponse)
+                IntentUtil.openUrl(this, topicUrl, color)
+            }
+        }
         youTubeFragment = YouTubePlayerSupportFragment.newInstance()
         supportFragmentManager.beginTransaction()
-                .replace(R.id.video_root, youTubeFragment)
+                .replace(R.id.rootVideo, youTubeFragment)
                 .commit()
         if (savedInstanceState != null) {
             savedMehResponse = savedInstanceState.getParcelerParcelable<MehResponse>(STATE_MEH_RESPONSE)
@@ -234,9 +196,9 @@ class MehActivity : BaseActivity() {
     private fun loadMeh() {
         swipeRefreshLayout.isEnabled = true
         swipeRefreshLayout.isRefreshing = true
-        failedView.visibility = View.GONE
-        root.visibility = View.GONE
-        imageBackground.visibility = View.GONE
+        rootFailed.visibility = View.GONE
+        rootContent.visibility = View.GONE
+        imageDealBackground.visibility = View.GONE
         App.get().meh.getMeh()
                 .compose(bindToLifecycle())
                 .fromIoToMainThread()
@@ -269,7 +231,7 @@ class MehActivity : BaseActivity() {
     private fun bindDeal(deal: Deal, animate: Boolean) {
         swipeRefreshLayout.isEnabled = false
         swipeRefreshLayout.isRefreshing = false
-        failedView.visibility = View.GONE
+        rootFailed.visibility = View.GONE
         imagePagerAdapter.setData(deal.photos)
         val color = deal.theme?.safeForegroundColor() ?: Color.WHITE
         indicator.setIndicatorBackgroundTint(color)
@@ -284,13 +246,13 @@ class MehActivity : BaseActivity() {
                 IntentUtil.openUrl(this@MehActivity, deal.getCheckoutUrl(), accentColor)
             }
         }
-        root.visibility = View.VISIBLE
-        imageBackground.visibility = View.VISIBLE
+        rootContent.visibility = View.VISIBLE
+        imageDealBackground.visibility = View.VISIBLE
         if (animate) {
-            root.alpha = 0f
-            root.animate().alpha(1.0f).setDuration(ANIMATION_TIME.toLong()).startDelay = ANIMATION_TIME.toLong()
-            imageBackground.alpha = 0f
-            imageBackground.animate().alpha(1.0f).setStartDelay(ANIMATION_TIME.toLong()).setDuration(ANIMATION_TIME.toLong()).startDelay = ANIMATION_TIME.toLong()
+            rootContent.alpha = 0f
+            rootContent.animate().alpha(1.0f).setDuration(ANIMATION_TIME.toLong()).startDelay = ANIMATION_TIME.toLong()
+            imageDealBackground.alpha = 0f
+            imageDealBackground.animate().alpha(1.0f).setStartDelay(ANIMATION_TIME.toLong()).setDuration(ANIMATION_TIME.toLong()).startDelay = ANIMATION_TIME.toLong()
         }
         textTitle.text = deal.title
         textDescription.text = markdownToCharSequence(textDescription, deal.features!!)
@@ -418,7 +380,7 @@ class MehActivity : BaseActivity() {
         toolbar.tintOverflow(backgroundColor)
         Glide.with(this)
                 .load(theme.backgroundImage)
-                .into(imageBackground)
+                .into(imageDealBackground)
     }
 
     private fun markdownToCharSequence(textView: TextView, markdownString: String): CharSequence {
@@ -439,7 +401,7 @@ class MehActivity : BaseActivity() {
     }
 
     private fun showError() {
-        failedView.visibility = View.VISIBLE
+        rootFailed.visibility = View.VISIBLE
         Snackbar.make(root, R.string.error_with_server, Snackbar.LENGTH_SHORT)
                 .show()
     }

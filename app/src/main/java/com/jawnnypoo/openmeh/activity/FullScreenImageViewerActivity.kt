@@ -5,19 +5,13 @@ import android.content.Intent
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
 import android.os.Bundle
-import android.support.v4.view.ViewPager
 import android.view.View
-import android.widget.FrameLayout
-import android.widget.ImageView
-import butterknife.BindView
-import butterknife.ButterKnife
-import butterknife.OnClick
 import com.commit451.addendum.parceler.getParcelerParcelableExtra
 import com.commit451.addendum.parceler.putParcelerParcelableExtra
 import com.jawnnypoo.openmeh.R
 import com.jawnnypoo.openmeh.adapter.ImageAdapter
 import com.jawnnypoo.openmeh.shared.model.Theme
-import me.relex.circleindicator.CircleIndicator
+import kotlinx.android.synthetic.main.activity_full_screen_image_viewer.*
 
 /**
  * Shows the full screen images
@@ -26,32 +20,23 @@ class FullScreenImageViewerActivity : BaseActivity() {
 
     companion object {
 
-        private val EXTRA_IMAGES = "images"
+        private const val EXTRA_IMAGES = "images"
+        private const val EXTRA_INDEX = "index"
 
-        fun newInstance(context: Context, theme: Theme?, images: List<String>): Intent {
+        fun newInstance(context: Context, theme: Theme?, images: List<String>, index: Int): Intent {
             val intent = Intent(context, FullScreenImageViewerActivity::class.java)
             intent.putParcelerParcelableExtra(BaseActivity.EXTRA_THEME, theme)
             intent.putParcelerParcelableExtra(EXTRA_IMAGES, images)
+            intent.putExtra(EXTRA_INDEX, index)
             return intent
         }
     }
 
-    @BindView(R.id.close) lateinit var buttonClose: ImageView
-    @BindView(R.id.images) lateinit var imageViewPager: ViewPager
-    @BindView(R.id.indicator) lateinit var indicator: CircleIndicator
-    @BindView(R.id.root) lateinit var root: FrameLayout
-
-    lateinit var pagerAdapter: ImageAdapter
-
-    @OnClick(R.id.close)
-    fun onCloseClicked() {
-        onBackPressed()
-    }
+    private lateinit var pagerAdapter: ImageAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_full_screen_image_viewer)
-        ButterKnife.bind(this)
 
         val images = intent.getParcelerParcelableExtra<List<String>>(EXTRA_IMAGES)
 
@@ -63,14 +48,17 @@ class FullScreenImageViewerActivity : BaseActivity() {
             }
 
         })
-        imageViewPager.adapter = pagerAdapter
+        viewPager.adapter = pagerAdapter
         pagerAdapter.setData(images)
         if (theme != null) {
             buttonClose.drawable.colorFilter = PorterDuffColorFilter(theme.safeForegroundColor(), PorterDuff.Mode.MULTIPLY)
             root.setBackgroundColor(theme.safeBackgroundColor())
             indicator.setIndicatorBackgroundTint(theme.safeForegroundColor())
         }
-        indicator.setViewPager(imageViewPager)
+        indicator.setViewPager(viewPager)
+        buttonClose.setOnClickListener { onBackPressed() }
+        val index = intent.getIntExtra(EXTRA_INDEX, 0)
+        viewPager.setCurrentItem(index, false)
     }
 
     override fun onBackPressed() {

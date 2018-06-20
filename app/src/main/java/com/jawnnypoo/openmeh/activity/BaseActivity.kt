@@ -5,8 +5,8 @@ import com.trello.rxlifecycle2.components.support.RxAppCompatActivity
 /**
  * The Activity to father them all
  */
-open class BaseActivity : RxAppCompatActivity() {
+abstract class BaseActivity : RxAppCompatActivity() {
     companion object {
-        val EXTRA_THEME = "EXTRA_THEME"
+        const val EXTRA_THEME = "EXTRA_THEME"
     }
 }

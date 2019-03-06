@@ -1,6 +1,6 @@
 package com.jawnnypoo.openmeh.adapter
 
-import android.support.v4.view.PagerAdapter
+import androidx.viewpager.widget.PagerAdapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,7 +12,7 @@ import java.util.*
 /**
  * Simple PagerAdapter that shows images
  */
-class ImageAdapter(private val allowZoom: Boolean, private val listener: ImageAdapter.Listener) : PagerAdapter() {
+class ImageAdapter(private val allowZoom: Boolean, private val listener: ImageAdapter.Listener) : androidx.viewpager.widget.PagerAdapter() {
 
     private val data: ArrayList<String> = ArrayList()
 

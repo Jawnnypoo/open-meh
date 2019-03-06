@@ -13,27 +13,27 @@ android {
     //doing it this way allows values to be left blank
     project.ext {
         MEH_API_KEY = project.hasProperty("MEH_API_KEY") ? project.MEH_API_KEY : "\"\""
-        GOOGLE_API_KEY = project.hasProperty("GOOGLE_API_KEY") ? project.GOOGLE_API_KEY : "\"\""
         FABRIC_KEY = project.hasProperty("FABRIC_KEY") ? project.FABRIC_KEY : ""
         KEYSTORE_PATH = project.hasProperty("KEYSTORE_PATH") ? project.KEYSTORE_PATH : " "
         KEYSTORE_PASSWORD = project.hasProperty("KEYSTORE_PASSWORD") ? project.KEYSTORE_PASSWORD : " "
         KEY_PASSWORD = project.hasProperty("KEY_PASSWORD") ? project.KEY_PASSWORD : " "
-
     }
 
     compileSdkVersion rootProject.ext.compileSdkVersion
 
     defaultConfig {
         applicationId "com.jawnnypoo.openmeh"
-        minSdkVersion 16
+        minSdkVersion 21
         targetSdkVersion rootProject.ext.compileSdkVersion
         versionCode 132
         versionName "1.3.2"
         buildConfigField "String", "MEH_API_KEY", project.ext.MEH_API_KEY
-        buildConfigField "String", "GOOGLE_API_KEY", project.ext.GOOGLE_API_KEY
         manifestPlaceholders = [fabric_key: project.ext.FABRIC_KEY]
+    }
 
-        vectorDrawables.useSupportLibrary = true
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 
     signingConfigs {
@@ -65,31 +65,22 @@ android {
     }
 }
 
-ext {
-    reptarVersion = '2.5.1'
-}
-
 dependencies {
-    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation "androidx.appcompat:appcompat:1.0.2"
+    implementation "androidx.recyclerview:recyclerview:1.0.0"
+    implementation "androidx.browser:browser:1.0.0"
 
-    implementation "com.android.support:appcompat-v7:$supportLibVersion"
-    implementation "com.android.support:design:$supportLibVersion"
-    implementation "com.android.support:support-v13:$supportLibVersion"
-    implementation "com.android.support:recyclerview-v7:$supportLibVersion"
-    implementation "com.android.support:customtabs:$supportLibVersion"
+    implementation "com.google.android.material:material:1.0.0"
 
-    implementation 'com.trello.rxlifecycle2:rxlifecycle-components:2.2.1'
+    implementation 'com.trello.rxlifecycle2:rxlifecycle-components:2.2.2'
 
-    implementation "com.github.Commit451.Reptar:reptar:$reptarVersion@aar"
-    implementation "com.github.Commit451.Reptar:reptar-kotlin:$reptarVersion@aar"
+    implementation 'com.github.bumptech.glide:glide:4.9.0'
 
-    implementation 'com.github.bumptech.glide:glide:4.7.1'
+    implementation 'de.hdodenhof:circleimageview:3.0.0'
 
-    implementation 'de.hdodenhof:circleimageview:2.2.0'
+    implementation 'com.wdullaer:materialdatetimepicker:4.1.2'
 
-    implementation 'com.wdullaer:materialdatetimepicker:3.6.0'
-
-    implementation 'com.github.Jawnnypoo:PhysicsLayout:2.1.0'
+    implementation 'com.github.Jawnnypoo:PhysicsLayout:2.2.0'
     implementation 'com.github.Jawnnypoo:CircleIndicator:1.4.0'
 
     implementation "com.github.Commit451.Addendum:addendum:$addendumVersion"
@@ -98,11 +89,11 @@ dependencies {
     implementation "com.github.Commit451.Addendum:addendum-parceler:$addendumVersion"
     implementation 'com.github.Commit451:BypassGlideImageGetter:1.0.1'
     implementation 'com.github.Commit451:Gimbal:2.0.2'
-    implementation 'com.github.Commit451:Alakazam:2.0.0'
+    implementation 'com.github.Commit451:Alakazam:2.1.0'
 
-    implementation 'com.github.chrisbanes:PhotoView:2.1.3'
+    implementation 'com.github.chrisbanes:PhotoView:2.3.0'
 
-    implementation 'com.crashlytics.sdk.android:crashlytics:2.9.4'
+    implementation 'com.crashlytics.sdk.android:crashlytics:2.9.9'
 
     implementation 'com.novoda:simple-chrome-custom-tabs:0.1.6'
 

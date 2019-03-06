@@ -61,7 +61,7 @@ class NotificationActivity : BaseActivity() {
         timeToAlert.set(Calendar.MINUTE, Prefs.getNotificationPreferenceMinute(this))
         setupUi()
         rootNotifications.setOnClickListener { switchNotifications.toggle() }
-        rootNotificationTime.setOnClickListener { timePickerDialog?.show(fragmentManager, TAG_TIME_PICKER) }
+        rootNotificationTime.setOnClickListener { timePickerDialog?.show(supportFragmentManager, TAG_TIME_PICKER) }
         rootNotificationSound.setOnClickListener { checkBoxSound.toggle() }
         rootVibrate.setOnClickListener { checkBoxVibrate.toggle() }
         timePickerDialog = fragmentManager.findFragmentByTag(TAG_TIME_PICKER) as? TimePickerDialog

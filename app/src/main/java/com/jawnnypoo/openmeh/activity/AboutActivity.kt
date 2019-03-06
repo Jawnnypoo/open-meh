@@ -10,15 +10,13 @@ import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.os.Build
 import android.os.Bundle
-import android.support.design.widget.Snackbar
+import com.google.android.material.snackbar.Snackbar
 import android.widget.FrameLayout
 import com.bumptech.glide.Glide
 import com.commit451.addendum.parceler.getParcelerParcelableExtra
 import com.commit451.addendum.parceler.putParcelerParcelableExtra
 import com.commit451.easel.Easel
 import com.commit451.gimbal.Gimbal
-import com.commit451.reptar.ComposableSingleObserver
-import com.commit451.reptar.kotlin.fromIoToMainThread
 import com.jawnnypoo.openmeh.R
 import com.jawnnypoo.openmeh.github.Contributor
 import com.jawnnypoo.openmeh.github.GitHubClient
@@ -26,8 +24,9 @@ import com.jawnnypoo.openmeh.shared.model.Theme
 import com.jawnnypoo.openmeh.util.IntentUtil
 import com.jawnnypoo.physicslayout.Physics
 import com.jawnnypoo.physicslayout.PhysicsConfig
-import com.jawnnypoo.physicslayout.PhysicsFrameLayout
 import de.hdodenhof.circleimageview.CircleImageView
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_about.*
 import org.jbox2d.common.Vec2
 import timber.log.Timber
@@ -87,17 +86,14 @@ class AboutActivity : BaseActivity() {
 
         GitHubClient.contributors(REPO_USER, REPO_NAME)
                 .compose(bindToLifecycle())
-                .fromIoToMainThread()
-                .subscribe(object : ComposableSingleObserver<List<Contributor>>() {
-                    override fun success(t: List<Contributor>) {
-                        physicsLayout.post { addContributors(t) }
-                    }
-
-                    override fun error(t: Throwable) {
-                        Timber.e(t)
-                        Snackbar.make(window.decorView, R.string.error_getting_contributors, Snackbar.LENGTH_SHORT)
-                                .show()
-                    }
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    physicsLayout.post { addContributors(it) }
+                }, {
+                    Timber.e(it)
+                    Snackbar.make(window.decorView, R.string.error_getting_contributors, Snackbar.LENGTH_SHORT)
+                        .show()
                 })
 
         rootSource.setOnClickListener {

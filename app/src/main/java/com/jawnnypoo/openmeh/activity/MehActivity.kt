@@ -7,17 +7,11 @@ import android.graphics.Color
 import android.graphics.PorterDuff
 import android.os.Build
 import android.os.Bundle
-import android.support.design.widget.Snackbar
-import android.support.v4.view.ViewCompat
-import android.support.v4.view.ViewPager
-import android.support.v4.widget.SwipeRefreshLayout
-import android.support.v7.widget.AppCompatButton
-import android.support.v7.widget.Toolbar
 import android.text.method.LinkMovementMethod
 import android.view.View
-import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.view.ViewCompat
 import com.bumptech.glide.Glide
 import com.commit451.addendum.parceler.getParcelerParcelable
 import com.commit451.addendum.parceler.putParcelerParcelable
@@ -28,11 +22,7 @@ import com.commit451.bypassglideimagegetter.BypassGlideImageGetter
 import com.commit451.easel.Easel
 import com.commit451.easel.tint
 import com.commit451.easel.tintOverflow
-import com.commit451.reptar.ComposableSingleObserver
-import com.commit451.reptar.kotlin.fromIoToMainThread
-import com.google.android.youtube.player.YouTubeInitializationResult
-import com.google.android.youtube.player.YouTubePlayer
-import com.google.android.youtube.player.YouTubePlayerSupportFragment
+import com.google.android.material.snackbar.Snackbar
 import com.jawnnypoo.openmeh.App
 import com.jawnnypoo.openmeh.BuildConfig
 import com.jawnnypoo.openmeh.R
@@ -47,11 +37,11 @@ import com.jawnnypoo.openmeh.shared.model.Video
 import com.jawnnypoo.openmeh.shared.response.MehResponse
 import com.jawnnypoo.openmeh.util.ColorUtil
 import com.jawnnypoo.openmeh.util.IntentUtil
-import com.jawnnypoo.openmeh.util.MehUtil
 import com.jawnnypoo.openmeh.util.Navigator
 import com.novoda.simplechromecustomtabs.SimpleChromeCustomTabs
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_meh.*
-import me.relex.circleindicator.CircleIndicator
 import timber.log.Timber
 
 /**
@@ -78,12 +68,9 @@ class MehActivity : BaseActivity() {
     }
 
     private lateinit var imagePagerAdapter: ImageAdapter
-    private var youTubeFragment: YouTubePlayerSupportFragment? = null
-    private var youTubePlayer: YouTubePlayer? = null
 
     private lateinit var bypass: Bypass
     private var savedMehResponse: MehResponse? = null
-    private var fullScreen = false
     private var buyOnLoad = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -156,10 +143,6 @@ class MehActivity : BaseActivity() {
                 IntentUtil.openUrl(this, topicUrl, color)
             }
         }
-        youTubeFragment = YouTubePlayerSupportFragment.newInstance()
-        supportFragmentManager.beginTransaction()
-                .replace(R.id.rootVideo, youTubeFragment)
-                .commit()
         if (savedInstanceState != null) {
             savedMehResponse = savedInstanceState.getParcelerParcelable<MehResponse>(STATE_MEH_RESPONSE)
             val response = savedMehResponse
@@ -201,30 +184,27 @@ class MehActivity : BaseActivity() {
         imageDealBackground.visibility = View.GONE
         App.get().meh.getMeh()
                 .compose(bindToLifecycle())
-                .fromIoToMainThread()
-                .subscribe(object : ComposableSingleObserver<MehResponse>() {
-                    override fun success(response: MehResponse) {
-                        swipeRefreshLayout.isEnabled = false
-                        swipeRefreshLayout.isRefreshing = false
-                        if (response.deal == null) {
-                            Timber.e("There was a meh response, but it was null or the deal was null or something")
-                            showError()
-                            return
-                        }
-                        savedMehResponse = response
-                        bindDeal(response.deal!!, true)
-                        if (buyOnLoad) {
-                            buttonBuy.callOnClick()
-                            buyOnLoad = false
-                        }
-                    }
-
-                    override fun error(t: Throwable) {
-                        swipeRefreshLayout.isEnabled = false
-                        swipeRefreshLayout.isRefreshing = false
-                        Timber.e(t)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ response->
+                    swipeRefreshLayout.isEnabled = false
+                    swipeRefreshLayout.isRefreshing = false
+                    if (response.deal == null) {
+                        Timber.e("There was a meh response, but it was null or the deal was null or something")
                         showError()
+                        return@subscribe
                     }
+                    savedMehResponse = response
+                    bindDeal(response.deal!!, true)
+                    if (buyOnLoad) {
+                        buttonBuy.callOnClick()
+                        buyOnLoad = false
+                    }
+                }, {
+                    swipeRefreshLayout.isEnabled = false
+                    swipeRefreshLayout.isRefreshing = false
+                    Timber.e(it)
+                    showError()
                 })
     }
 
@@ -270,49 +250,10 @@ class MehActivity : BaseActivity() {
     }
 
     private fun bindVideo(video: Video) {
-        val videoUrl = video.url
-        if (MehUtil.isYouTubeInstalled(this) && videoUrl != null) {
-            val videoId = MehUtil.getYouTubeIdFromUrl(videoUrl)
-            if (videoId != null) {
-                Timber.d("videoId: $videoId")
-                bindYouTubeVideo(videoId)
-                return
-            }
-        }
         bindVideoLink(video)
     }
 
-    private fun bindYouTubeVideo(videoId: String) {
-        Timber.d("bindingYouTubeVideo")
-
-        youTubeFragment?.initialize(BuildConfig.GOOGLE_API_KEY, object : YouTubePlayer.OnInitializedListener {
-            override fun onInitializationSuccess(provider: YouTubePlayer.Provider, youTubePlayer: YouTubePlayer, wasRestored: Boolean) {
-                Timber.d("onInitializationSuccess")
-                this@MehActivity.youTubePlayer = youTubePlayer
-                if (!wasRestored) {
-                    youTubePlayer.cueVideo(videoId)
-                }
-                youTubePlayer.setOnFullscreenListener { b ->
-                    fullScreen = b
-                }
-            }
-
-            override fun onInitializationFailure(provider: YouTubePlayer.Provider, youTubeInitializationResult: YouTubeInitializationResult) {
-                Timber.d("onInitializationFailure")
-                supportFragmentManager
-                        .beginTransaction()
-                        .remove(youTubeFragment)
-                        .commit()
-                savedMehResponse?.video?.let {
-                    bindVideoLink(it)
-                }
-            }
-        })
-    }
-
     private fun bindVideoLink(video: Video) {
-        Timber.d("YouTube didn't work. Just link it")
-        supportFragmentManager.beginTransaction().remove(youTubeFragment).commitAllowingStateLoss()
         layoutInflater.inflate(R.layout.view_link_video, rootVideo)
         rootVideo.setOnClickListener {
             video.url?.let {
@@ -390,14 +331,6 @@ class MehActivity : BaseActivity() {
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putParcelerParcelable(STATE_MEH_RESPONSE, savedMehResponse)
-    }
-
-    override fun onBackPressed() {
-        if (fullScreen) {
-            youTubePlayer?.setFullscreen(false)
-        } else {
-            super.onBackPressed()
-        }
     }
 
     private fun showError() {

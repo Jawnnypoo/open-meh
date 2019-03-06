@@ -1,8 +1,8 @@
 package com.jawnnypoo.openmeh.util
 
 import android.app.Activity
-import android.support.v4.app.ActivityOptionsCompat
-import android.support.v7.app.AppCompatActivity
+import androidx.core.app.ActivityOptionsCompat
+import androidx.appcompat.app.AppCompatActivity
 import android.view.View
 import com.jawnnypoo.openmeh.R
 import com.jawnnypoo.openmeh.activity.AboutActivity

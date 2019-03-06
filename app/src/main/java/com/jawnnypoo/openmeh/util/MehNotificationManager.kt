@@ -8,8 +8,8 @@ import android.graphics.Bitmap
 import android.graphics.Color
 import android.media.RingtoneManager
 import android.os.Build
-import android.support.v4.app.NotificationCompat
-import android.support.v4.app.TaskStackBuilder
+import androidx.core.app.NotificationCompat
+import androidx.core.app.TaskStackBuilder
 import com.jawnnypoo.openmeh.R
 import com.jawnnypoo.openmeh.activity.MehActivity
 import com.jawnnypoo.openmeh.shared.extension.getPriceRange

@@ -27,11 +27,10 @@ class NotificationActivity : BaseActivity() {
     companion object {
 
         private const val TAG_TIME_PICKER = "timepicker"
-        private val TIME_FORMAT = SimpleDateFormat("h:mm a", Locale.getDefault())
 
         fun newInstance(context: Context, theme: Theme?): Intent {
             val intent = Intent(context, NotificationActivity::class.java)
-            intent.putParcelerParcelableExtra(BaseActivity.EXTRA_THEME, theme)
+            intent.putParcelerParcelableExtra(EXTRA_THEME, theme)
             return intent
         }
     }
@@ -42,7 +41,7 @@ class NotificationActivity : BaseActivity() {
     private val onTimeSetListener = TimePickerDialog.OnTimeSetListener { _, hourOfDay, minute, _ ->
         timeToAlert.set(Calendar.HOUR_OF_DAY, hourOfDay)
         timeToAlert.set(Calendar.MINUTE, minute)
-        textTime.text = TIME_FORMAT.format(timeToAlert.time)
+        textTime.text = timeFormat().format(timeToAlert.time)
         Prefs.setNotificationPreferenceHour(this@NotificationActivity, hourOfDay)
         Prefs.setNotificationPreferenceMinute(this@NotificationActivity, minute)
         ReminderJob.schedule(hourOfDay, minute)
@@ -64,12 +63,12 @@ class NotificationActivity : BaseActivity() {
         rootNotificationTime.setOnClickListener { timePickerDialog?.show(supportFragmentManager, TAG_TIME_PICKER) }
         rootNotificationSound.setOnClickListener { checkBoxSound.toggle() }
         rootVibrate.setOnClickListener { checkBoxVibrate.toggle() }
-        timePickerDialog = fragmentManager.findFragmentByTag(TAG_TIME_PICKER) as? TimePickerDialog
+        timePickerDialog = supportFragmentManager.findFragmentByTag(TAG_TIME_PICKER) as? TimePickerDialog
         if (timePickerDialog == null) {
             timePickerDialog = TimePickerDialog.newInstance(onTimeSetListener, timeToAlert.get(Calendar.HOUR_OF_DAY), timeToAlert.get(Calendar.MINUTE), false)
-            timePickerDialog!!.vibrate(false)
+            timePickerDialog?.vibrate(false)
         }
-        val theme = intent.getParcelerParcelableExtra<Theme>(BaseActivity.EXTRA_THEME)
+        val theme = intent.getParcelerParcelableExtra<Theme>(EXTRA_THEME)
         if (theme != null) {
             applyTheme(theme)
         }
@@ -119,8 +118,12 @@ class NotificationActivity : BaseActivity() {
             }
         }
 
-        textTime.text = TIME_FORMAT.format(timeToAlert.time)
+        textTime.text = timeFormat().format(timeToAlert.time)
         checkBoxSound.setOnCheckedChangeListener { _, isChecked -> Prefs.setNotificationSound(this@NotificationActivity, isChecked) }
         checkBoxVibrate.setOnCheckedChangeListener { _, isChecked -> Prefs.setNotificationVibrate(this@NotificationActivity, isChecked) }
+    }
+
+    private fun timeFormat(): SimpleDateFormat {
+        return SimpleDateFormat("h:mm a", Locale.getDefault())
     }
 }

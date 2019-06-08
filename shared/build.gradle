@@ -2,8 +2,6 @@ apply plugin: 'com.android.library'
 
 apply plugin: 'kotlin-android'
 
-apply plugin: 'kotlin-kapt'
-
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
 
@@ -29,29 +27,20 @@ android {
 }
 
 ext {
-    retrofitVersion = '2.5.0'
+    retrofitVersion = '2.6.0'
 }
 
 dependencies {
-    api "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    api("org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version")
 
-    api "androidx.appcompat:appcompat:1.0.2"
+    api("com.squareup.retrofit2:retrofit:$retrofitVersion")
+    api("com.squareup.retrofit2:converter-moshi:$retrofitVersion")
+    api("com.squareup.retrofit2:adapter-rxjava2:$retrofitVersion")
+    api("com.squareup.moshi:moshi:1.8.0")
+    api("com.squareup.moshi:moshi-kotlin:1.8.0")
+    api("com.squareup.okhttp3:logging-interceptor:3.14.1")
 
-    api 'com.jakewharton.timber:timber:4.7.1'
+    api("io.reactivex.rxjava2:rxjava:2.2.9")
 
-    api 'com.github.Commit451:Easel:3.1.0'
-
-    api "com.squareup.retrofit2:retrofit:$retrofitVersion"
-    api "com.squareup.retrofit2:converter-moshi:$retrofitVersion"
-    api "com.squareup.retrofit2:adapter-rxjava2:$retrofitVersion"
-    api 'com.squareup.moshi:moshi:1.8.0'
-    api 'com.squareup.okhttp3:logging-interceptor:3.13.1'
-
-    api "io.reactivex.rxjava2:rxjava:2.2.7"
-    api 'io.reactivex.rxjava2:rxandroid:2.1.1'
-
-    api 'org.parceler:parceler-api:1.1.12'
-    kapt 'org.parceler:parceler:1.1.12'
-
-    testImplementation 'junit:junit:4.12'
+    testImplementation("junit:junit:4.12")
 }

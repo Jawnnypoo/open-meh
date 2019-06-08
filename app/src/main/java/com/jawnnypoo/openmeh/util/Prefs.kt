@@ -8,7 +8,7 @@ import android.content.SharedPreferences
  */
 object Prefs {
 
-    const val SHARED_PREFS = "meh_shared_prefs"
+    private const val SHARED_PREFS = "meh_shared_prefs"
     private const val SHARED_PREFS_NOTIFICATION_STATUS = "notification_status"
     private const val SHARED_PREFS_NOTIFICATION_HOUR = "notification_hour"
     private const val SHARED_PREFS_NOTIFICATION_MINUTE = "notification_minute"

@@ -18,6 +18,7 @@ import com.commit451.addendum.parceler.putParcelerParcelableExtra
 import com.commit451.easel.Easel
 import com.commit451.gimbal.Gimbal
 import com.jawnnypoo.openmeh.R
+import com.jawnnypoo.openmeh.extension.bind
 import com.jawnnypoo.openmeh.github.Contributor
 import com.jawnnypoo.openmeh.github.GitHubClient
 import com.jawnnypoo.openmeh.shared.model.Theme
@@ -32,7 +33,7 @@ import org.jbox2d.common.Vec2
 import timber.log.Timber
 
 /**
- * Thats what its all about
+ * That's what its all about
  */
 class AboutActivity : BaseActivity() {
 
@@ -50,10 +51,10 @@ class AboutActivity : BaseActivity() {
         }
     }
 
-    lateinit var sensorManager: SensorManager
-    var gravitySensor: Sensor? = null
-    lateinit var gimbal: Gimbal
-    var theme: Theme? = null
+    private lateinit var sensorManager: SensorManager
+    private var gravitySensor: Sensor? = null
+    private lateinit var gimbal: Gimbal
+    private var theme: Theme? = null
 
     private val sensorEventListener = object : SensorEventListener {
         override fun onSensorChanged(event: SensorEvent) {
@@ -85,9 +86,7 @@ class AboutActivity : BaseActivity() {
         }
 
         GitHubClient.contributors(REPO_USER, REPO_NAME)
-                .compose(bindToLifecycle())
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                .bind(this)
                 .subscribe({
                     physicsLayout.post { addContributors(it) }
                 }, {

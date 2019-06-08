@@ -12,7 +12,7 @@ fun Deal.getPriceRange(): String {
     if (items.size == 1) {
         return PRICE_FORMATTER.format(items.first().price)
     }
-    Collections.sort(items)
+    items.sortBy { it.price }
     val lowestPrice = items.first().price
     val highestPrice = items.last().price
     //Same price between highest and lowest, just show the one price

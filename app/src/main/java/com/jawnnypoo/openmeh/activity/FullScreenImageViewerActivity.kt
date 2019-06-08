@@ -25,7 +25,7 @@ class FullScreenImageViewerActivity : BaseActivity() {
 
         fun newInstance(context: Context, theme: Theme?, images: List<String>, index: Int): Intent {
             val intent = Intent(context, FullScreenImageViewerActivity::class.java)
-            intent.putParcelerParcelableExtra(BaseActivity.EXTRA_THEME, theme)
+            intent.putParcelerParcelableExtra(EXTRA_THEME, theme)
             intent.putParcelerParcelableExtra(EXTRA_IMAGES, images)
             intent.putExtra(EXTRA_INDEX, index)
             return intent

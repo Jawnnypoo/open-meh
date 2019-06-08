@@ -1,6 +1,5 @@
 package com.jawnnypoo.openmeh.adapter
 
-import androidx.viewpager.widget.PagerAdapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,16 +11,15 @@ import java.util.*
 /**
  * Simple PagerAdapter that shows images
  */
-class ImageAdapter(private val allowZoom: Boolean, private val listener: ImageAdapter.Listener) : androidx.viewpager.widget.PagerAdapter() {
+class ImageAdapter(private val allowZoom: Boolean, private val listener: Listener) : androidx.viewpager.widget.PagerAdapter() {
 
     private val data: ArrayList<String> = ArrayList()
 
     override fun instantiateItem(collection: ViewGroup, position: Int): Any {
-        val v: View
-        if (allowZoom) {
-            v = LayoutInflater.from(collection.context).inflate(R.layout.item_zoomable_image, collection, false)
+        val v: View = if (allowZoom) {
+            LayoutInflater.from(collection.context).inflate(R.layout.item_zoomable_image, collection, false)
         } else {
-            v = LayoutInflater.from(collection.context).inflate(R.layout.item_deal_image, collection, false)
+            LayoutInflater.from(collection.context).inflate(R.layout.item_deal_image, collection, false)
         }
         val imageView = v.findViewById<ImageView>(R.id.imageView)
         Glide.with(collection.context)

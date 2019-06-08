@@ -1,6 +1,8 @@
 package com.jawnnypoo.openmeh.shared.api
 
 import com.jawnnypoo.openmeh.shared.response.MehResponse
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import io.reactivex.Single
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -16,8 +18,8 @@ class MehClient private constructor() {
 
     companion object {
 
-        const val API_URL = "https://api.meh.com/"
-        const val PARAM_API_KEY = "apikey"
+        private const val API_URL = "https://api.meh.com/"
+        private const val PARAM_API_KEY = "apikey"
 
         fun create(apiKey: String, debug: Boolean): MehClient {
             val client = MehClient()
@@ -35,9 +37,14 @@ class MehClient private constructor() {
                         .build()
                 chain.proceed(request)
             }
+
+            val moshi = Moshi.Builder()
+                    .add(KotlinJsonAdapterFactory())
+                    .build()
+
             val restAdapter = Retrofit.Builder()
                     .baseUrl(API_URL)
-                    .addConverterFactory(MoshiConverterFactory.create())
+                    .addConverterFactory(MoshiConverterFactory.create(moshi))
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                     .client(clientBuilder.build())
                     .build()

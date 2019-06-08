@@ -1,23 +1,20 @@
 package com.jawnnypoo.openmeh.shared.model
 
-import org.parceler.Parcel
+import com.squareup.moshi.Json
 
 /**
  * The entire deal!
  */
-@Parcel(Parcel.Serialization.BEAN)
 class Deal {
-
-    var features: String? = null
-    var id: String? = null
-    var items: MutableList<Item>? = null
-    var photos: MutableList<String>? = null
-    var title: String? = null
+    @Json(name = "features") var features: String? = null
+    @Json(name = "id") var id: String? = null
+    @Json(name = "items") var items: MutableList<Item>? = null
+    @Json(name = "photos") var photos: MutableList<String>? = null
+    @Json(name = "title") var title: String? = null
     //Null if not sold out
-    var soldOutAt: String? = null
-    var specifications: String? = null
-    var story: Story? = null
-    var theme: Theme? = null
-    var topic: Topic? = null
-    var url: String? = null
+    @Json(name = "soldOutAt") var soldOutAt: String? = null
+    @Json(name = "story") var story: Story? = null
+    @Json(name = "theme")  var theme: Theme? = null
+    @Json(name = "topic") var topic: Topic? = null
+    @Json(name = "url") var url: String? = null
 }

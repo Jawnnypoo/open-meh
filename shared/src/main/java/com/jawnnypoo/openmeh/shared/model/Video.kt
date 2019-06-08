@@ -1,13 +1,12 @@
 package com.jawnnypoo.openmeh.shared.model
 
-import org.parceler.Parcel
+import com.squareup.moshi.Json
 
 /**
  * The video of the day
  */
-@Parcel(Parcel.Serialization.BEAN)
 class Video {
-    var id: String? = null
-    var title: String? = null
-    var url: String? = null
+    @Json(name = "id") var id: String? = null
+    @Json(name = "title") var title: String? = null
+    @Json(name = "url") var url: String? = null
 }

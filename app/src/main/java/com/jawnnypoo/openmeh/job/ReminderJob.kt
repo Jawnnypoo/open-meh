@@ -28,7 +28,7 @@ class ReminderJob : DailyJob() {
             //give it 10 minutes
             val withinInterval = 10
             // run job between user set time and 10 minutes from then
-            DailyJob.schedule(builder, TimeUnit.MINUTES.toMillis(timeInMinutes.toLong()), TimeUnit.MINUTES.toMillis(timeInMinutes.toLong() + withinInterval))
+            schedule(builder, TimeUnit.MINUTES.toMillis(timeInMinutes.toLong()), TimeUnit.MINUTES.toMillis(timeInMinutes.toLong() + withinInterval))
         }
 
         fun scheduleNow() {
@@ -81,6 +81,6 @@ class ReminderJob : DailyJob() {
             Timber.e(e)
         }
         MehNotificationManager.postDailyNotification(context, response, icon)
-        return DailyJob.DailyJobResult.SUCCESS
+        return DailyJobResult.SUCCESS
     }
 }

@@ -13,7 +13,7 @@ import retrofit2.http.Path
  */
 object GitHubClient {
 
-    val API_URL = "https://api.github.com"
+    private const val API_URL = "https://api.github.com"
 
     interface GitHub {
         @GET("/repos/{owner}/{repo}/contributors")
@@ -22,7 +22,7 @@ object GitHubClient {
                 @Path("repo") repo: String): Single<List<Contributor>>
     }
 
-    lateinit var gitHub: GitHub
+    private lateinit var gitHub: GitHub
 
     fun init() {
         val restAdapter = Retrofit.Builder()

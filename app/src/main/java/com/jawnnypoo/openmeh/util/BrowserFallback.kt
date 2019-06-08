@@ -15,10 +15,10 @@ import com.novoda.simplechromecustomtabs.navigation.NavigationFallback
 class BrowserFallback(private val mActivity: Activity) : NavigationFallback {
 
     override fun onFallbackNavigateTo(url: Uri) {
-        val i = Intent(Intent.ACTION_VIEW)
-        i.data = url
+        val intent = Intent(Intent.ACTION_VIEW)
+        intent.data = url
         try {
-            mActivity.startActivity(i)
+            mActivity.startActivity(intent)
         } catch (e: ActivityNotFoundException) {
             Snackbar.make(mActivity.window.decorView, R.string.error_no_browser, Snackbar.LENGTH_SHORT)
                     .show()

@@ -12,6 +12,7 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.TaskStackBuilder
 import com.jawnnypoo.openmeh.R
 import com.jawnnypoo.openmeh.activity.MehActivity
+import com.jawnnypoo.openmeh.model.ParsedTheme
 import com.jawnnypoo.openmeh.shared.extension.getPriceRange
 import com.jawnnypoo.openmeh.shared.extension.isSoldOut
 import com.jawnnypoo.openmeh.shared.model.Theme
@@ -30,7 +31,7 @@ object MehNotificationManager {
 
     private fun postIt(context: Context, response: MehResponse, icon: Bitmap?) {
         val deal = response.deal
-        val theme = deal?.theme
+        val theme = ParsedTheme.fromTheme(deal?.theme)
         if (deal != null) {
             val color = theme?.safeBackgroundColor() ?: Color.WHITE
             val priceString = if (deal.isSoldOut())

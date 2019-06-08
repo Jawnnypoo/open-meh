@@ -17,7 +17,6 @@ Open source meh.com Android App
 You will need to generate your own API key from [meh](https://meh.com/forum/topics/meh-api) and add it to your gradle.properties file (create one in your home directory, under .gradle). You will also need to create an API key for the [YouTube API](https://developers.google.com/youtube/android/player/) if you want videos to show up while you are building. The app also uses Fabric for Crashlytics, so you will need to generate your own crashlytics key. All in all, your gradle.properties will look something like this:
 ```Gradle
 MEH_API_KEY="api_key_here"
-GOOGLE_API_KEY="google_key_here"
 FABRIC_KEY=fabric_key_here
 KEYSTORE_PATH = path_to_keystore.jks
 KEYSTORE_PASSWORD = keystorepassword

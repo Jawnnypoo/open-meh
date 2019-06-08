@@ -1,12 +1,11 @@
 package com.jawnnypoo.openmeh.shared.model
 
-import org.parceler.Parcel
+import com.squareup.moshi.Json
 
 /**
  * Cool story brah
  */
-@Parcel(Parcel.Serialization.BEAN)
 class Story {
-    var title: String? = null
-    var body: String? = null
+    @Json(name = "title") var title: String? = null
+    @Json(name = "body") var body: String? = null
 }

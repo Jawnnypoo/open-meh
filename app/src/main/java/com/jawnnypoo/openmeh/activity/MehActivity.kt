@@ -7,6 +7,7 @@ import android.graphics.Color
 import android.graphics.PorterDuff
 import android.os.Build
 import android.os.Bundle
+import android.system.Os.bind
 import android.text.method.LinkMovementMethod
 import android.view.View
 import android.widget.ImageView
@@ -27,6 +28,7 @@ import com.jawnnypoo.openmeh.App
 import com.jawnnypoo.openmeh.BuildConfig
 import com.jawnnypoo.openmeh.R
 import com.jawnnypoo.openmeh.adapter.ImageAdapter
+import com.jawnnypoo.openmeh.extension.bind
 import com.jawnnypoo.openmeh.job.ReminderTestJob
 import com.jawnnypoo.openmeh.shared.extension.getCheckoutUrl
 import com.jawnnypoo.openmeh.shared.extension.getPriceRange
@@ -50,21 +52,9 @@ import timber.log.Timber
 class MehActivity : BaseActivity() {
 
     companion object {
-
         private const val STATE_MEH_RESPONSE = "STATE_MEH_RESPONSE"
         private const val EXTRA_BUY_NOW = "key_meh_response"
         private const val ANIMATION_TIME = 800
-
-        fun newIntent(context: Context): Intent {
-            val intent = Intent(context, MehActivity::class.java)
-            return intent
-        }
-
-        fun newIntentForInstaBuy(context: Context): Intent {
-            val intent = Intent(context, MehActivity::class.java)
-            intent.putExtra(EXTRA_BUY_NOW, true)
-            return intent
-        }
     }
 
     private lateinit var imagePagerAdapter: ImageAdapter
@@ -183,9 +173,7 @@ class MehActivity : BaseActivity() {
         rootContent.visibility = View.GONE
         imageDealBackground.visibility = View.GONE
         App.get().meh.getMeh()
-                .compose(bindToLifecycle())
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                .bind(this)
                 .subscribe({ response->
                     swipeRefreshLayout.isEnabled = false
                     swipeRefreshLayout.isRefreshing = false

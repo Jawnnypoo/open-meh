@@ -1,0 +1,23 @@
+apply plugin: 'java-library'
+
+apply plugin: 'kotlin'
+
+sourceCompatibility = "1.8"
+targetCompatibility = "1.8"
+
+ext {
+    retrofitVersion = '2.6.0'
+}
+
+dependencies {
+    api("org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version")
+
+    api("com.squareup.retrofit2:retrofit:$retrofitVersion")
+    api("com.squareup.retrofit2:converter-moshi:$retrofitVersion")
+    api("com.squareup.retrofit2:adapter-rxjava2:$retrofitVersion")
+    api("com.squareup.moshi:moshi:1.8.0")
+    api("com.squareup.moshi:moshi-kotlin:1.8.0")
+    api("com.squareup.okhttp3:logging-interceptor:3.14.1")
+
+    api("io.reactivex.rxjava2:rxjava:2.2.9")
+}

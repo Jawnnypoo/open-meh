@@ -110,5 +110,5 @@ dependencies {
 
     implementation "com.evernote:android-job:1.2.5"
 
-    implementation project(':shared')
+    implementation project(':api')
 }

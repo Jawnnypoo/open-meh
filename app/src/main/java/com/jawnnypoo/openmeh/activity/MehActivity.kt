@@ -1,6 +1,7 @@
 package com.jawnnypoo.openmeh.activity
 
 import `in`.uncod.android.bypass.Bypass
+import android.annotation.SuppressLint
 import android.graphics.Color
 import android.graphics.PorterDuff
 import android.os.Build
@@ -118,7 +119,7 @@ class MehActivity : BaseActivity() {
         textFullSpecs.setOnClickListener {
             val topicUrl = savedMehResponse?.deal?.topic?.url
             if (topicUrl != null) {
-                val color = safeAccentColor(savedMehResponse)
+                val color = safeAccentColor()
                 IntentUtil.openUrl(this, topicUrl, color)
             }
         }
@@ -145,16 +146,11 @@ class MehActivity : BaseActivity() {
         imageDealBackground.visibility = View.GONE
         App.get().meh.getMeh()
                 .bind(this)
-                .subscribe({ response->
+                .subscribe({ response ->
                     swipeRefreshLayout.isEnabled = false
                     swipeRefreshLayout.isRefreshing = false
-                    if (response.deal == null) {
-                        Timber.e("There was a meh response, but it was null or the deal was null or something")
-                        showError()
-                        return@subscribe
-                    }
                     savedMehResponse = response
-                    bindDeal(response.deal!!, true)
+                    bindDeal(response.deal)
                 }, {
                     swipeRefreshLayout.isEnabled = false
                     swipeRefreshLayout.isRefreshing = false
@@ -163,7 +159,8 @@ class MehActivity : BaseActivity() {
                 })
     }
 
-    private fun bindDeal(deal: Deal, animate: Boolean) {
+    @SuppressLint("SetTextI18n")
+    private fun bindDeal(deal: Deal) {
         swipeRefreshLayout.isEnabled = false
         swipeRefreshLayout.isRefreshing = false
         rootFailed.visibility = View.GONE
@@ -175,33 +172,29 @@ class MehActivity : BaseActivity() {
             buttonBuy.isEnabled = false
             buttonBuy.setText(R.string.sold_out)
         } else {
-            buttonBuy.text = deal.getPriceRange() + "\n" + getString(R.string.buy_it)
+            buttonBuy.text = "${deal.getPriceRange()}\n${getString(R.string.buy_it)}"
             buttonBuy.setOnClickListener {
-                val accentColor = safeAccentColor(savedMehResponse)
+                val accentColor = safeAccentColor()
                 IntentUtil.openUrl(this@MehActivity, deal.getCheckoutUrl(), accentColor)
             }
         }
         rootContent.visibility = View.VISIBLE
         imageDealBackground.visibility = View.VISIBLE
-        if (animate) {
-            rootContent.alpha = 0f
-            rootContent.animate().alpha(1.0f).setDuration(ANIMATION_TIME.toLong()).startDelay = ANIMATION_TIME.toLong()
-            imageDealBackground.alpha = 0f
-            imageDealBackground.animate().alpha(1.0f).setStartDelay(ANIMATION_TIME.toLong()).setDuration(ANIMATION_TIME.toLong()).startDelay = ANIMATION_TIME.toLong()
-        }
+        rootContent.alpha = 0f
+        rootContent.animate().alpha(1.0f).setDuration(ANIMATION_TIME.toLong()).startDelay = ANIMATION_TIME.toLong()
+        imageDealBackground.alpha = 0f
+        imageDealBackground.animate().alpha(1.0f).setStartDelay(ANIMATION_TIME.toLong()).setDuration(ANIMATION_TIME.toLong()).startDelay = ANIMATION_TIME.toLong()
         textTitle.text = deal.title
-        textDescription.text = markdownToCharSequence(textDescription, deal.features!!)
+        textDescription.text = markdownToCharSequence(textDescription, deal.features)
         textDescription.movementMethod = LinkMovementMethod.getInstance()
-        if (deal.story != null) {
-            textStoryTitle.text = deal.story!!.title
-            textStoryBody.text = markdownToCharSequence(textStoryBody, deal.story!!.body!!)
-            textStoryBody.movementMethod = LinkMovementMethod.getInstance()
-        }
+        textStoryTitle.text = deal.story.title
+        textStoryBody.text = markdownToCharSequence(textStoryBody, deal.story.body)
+        textStoryBody.movementMethod = LinkMovementMethod.getInstance()
         val video = savedMehResponse?.video
         if (video != null) {
             bindVideo(video)
         }
-        bindTheme(deal, animate)
+        bindTheme(deal)
     }
 
     private fun bindVideo(video: Video) {
@@ -211,10 +204,8 @@ class MehActivity : BaseActivity() {
     private fun bindVideoLink(video: Video) {
         layoutInflater.inflate(R.layout.view_link_video, rootVideo)
         rootVideo.setOnClickListener {
-            video.url?.let {
-                val color = theme()?.safeAccentColor() ?: Color.WHITE
-                IntentUtil.openUrl(this@MehActivity, it, color)
-            }
+            val color = theme()?.safeAccentColor() ?: Color.WHITE
+            IntentUtil.openUrl(this@MehActivity, video.url, color)
         }
         val playIcon = rootVideo.findViewById<ImageView>(R.id.video_play)
         val title = rootVideo.findViewById<TextView>(R.id.video_title)
@@ -223,7 +214,7 @@ class MehActivity : BaseActivity() {
         playIcon.drawable.setColorFilter(color, PorterDuff.Mode.MULTIPLY)
     }
 
-    private fun bindTheme(deal: Deal, animate: Boolean) {
+    private fun bindTheme(deal: Deal) {
         val theme = theme()!!
         val accentColor = theme.safeAccentColor()
         val darkerAccentColor = Easel.darkerColor(accentColor)
@@ -249,29 +240,20 @@ class MehActivity : BaseActivity() {
         toolbar.setTitleTextColor(backgroundColor)
 
         val decorView = window.decorView
-        if (animate) {
-            toolbar.backgroundColorAnimator(accentColor)
+        toolbar.backgroundColorAnimator(accentColor)
+                .setDuration(ANIMATION_TIME.toLong())
+                .start()
+        if (Build.VERSION.SDK_INT >= 21) {
+            window.statusBarColorAnimator(darkerAccentColor)
                     .setDuration(ANIMATION_TIME.toLong())
                     .start()
-            if (Build.VERSION.SDK_INT >= 21) {
-                window.statusBarColorAnimator(darkerAccentColor)
-                        .setDuration(ANIMATION_TIME.toLong())
-                        .start()
-                window.navigationBarColorAnimator(darkerAccentColor)
-                        .setDuration(ANIMATION_TIME.toLong())
-                        .start()
-            }
-            decorView.backgroundColorAnimator(backgroundColor)
+            window.navigationBarColorAnimator(darkerAccentColor)
                     .setDuration(ANIMATION_TIME.toLong())
                     .start()
-        } else {
-            toolbar.setBackgroundColor(accentColor)
-            if (Build.VERSION.SDK_INT >= 21) {
-                window.statusBarColor = darkerAccentColor
-                window.navigationBarColor = darkerAccentColor
-            }
-            decorView.setBackgroundColor(backgroundColor)
         }
+        decorView.backgroundColorAnimator(backgroundColor)
+                .setDuration(ANIMATION_TIME.toLong())
+                .start()
         toolbar.menu.tint(backgroundColor)
         toolbar.tintOverflow(backgroundColor)
         Glide.with(this)
@@ -289,7 +271,7 @@ class MehActivity : BaseActivity() {
                 .show()
     }
 
-    private fun safeAccentColor(response: MehResponse?): Int {
+    private fun safeAccentColor(): Int {
         return theme()?.safeAccentColor() ?: Color.WHITE
     }
 

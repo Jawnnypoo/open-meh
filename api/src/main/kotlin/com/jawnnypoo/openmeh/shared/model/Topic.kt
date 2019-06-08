@@ -6,5 +6,5 @@ import com.squareup.moshi.Json
  * Stay on topic
  */
 data class Topic(
-        @Json(name = "url") var url: String
+        @Json(name = "url") val url: String
 )

@@ -25,10 +25,12 @@ class MehClient private constructor() {
             val client = MehClient()
             val clientBuilder = OkHttpClient.Builder()
             if (debug) {
-                clientBuilder.addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
+                val httpLoggingInterceptor = HttpLoggingInterceptor()
+                clientBuilder.addInterceptor(httpLoggingInterceptor.apply { httpLoggingInterceptor.level = HttpLoggingInterceptor.Level.BODY })
             }
             clientBuilder.addInterceptor { chain ->
-                val url = chain.request().url()
+                val url = chain.request()
+                        .url
                         .newBuilder()
                         .addQueryParameter(PARAM_API_KEY, apiKey)
                         .build()

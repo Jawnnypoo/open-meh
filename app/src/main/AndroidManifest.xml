@@ -4,8 +4,6 @@
     package="com.jawnnypoo.openmeh">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <!-- Notification stuff -->
-    <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
         android:name=".App"

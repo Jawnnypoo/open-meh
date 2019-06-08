@@ -10,8 +10,8 @@ import android.text.method.LinkMovementMethod
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.view.ViewCompat
-import androidx.viewpager.widget.ViewPager
 import com.bumptech.glide.Glide
 import com.commit451.alakazam.backgroundColorAnimator
 import com.commit451.alakazam.navigationBarColorAnimator
@@ -27,7 +27,7 @@ import com.jawnnypoo.openmeh.R
 import com.jawnnypoo.openmeh.adapter.ImageAdapter
 import com.jawnnypoo.openmeh.extension.addOnPageScrollStateChange
 import com.jawnnypoo.openmeh.extension.bind
-import com.jawnnypoo.openmeh.job.ReminderTestJob
+import com.jawnnypoo.openmeh.job.ReminderJob
 import com.jawnnypoo.openmeh.model.ParsedTheme
 import com.jawnnypoo.openmeh.shared.extension.getCheckoutUrl
 import com.jawnnypoo.openmeh.shared.extension.getPriceRange
@@ -42,6 +42,7 @@ import com.jawnnypoo.openmeh.util.SwipeRefreshViewPagerSyncer
 import com.novoda.simplechromecustomtabs.SimpleChromeCustomTabs
 import kotlinx.android.synthetic.main.activity_meh.*
 import timber.log.Timber
+import java.util.*
 
 /**
  * Activity that shows the meh.com deal of the day
@@ -82,7 +83,14 @@ class MehActivity : BaseActivity() {
                     IntentUtil.shareDeal(root, savedMehResponse)
                     return@setOnMenuItemClickListener true
                 }
-                R.id.action_post_notification -> ReminderTestJob.scheduleNow()
+                R.id.action_post_notification -> {
+                    val timeToAlert = Calendar.getInstance()
+                    val hourOfDay = timeToAlert.get(Calendar.HOUR_OF_DAY)
+                    val minute = timeToAlert.get(Calendar.MINUTE)
+                    ReminderJob.schedule(hourOfDay, minute + 1)
+                    Toast.makeText(this, "Scheduled for one minute from now", Toast.LENGTH_SHORT)
+                            .show()
+                }
                 R.id.nav_about -> {
                     Navigator.navigateToAbout(this@MehActivity, theme)
                     return@setOnMenuItemClickListener true

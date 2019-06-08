@@ -5,6 +5,6 @@ import com.squareup.moshi.Json
 /**
  * Stay on topic
  */
-class Topic {
-    @Json(name = "url") var url: String? = null
-}
+data class Topic(
+        @Json(name = "url") var url: String
+)

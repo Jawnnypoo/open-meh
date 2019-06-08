@@ -5,7 +5,7 @@ import com.squareup.moshi.Json
 /**
  * An item of the deal
  */
-class Item{
-    @Json(name = "id") var id: String? = null
-    @Json(name = "price") var price: Float? = null
-}
+data class Item(
+        @Json(name = "id") var id: String? = null,
+        @Json(name = "price") var price: Float? = null
+)

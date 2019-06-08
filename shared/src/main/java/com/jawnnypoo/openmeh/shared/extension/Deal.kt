@@ -8,17 +8,16 @@ private val PRICE_FORMATTER = NumberFormat.getCurrencyInstance(Locale.US)
 private const val PATH_CHECKOUT = "/checkout"
 
 fun Deal.getPriceRange(): String {
-    val items = items ?: return ""
+    val items = items.sortedBy { it.price }
     if (items.size == 1) {
         return PRICE_FORMATTER.format(items.first().price)
     }
-    items.sortBy { it.price }
     val lowestPrice = items.first().price
     val highestPrice = items.last().price
     //Same price between highest and lowest, just show the one price
     return if (lowestPrice == highestPrice) {
         PRICE_FORMATTER.format(items.first().price)
-    } else PRICE_FORMATTER.format(lowestPrice) + "-" +PRICE_FORMATTER.format(highestPrice)
+    } else PRICE_FORMATTER.format(lowestPrice) + "-" + PRICE_FORMATTER.format(highestPrice)
 }
 
 fun Deal.getCheckoutUrl(): String {

@@ -5,12 +5,12 @@ import com.squareup.moshi.Json
 /**
  * Pretty cool theme. Tells us all about the colors we want to show
  */
-class Theme {
-    @Json(name = "accentColor") var accentColor: String? = null
-    @Json(name = "foreground") var foreground: String? = null
-    @Json(name = "backgroundColor") var backgroundColor: String? = null
-    @Json(name = "backgroundImage") var backgroundImage: String? = null
-
+data class Theme(
+        @Json(name = "accentColor") var accentColor: String,
+        @Json(name = "foreground") var foreground: String,
+        @Json(name = "backgroundColor") var backgroundColor: String,
+        @Json(name = "backgroundImage") var backgroundImage: String
+) {
     companion object {
         const val FOREGROUND_LIGHT = "light"
     }

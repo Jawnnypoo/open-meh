@@ -7,7 +7,7 @@ import com.squareup.moshi.Json
 /**
  * The actual response we get when pulling in the meh deal
  */
-class MehResponse {
-    @Json(name = "deal") var deal: Deal? = null
-    @Json(name = "video") var video: Video? = null
-}
+data class MehResponse(
+        @Json(name = "deal") var deal: Deal,
+        @Json(name = "video") var video: Video
+)

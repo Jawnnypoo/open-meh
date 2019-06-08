@@ -67,47 +67,48 @@ androidExtensions {
 }
 
 ext {
+    addendumVersion = "2.1.0"
     autodisposeVersion = "1.2.0"
 }
 dependencies {
-    implementation "androidx.appcompat:appcompat:1.0.2"
-    implementation "androidx.recyclerview:recyclerview:1.0.0"
-    implementation "androidx.browser:browser:1.0.0"
+    implementation("androidx.appcompat:appcompat:1.0.2")
+    implementation("androidx.recyclerview:recyclerview:1.0.0")
+    implementation("androidx.browser:browser:1.0.0")
 
-    implementation "com.google.android.material:material:1.0.0"
+    implementation("com.google.android.material:material:1.0.0")
 
-    implementation "io.reactivex.rxjava2:rxandroid:2.1.1"
+    implementation("io.reactivex.rxjava2:rxandroid:2.1.1")
 
     implementation("com.uber.autodispose:autodispose-ktx:$autodisposeVersion")
     implementation("com.uber.autodispose:autodispose-android-ktx:$autodisposeVersion")
     implementation("com.uber.autodispose:autodispose-android-archcomponents-ktx:$autodisposeVersion")
 
-    implementation "com.github.bumptech.glide:glide:4.9.0"
+    implementation("com.github.bumptech.glide:glide:4.9.0")
 
-    implementation "de.hdodenhof:circleimageview:3.0.0"
+    implementation("de.hdodenhof:circleimageview:3.0.0")
 
-    implementation "com.wdullaer:materialdatetimepicker:4.2.0"
+    implementation("com.wdullaer:materialdatetimepicker:4.2.0")
 
-    implementation "com.github.Jawnnypoo:PhysicsLayout:2.2.0"
-    implementation "com.github.Jawnnypoo:CircleIndicator:1.4.0"
+    implementation("com.github.Jawnnypoo:PhysicsLayout:2.2.0")
+    implementation("com.github.Jawnnypoo:CircleIndicator:1.4.0")
 
-    implementation "com.jakewharton.timber:timber:4.7.1"
+    implementation("com.jakewharton.timber:timber:4.7.1")
 
-    implementation "com.github.Commit451:Easel:3.1.0"
-    implementation "com.github.Commit451.Addendum:addendum:$addendumVersion"
-    implementation "com.github.Commit451.Addendum:addendum-design:$addendumVersion"
-    implementation "com.github.Commit451.Addendum:addendum-recyclerview:$addendumVersion"
-    implementation "com.github.Commit451:BypassGlideImageGetter:1.0.1"
-    implementation "com.github.Commit451:Gimbal:2.0.2"
-    implementation "com.github.Commit451:Alakazam:2.1.0"
+    implementation("com.github.Commit451:Easel:3.1.0")
+    implementation("com.github.Commit451.Addendum:addendum:$addendumVersion")
+    implementation("com.github.Commit451.Addendum:addendum-design:$addendumVersion")
+    implementation("com.github.Commit451.Addendum:addendum-recyclerview:$addendumVersion")
+    implementation("com.github.Commit451:BypassGlideImageGetter:1.0.1")
+    implementation("com.github.Commit451:Gimbal:2.0.2")
+    implementation("com.github.Commit451:Alakazam:2.1.0")
 
-    implementation "com.github.chrisbanes:PhotoView:2.3.0"
+    implementation("com.github.chrisbanes:PhotoView:2.3.0")
 
-    implementation "com.crashlytics.sdk.android:crashlytics:2.10.1"
+    implementation("com.crashlytics.sdk.android:crashlytics:2.10.1")
 
-    implementation "com.novoda:simple-chrome-custom-tabs:0.1.6"
+    implementation("com.github.novoda:simple-chrome-custom-tabs:0.1.6")
 
-    implementation "com.evernote:android-job:1.2.5"
+    implementation("com.evernote:android-job:1.2.5")
 
     implementation project(':api')
 }

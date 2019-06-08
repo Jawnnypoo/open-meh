@@ -12,55 +12,49 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.GET
 
 /**
- * meh.com
+ * meh.com client
  */
-class MehClient private constructor() {
-
+class MehClient(
+        apiKey: String,
+        debug: Boolean = false
+) {
     companion object {
-
         private const val API_URL = "https://api.meh.com/"
         private const val PARAM_API_KEY = "apikey"
+    }
 
-        fun create(apiKey: String, debug: Boolean): MehClient {
-            val client = MehClient()
-            val clientBuilder = OkHttpClient.Builder()
-            if (debug) {
-                val httpLoggingInterceptor = HttpLoggingInterceptor()
-                clientBuilder.addInterceptor(httpLoggingInterceptor.apply { httpLoggingInterceptor.level = HttpLoggingInterceptor.Level.BODY })
-            }
-            clientBuilder.addInterceptor { chain ->
-                val url = chain.request()
-                        .url
-                        .newBuilder()
-                        .addQueryParameter(PARAM_API_KEY, apiKey)
-                        .build()
-                val request = chain.request().newBuilder()
-                        .url(url)
-                        .build()
-                chain.proceed(request)
-            }
+    private val mehService: MehService
 
-            val moshi = Moshi.Builder()
-                    .add(KotlinJsonAdapterFactory())
-                    .build()
-
-            val restAdapter = Retrofit.Builder()
-                    .baseUrl(API_URL)
-                    .addConverterFactory(MoshiConverterFactory.create(moshi))
-                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                    .client(clientBuilder.build())
-                    .build()
-            client.mehService = restAdapter.create(MehService::class.java)
-            return client
+    init {
+        val clientBuilder = OkHttpClient.Builder()
+        if (debug) {
+            val httpLoggingInterceptor = HttpLoggingInterceptor()
+            clientBuilder.addInterceptor(httpLoggingInterceptor.apply { httpLoggingInterceptor.level = HttpLoggingInterceptor.Level.BODY })
         }
-    }
+        clientBuilder.addInterceptor { chain ->
+            val url = chain.request()
+                    .url
+                    .newBuilder()
+                    .addQueryParameter(PARAM_API_KEY, apiKey)
+                    .build()
+            val request = chain.request().newBuilder()
+                    .url(url)
+                    .build()
+            chain.proceed(request)
+        }
 
-    interface MehService {
-        @GET("1/current.json")
-        fun getMeh(): Single<MehResponse>
-    }
+        val moshi = Moshi.Builder()
+                .add(KotlinJsonAdapterFactory())
+                .build()
 
-    private lateinit var mehService: MehService
+        val restAdapter = Retrofit.Builder()
+                .baseUrl(API_URL)
+                .addConverterFactory(MoshiConverterFactory.create(moshi))
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .client(clientBuilder.build())
+                .build()
+        mehService = restAdapter.create(MehService::class.java)
+    }
 
     fun getMeh(): Single<MehResponse> {
         return mehService.getMeh()

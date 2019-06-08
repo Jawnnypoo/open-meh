@@ -21,8 +21,6 @@ allprojects {
         google()
         jcenter()
         maven { url "https://jitpack.io" }
-        maven { url "http://dl.bintray.com/novoda/maven" }
-        maven { url 'https://maven.fabric.io/public' }
     }
 }
 
@@ -33,5 +31,4 @@ task clean(type: Delete) {
 ext {
     compileSdkVersion = 28
     targetSdkVersion = compileSdkVersion
-    addendumVersion = '2.1.0'
 }

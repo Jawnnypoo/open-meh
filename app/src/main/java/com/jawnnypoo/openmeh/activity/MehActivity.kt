@@ -2,9 +2,9 @@ package com.jawnnypoo.openmeh.activity
 
 import `in`.uncod.android.bypass.Bypass
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.PorterDuff
-import android.os.Build
 import android.os.Bundle
 import android.text.method.LinkMovementMethod
 import android.view.View
@@ -138,6 +138,11 @@ class MehActivity : BaseActivity() {
         super.onPause()
     }
 
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        loadMeh()
+    }
+
     private fun loadMeh() {
         swipeRefreshLayout.isEnabled = true
         swipeRefreshLayout.isRefreshing = true
@@ -217,7 +222,6 @@ class MehActivity : BaseActivity() {
     private fun bindTheme(deal: Deal) {
         val theme = theme()!!
         val accentColor = theme.safeAccentColor()
-        val darkerAccentColor = Easel.darkerColor(accentColor)
         val backgroundColor = theme.safeBackgroundColor()
         val foreGround = theme.safeForegroundColor()
         val foreGroundInverse = theme.safeForegroundColorInverse()
@@ -243,14 +247,12 @@ class MehActivity : BaseActivity() {
         toolbar.backgroundColorAnimator(accentColor)
                 .setDuration(ANIMATION_TIME.toLong())
                 .start()
-        if (Build.VERSION.SDK_INT >= 21) {
-            window.statusBarColorAnimator(darkerAccentColor)
-                    .setDuration(ANIMATION_TIME.toLong())
-                    .start()
-            window.navigationBarColorAnimator(darkerAccentColor)
-                    .setDuration(ANIMATION_TIME.toLong())
-                    .start()
-        }
+        window.statusBarColorAnimator(accentColor)
+                .setDuration(ANIMATION_TIME.toLong())
+                .start()
+        window.navigationBarColorAnimator(accentColor)
+                .setDuration(ANIMATION_TIME.toLong())
+                .start()
         decorView.backgroundColorAnimator(backgroundColor)
                 .setDuration(ANIMATION_TIME.toLong())
                 .start()

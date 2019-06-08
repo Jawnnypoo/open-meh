@@ -38,7 +38,7 @@ class App : Application() {
         } else {
             Fabric.with(this, Crashlytics())
         }
-        meh = MehClient.create(BuildConfig.MEH_API_KEY, BuildConfig.DEBUG)
+        meh = MehClient(BuildConfig.MEH_API_KEY, BuildConfig.DEBUG)
         GitHubClient.init()
         SimpleChromeCustomTabs.initialize(this)
 

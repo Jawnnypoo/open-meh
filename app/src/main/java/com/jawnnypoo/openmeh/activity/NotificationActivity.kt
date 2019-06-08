@@ -3,9 +3,7 @@ package com.jawnnypoo.openmeh.activity
 import android.content.Context
 import android.content.Intent
 import android.graphics.PorterDuff
-import android.os.Build
 import android.os.Bundle
-import com.commit451.easel.Easel
 import com.commit451.easel.tint
 import com.jawnnypoo.openmeh.R
 import com.jawnnypoo.openmeh.job.ReminderJob
@@ -81,11 +79,8 @@ class NotificationActivity : BaseActivity() {
         textToolbarTitle.setTextColor(theme.safeBackgroundColor())
         toolbar.setBackgroundColor(accentColor)
         toolbar.navigationIcon?.setColorFilter(theme.safeBackgroundColor(), PorterDuff.Mode.MULTIPLY)
-        if (Build.VERSION.SDK_INT >= 21) {
-            val darkerAccentColor = Easel.darkerColor(accentColor)
-            window.statusBarColor = darkerAccentColor
-            window.navigationBarColor = darkerAccentColor
-        }
+        window.statusBarColor = accentColor
+        window.navigationBarColor = accentColor
         window.decorView.setBackgroundColor(theme.safeBackgroundColor())
         textLabelNotifications.setTextColor(foreGround)
         textTime.setTextColor(foreGround)

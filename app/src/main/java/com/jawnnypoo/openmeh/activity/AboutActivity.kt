@@ -8,19 +8,16 @@ import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
-import android.os.Build
 import android.os.Bundle
-import com.google.android.material.snackbar.Snackbar
 import android.widget.FrameLayout
 import com.bumptech.glide.Glide
-import com.commit451.easel.Easel
 import com.commit451.gimbal.Gimbal
+import com.google.android.material.snackbar.Snackbar
 import com.jawnnypoo.openmeh.R
 import com.jawnnypoo.openmeh.extension.bind
 import com.jawnnypoo.openmeh.github.Contributor
 import com.jawnnypoo.openmeh.github.GitHubClient
 import com.jawnnypoo.openmeh.model.ParsedTheme
-import com.jawnnypoo.openmeh.shared.model.Theme
 import com.jawnnypoo.openmeh.util.IntentUtil
 import com.jawnnypoo.physicslayout.Physics
 import com.jawnnypoo.physicslayout.PhysicsConfig
@@ -77,7 +74,7 @@ class AboutActivity : BaseActivity() {
         physicsLayout.physics.enableFling()
         sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
         gravitySensor = sensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY)
-        theme = intent.getParcelableExtra<ParsedTheme>(EXTRA_THEME)
+        theme = intent.getParcelableExtra(EXTRA_THEME)
         theme?.let {
             applyTheme(it)
         }
@@ -119,10 +116,8 @@ class AboutActivity : BaseActivity() {
         textToolbarTitle.setTextColor(theme.safeBackgroundColor())
         toolbar.setBackgroundColor(theme.safeAccentColor())
         toolbar.navigationIcon?.setColorFilter(theme.safeBackgroundColor(), PorterDuff.Mode.MULTIPLY)
-        if (Build.VERSION.SDK_INT >= 21) {
-            window.statusBarColor = Easel.darkerColor(accentColor)
-            window.navigationBarColor = Easel.darkerColor(accentColor)
-        }
+        window.statusBarColor = accentColor
+        window.navigationBarColor = accentColor
         window.decorView.setBackgroundColor(theme.safeBackgroundColor())
     }
 

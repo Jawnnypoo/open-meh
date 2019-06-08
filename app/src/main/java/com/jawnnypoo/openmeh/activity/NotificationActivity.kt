@@ -5,14 +5,11 @@ import android.content.Intent
 import android.graphics.PorterDuff
 import android.os.Build
 import android.os.Bundle
-
-import com.commit451.addendum.parceler.getParcelerParcelableExtra
-import com.commit451.addendum.parceler.putParcelerParcelableExtra
 import com.commit451.easel.Easel
 import com.commit451.easel.tint
 import com.jawnnypoo.openmeh.R
 import com.jawnnypoo.openmeh.job.ReminderJob
-import com.jawnnypoo.openmeh.shared.model.Theme
+import com.jawnnypoo.openmeh.model.ParsedTheme
 import com.jawnnypoo.openmeh.util.Prefs
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog
 import kotlinx.android.synthetic.main.activity_notifications.*
@@ -28,9 +25,9 @@ class NotificationActivity : BaseActivity() {
 
         private const val TAG_TIME_PICKER = "timepicker"
 
-        fun newInstance(context: Context, theme: Theme?): Intent {
+        fun newInstance(context: Context, theme: ParsedTheme?): Intent {
             val intent = Intent(context, NotificationActivity::class.java)
-            intent.putParcelerParcelableExtra(EXTRA_THEME, theme)
+            intent.putExtra(EXTRA_THEME, theme)
             return intent
         }
     }
@@ -68,13 +65,13 @@ class NotificationActivity : BaseActivity() {
             timePickerDialog = TimePickerDialog.newInstance(onTimeSetListener, timeToAlert.get(Calendar.HOUR_OF_DAY), timeToAlert.get(Calendar.MINUTE), false)
             timePickerDialog?.vibrate(false)
         }
-        val theme = intent.getParcelerParcelableExtra<Theme>(EXTRA_THEME)
+        val theme = intent.getParcelableExtra<ParsedTheme>(EXTRA_THEME)
         if (theme != null) {
             applyTheme(theme)
         }
     }
 
-    private fun applyTheme(theme: Theme) {
+    private fun applyTheme(theme: ParsedTheme) {
         //Tint widgets
         val accentColor = theme.safeAccentColor()
         val foreGround = theme.safeForegroundColor()

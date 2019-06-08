@@ -6,10 +6,9 @@ import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
 import android.os.Bundle
 import android.view.View
-import com.commit451.addendum.parceler.getParcelerParcelableExtra
-import com.commit451.addendum.parceler.putParcelerParcelableExtra
 import com.jawnnypoo.openmeh.R
 import com.jawnnypoo.openmeh.adapter.ImageAdapter
+import com.jawnnypoo.openmeh.model.ParsedTheme
 import com.jawnnypoo.openmeh.shared.model.Theme
 import kotlinx.android.synthetic.main.activity_full_screen_image_viewer.*
 
@@ -23,10 +22,10 @@ class FullScreenImageViewerActivity : BaseActivity() {
         private const val EXTRA_IMAGES = "images"
         private const val EXTRA_INDEX = "index"
 
-        fun newInstance(context: Context, theme: Theme?, images: List<String>, index: Int): Intent {
+        fun newInstance(context: Context, theme: ParsedTheme?, images: ArrayList<String>, index: Int): Intent {
             val intent = Intent(context, FullScreenImageViewerActivity::class.java)
-            intent.putParcelerParcelableExtra(EXTRA_THEME, theme)
-            intent.putParcelerParcelableExtra(EXTRA_IMAGES, images)
+            intent.putExtra(EXTRA_THEME, theme)
+            intent.putExtra(EXTRA_IMAGES, images)
             intent.putExtra(EXTRA_INDEX, index)
             return intent
         }
@@ -38,9 +37,9 @@ class FullScreenImageViewerActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_full_screen_image_viewer)
 
-        val images = intent.getParcelerParcelableExtra<List<String>>(EXTRA_IMAGES)
+        val images = intent.getStringArrayListExtra(EXTRA_IMAGES)
 
-        val theme = intent.getParcelerParcelableExtra<Theme>(BaseActivity.Companion.EXTRA_THEME)
+        val theme = intent.getParcelableExtra<ParsedTheme>(EXTRA_THEME)
 
         pagerAdapter = ImageAdapter(true, object : ImageAdapter.Listener {
             override fun onImageClicked(view: View, position: Int) {

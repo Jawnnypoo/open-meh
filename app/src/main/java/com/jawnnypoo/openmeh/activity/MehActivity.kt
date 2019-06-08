@@ -1,21 +1,16 @@
 package com.jawnnypoo.openmeh.activity
 
 import `in`.uncod.android.bypass.Bypass
-import android.content.Context
-import android.content.Intent
 import android.graphics.Color
 import android.graphics.PorterDuff
 import android.os.Build
 import android.os.Bundle
-import android.system.Os.bind
 import android.text.method.LinkMovementMethod
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.view.ViewCompat
 import com.bumptech.glide.Glide
-import com.commit451.addendum.parceler.getParcelerParcelable
-import com.commit451.addendum.parceler.putParcelerParcelable
 import com.commit451.alakazam.backgroundColorAnimator
 import com.commit451.alakazam.navigationBarColorAnimator
 import com.commit451.alakazam.statusBarColorAnimator
@@ -30,19 +25,17 @@ import com.jawnnypoo.openmeh.R
 import com.jawnnypoo.openmeh.adapter.ImageAdapter
 import com.jawnnypoo.openmeh.extension.bind
 import com.jawnnypoo.openmeh.job.ReminderTestJob
+import com.jawnnypoo.openmeh.model.ParsedTheme
 import com.jawnnypoo.openmeh.shared.extension.getCheckoutUrl
 import com.jawnnypoo.openmeh.shared.extension.getPriceRange
 import com.jawnnypoo.openmeh.shared.extension.isSoldOut
 import com.jawnnypoo.openmeh.shared.model.Deal
-import com.jawnnypoo.openmeh.shared.model.Theme
 import com.jawnnypoo.openmeh.shared.model.Video
 import com.jawnnypoo.openmeh.shared.response.MehResponse
 import com.jawnnypoo.openmeh.util.ColorUtil
 import com.jawnnypoo.openmeh.util.IntentUtil
 import com.jawnnypoo.openmeh.util.Navigator
 import com.novoda.simplechromecustomtabs.SimpleChromeCustomTabs
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_meh.*
 import timber.log.Timber
 
@@ -52,8 +45,6 @@ import timber.log.Timber
 class MehActivity : BaseActivity() {
 
     companion object {
-        private const val STATE_MEH_RESPONSE = "STATE_MEH_RESPONSE"
-        private const val EXTRA_BUY_NOW = "key_meh_response"
         private const val ANIMATION_TIME = 800
     }
 
@@ -61,7 +52,6 @@ class MehActivity : BaseActivity() {
 
     private lateinit var bypass: Bypass
     private var savedMehResponse: MehResponse? = null
-    private var buyOnLoad = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         layoutInflater.factory = this
@@ -74,11 +64,10 @@ class MehActivity : BaseActivity() {
             toolbar.inflateMenu(R.menu.post_notification)
         }
         toolbar.setOnMenuItemClickListener { item ->
-            var theme: Theme? = null
-            if (savedMehResponse != null && savedMehResponse!!.deal != null) {
-                theme = savedMehResponse!!.deal?.theme
+            val theme: ParsedTheme? = savedMehResponse?.deal?.theme?.let {
+                ParsedTheme.fromTheme(it)
             }
-            val accentColor = if (theme == null) Color.WHITE else theme.safeAccentColor()
+            val accentColor = theme?.safeAccentColor() ?: Color.WHITE
             when (item.itemId) {
                 R.id.nav_notifications -> {
                     Navigator.navigateToNotifications(this@MehActivity, theme)
@@ -117,7 +106,7 @@ class MehActivity : BaseActivity() {
             override fun onImageClicked(view: View, position: Int) {
                 val photos = savedMehResponse?.deal?.photos
                 if (photos != null) {
-                    Navigator.navigateToFullScreenImageViewer(this@MehActivity, view, savedMehResponse?.deal?.theme, photos, viewPager.currentItem)
+                    Navigator.navigateToFullScreenImageViewer(this@MehActivity, view, theme(), photos, viewPager.currentItem)
                 }
             }
         })
@@ -133,24 +122,6 @@ class MehActivity : BaseActivity() {
                 IntentUtil.openUrl(this, topicUrl, color)
             }
         }
-        if (savedInstanceState != null) {
-            savedMehResponse = savedInstanceState.getParcelerParcelable<MehResponse>(STATE_MEH_RESPONSE)
-            val response = savedMehResponse
-            if (response != null) {
-                Timber.d("Restored from savedInstanceState")
-                response.deal?.let {
-                    bindDeal(it, false)
-                }
-            }
-        } else {
-            buyOnLoad = intent.getBooleanExtra(EXTRA_BUY_NOW, false)
-            loadMeh()
-        }
-    }
-
-    override fun onNewIntent(intent: Intent) {
-        super.onNewIntent(intent)
-        buyOnLoad = intent.getBooleanExtra(EXTRA_BUY_NOW, false)
         loadMeh()
     }
 
@@ -184,10 +155,6 @@ class MehActivity : BaseActivity() {
                     }
                     savedMehResponse = response
                     bindDeal(response.deal!!, true)
-                    if (buyOnLoad) {
-                        buttonBuy.callOnClick()
-                        buyOnLoad = false
-                    }
                 }, {
                     swipeRefreshLayout.isEnabled = false
                     swipeRefreshLayout.isRefreshing = false
@@ -201,7 +168,7 @@ class MehActivity : BaseActivity() {
         swipeRefreshLayout.isRefreshing = false
         rootFailed.visibility = View.GONE
         imagePagerAdapter.setData(deal.photos)
-        val color = deal.theme?.safeForegroundColor() ?: Color.WHITE
+        val color = theme()?.safeForegroundColor() ?: Color.WHITE
         indicator.setIndicatorBackgroundTint(color)
         indicator.setViewPager(viewPager)
         if (deal.isSoldOut()) {
@@ -245,19 +212,19 @@ class MehActivity : BaseActivity() {
         layoutInflater.inflate(R.layout.view_link_video, rootVideo)
         rootVideo.setOnClickListener {
             video.url?.let {
-                val color = savedMehResponse?.deal?.theme?.safeAccentColor() ?: Color.WHITE
+                val color = theme()?.safeAccentColor() ?: Color.WHITE
                 IntentUtil.openUrl(this@MehActivity, it, color)
             }
         }
         val playIcon = rootVideo.findViewById<ImageView>(R.id.video_play)
         val title = rootVideo.findViewById<TextView>(R.id.video_title)
         title.text = video.title
-        val color = savedMehResponse?.deal?.theme?.safeAccentColor() ?: Color.WHITE
+        val color = theme()?.safeAccentColor() ?: Color.WHITE
         playIcon.drawable.setColorFilter(color, PorterDuff.Mode.MULTIPLY)
     }
 
     private fun bindTheme(deal: Deal, animate: Boolean) {
-        val theme = deal.theme!!
+        val theme = theme()!!
         val accentColor = theme.safeAccentColor()
         val darkerAccentColor = Easel.darkerColor(accentColor)
         val backgroundColor = theme.safeBackgroundColor()
@@ -316,11 +283,6 @@ class MehActivity : BaseActivity() {
         return bypass.markdownToSpannable(markdownString, BypassGlideImageGetter(textView, Glide.with(this)))
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        outState.putParcelerParcelable(STATE_MEH_RESPONSE, savedMehResponse)
-    }
-
     private fun showError() {
         rootFailed.visibility = View.VISIBLE
         Snackbar.make(root, R.string.error_with_server, Snackbar.LENGTH_SHORT)
@@ -328,6 +290,12 @@ class MehActivity : BaseActivity() {
     }
 
     private fun safeAccentColor(response: MehResponse?): Int {
-        return response?.deal?.theme?.safeAccentColor() ?: Color.WHITE
+        return theme()?.safeAccentColor() ?: Color.WHITE
+    }
+
+    private fun theme(): ParsedTheme? {
+        return savedMehResponse?.deal?.theme?.let {
+            ParsedTheme.fromTheme(it)
+        }
     }
 }

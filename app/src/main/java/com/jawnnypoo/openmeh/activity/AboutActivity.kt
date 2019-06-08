@@ -13,21 +13,18 @@ import android.os.Bundle
 import com.google.android.material.snackbar.Snackbar
 import android.widget.FrameLayout
 import com.bumptech.glide.Glide
-import com.commit451.addendum.parceler.getParcelerParcelableExtra
-import com.commit451.addendum.parceler.putParcelerParcelableExtra
 import com.commit451.easel.Easel
 import com.commit451.gimbal.Gimbal
 import com.jawnnypoo.openmeh.R
 import com.jawnnypoo.openmeh.extension.bind
 import com.jawnnypoo.openmeh.github.Contributor
 import com.jawnnypoo.openmeh.github.GitHubClient
+import com.jawnnypoo.openmeh.model.ParsedTheme
 import com.jawnnypoo.openmeh.shared.model.Theme
 import com.jawnnypoo.openmeh.util.IntentUtil
 import com.jawnnypoo.physicslayout.Physics
 import com.jawnnypoo.physicslayout.PhysicsConfig
 import de.hdodenhof.circleimageview.CircleImageView
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_about.*
 import org.jbox2d.common.Vec2
 import timber.log.Timber
@@ -42,10 +39,10 @@ class AboutActivity : BaseActivity() {
         private const val REPO_USER = "Jawnnypoo"
         private const val REPO_NAME = "open-meh"
 
-        fun newInstance(context: Context, theme: Theme?): Intent {
+        fun newInstance(context: Context, theme: ParsedTheme?): Intent {
             val intent = Intent(context, AboutActivity::class.java)
             if (theme != null) {
-                intent.putParcelerParcelableExtra(BaseActivity.EXTRA_THEME, theme)
+                intent.putExtra(EXTRA_THEME, theme)
             }
             return intent
         }
@@ -54,7 +51,7 @@ class AboutActivity : BaseActivity() {
     private lateinit var sensorManager: SensorManager
     private var gravitySensor: Sensor? = null
     private lateinit var gimbal: Gimbal
-    private var theme: Theme? = null
+    private var theme: ParsedTheme? = null
 
     private val sensorEventListener = object : SensorEventListener {
         override fun onSensorChanged(event: SensorEvent) {
@@ -80,7 +77,7 @@ class AboutActivity : BaseActivity() {
         physicsLayout.physics.enableFling()
         sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
         gravitySensor = sensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY)
-        theme = intent.getParcelerParcelableExtra<Theme>(BaseActivity.EXTRA_THEME)
+        theme = intent.getParcelableExtra<ParsedTheme>(EXTRA_THEME)
         theme?.let {
             applyTheme(it)
         }
@@ -116,7 +113,7 @@ class AboutActivity : BaseActivity() {
         overridePendingTransition(R.anim.do_nothing, R.anim.fade_out)
     }
 
-    private fun applyTheme(theme: Theme) {
+    private fun applyTheme(theme: ParsedTheme) {
         //Tint widgets
         val accentColor = theme.safeAccentColor()
         textToolbarTitle.setTextColor(theme.safeBackgroundColor())

@@ -61,6 +61,7 @@ class NotificationActivity : BaseActivity() {
         timePickerDialog = supportFragmentManager.findFragmentByTag(TAG_TIME_PICKER) as? TimePickerDialog
         if (timePickerDialog == null) {
             timePickerDialog = TimePickerDialog.newInstance(onTimeSetListener, timeToAlert.get(Calendar.HOUR_OF_DAY), timeToAlert.get(Calendar.MINUTE), false)
+            timePickerDialog?.version = TimePickerDialog.Version.VERSION_1
             timePickerDialog?.vibrate(false)
         }
         val theme = intent.getParcelableExtra<ParsedTheme>(EXTRA_THEME)

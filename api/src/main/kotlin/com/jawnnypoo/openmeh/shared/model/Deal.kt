@@ -1,10 +1,12 @@
 package com.jawnnypoo.openmeh.shared.model
 
 import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
 /**
  * The entire deal!
  */
+@JsonClass(generateAdapter = true)
 data class Deal(
         @Json(name = "features") val features: String,
         @Json(name = "id") val id: String,

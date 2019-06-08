@@ -29,7 +29,7 @@ Pull requests are welcomed and encouraged. If you experience any bugs, please [f
 License
 =======
 
-    Copyright 2015 John Carlson
+    Copyright 2019 John Carlson
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.

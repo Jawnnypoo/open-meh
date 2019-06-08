@@ -1,14 +1,15 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/white</item>
+        <item name="colorPrimaryDark">@color/white</item>
         <item name="colorAccent">@color/black</item>
-        <item name="android:windowActivityTransitions" tools:targetApi="lollipop">true</item>
+        <item name="android:windowActivityTransitions">true</item>
     </style>
 
-    <style name="Activity" parent="AppTheme"/>
+    <style name="Activity" parent="AppTheme" />
 
     <style name="Activity.Translucent">
         <!-- using a semi-transparent window background for the drag-back gesture -->
@@ -21,12 +22,10 @@
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
     </style>
 
-    <style name="Activity.Translucent.FullScreenImageViewer" parent="Activity.Translucent">
-    </style>
+    <style name="Activity.Translucent.FullScreenImageViewer" parent="Activity.Translucent"/>
 
 
-    <style name="Text" parent="TextAppearance.AppCompat">
-    </style>
+    <style name="Text" parent="TextAppearance.AppCompat"/>
 
     <style name="Text.Huge">
         <item name="android:textSize">@dimen/text_size_huge</item>

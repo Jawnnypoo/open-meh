@@ -102,6 +102,11 @@ dependencies {
     implementation("com.github.Commit451:Gimbal:2.0.2")
     implementation("com.github.Commit451:Alakazam:2.1.0")
 
+    // https://github.com/blazsolar/FlowLayout/issues/31
+    implementation("com.wefika:flowlayout:0.4.1") {
+        exclude group: "com.intellij", module: "annotations"
+    }
+
     implementation("com.github.chrisbanes:PhotoView:2.3.0")
 
     implementation("com.crashlytics.sdk.android:crashlytics:2.10.1")

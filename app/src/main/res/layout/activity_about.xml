@@ -38,15 +38,14 @@
         android:text="@string/contributors"
         android:textSize="22sp" />
 
-    <com.jawnnypoo.physicslayout.PhysicsFrameLayout
+    <com.jawnnypoo.openmeh.view.PhysicsFlowLayout
         android:id="@+id/physicsLayout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
+        app:fling="true"
         app:gravityX="0"
-        app:gravityY="0">
-
-    </com.jawnnypoo.physicslayout.PhysicsFrameLayout>
+        app:gravityY="0" />
 
     <LinearLayout
         android:id="@+id/rootSource"

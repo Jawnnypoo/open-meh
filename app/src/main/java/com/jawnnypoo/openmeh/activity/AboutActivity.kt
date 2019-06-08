@@ -9,7 +9,6 @@ import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.os.Bundle
-import android.widget.FrameLayout
 import com.bumptech.glide.Glide
 import com.commit451.gimbal.Gimbal
 import com.google.android.material.snackbar.Snackbar
@@ -21,6 +20,7 @@ import com.jawnnypoo.openmeh.model.ParsedTheme
 import com.jawnnypoo.openmeh.util.IntentUtil
 import com.jawnnypoo.physicslayout.Physics
 import com.jawnnypoo.physicslayout.PhysicsConfig
+import com.wefika.flowlayout.FlowLayout
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.activity_about.*
 import org.jbox2d.common.Vec2
@@ -125,13 +125,11 @@ class AboutActivity : BaseActivity() {
         val config = PhysicsConfig.create()
         config.shapeType = PhysicsConfig.SHAPE_TYPE_CIRCLE
         val borderSize = resources.getDimensionPixelSize(R.dimen.border_size)
-        var x = 0
-        var y = 0
         val imageSize = resources.getDimensionPixelSize(R.dimen.circle_size)
         for (i in contributors.indices) {
             val contributor = contributors[i]
             val imageView = CircleImageView(this)
-            val llp = FrameLayout.LayoutParams(
+            val llp = FlowLayout.LayoutParams(
                     imageSize,
                     imageSize)
             imageView.layoutParams = llp
@@ -139,18 +137,12 @@ class AboutActivity : BaseActivity() {
             imageView.borderColor = Color.BLACK
             Physics.setPhysicsConfig(imageView, config)
             physicsLayout.addView(imageView)
-            imageView.x = x.toFloat()
-            imageView.y = y.toFloat()
 
-            x += imageSize
-            if (x > physicsLayout.width) {
-                x = 0
-                y = (y + imageSize) % physicsLayout.height
-            }
             Glide.with(this)
                     .load(contributor.avatarUrl)
                     .into(imageView)
         }
-        physicsLayout.physics.onLayout(true)
+        physicsLayout.requestLayout()
     }
+
 }

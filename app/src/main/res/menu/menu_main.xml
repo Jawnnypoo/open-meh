@@ -4,12 +4,6 @@
     tools:context=".MainActivity">
 
     <item
-        android:id="@+id/action_refresh"
-        android:icon="@drawable/ic_refresh_24dp"
-        android:title="@string/action_refresh"
-        app:showAsAction="always" />
-
-    <item
         android:id="@+id/nav_notifications"
         android:icon="@drawable/ic_notifications_24dp"
         android:title="@string/notifications"

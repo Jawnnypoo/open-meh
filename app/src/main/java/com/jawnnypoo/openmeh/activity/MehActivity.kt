@@ -11,6 +11,7 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.view.ViewCompat
+import androidx.viewpager.widget.ViewPager
 import com.bumptech.glide.Glide
 import com.commit451.alakazam.backgroundColorAnimator
 import com.commit451.alakazam.navigationBarColorAnimator
@@ -24,6 +25,7 @@ import com.jawnnypoo.openmeh.App
 import com.jawnnypoo.openmeh.BuildConfig
 import com.jawnnypoo.openmeh.R
 import com.jawnnypoo.openmeh.adapter.ImageAdapter
+import com.jawnnypoo.openmeh.extension.addOnPageScrollStateChange
 import com.jawnnypoo.openmeh.extension.bind
 import com.jawnnypoo.openmeh.job.ReminderTestJob
 import com.jawnnypoo.openmeh.model.ParsedTheme
@@ -36,6 +38,7 @@ import com.jawnnypoo.openmeh.shared.response.MehResponse
 import com.jawnnypoo.openmeh.util.ColorUtil
 import com.jawnnypoo.openmeh.util.IntentUtil
 import com.jawnnypoo.openmeh.util.Navigator
+import com.jawnnypoo.openmeh.util.SwipeRefreshViewPagerSyncer
 import com.novoda.simplechromecustomtabs.SimpleChromeCustomTabs
 import kotlinx.android.synthetic.main.activity_meh.*
 import timber.log.Timber
@@ -50,8 +53,9 @@ class MehActivity : BaseActivity() {
     }
 
     private lateinit var imagePagerAdapter: ImageAdapter
-
     private lateinit var bypass: Bypass
+    private lateinit var syncer: SwipeRefreshViewPagerSyncer
+
     private var savedMehResponse: MehResponse? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -78,10 +82,6 @@ class MehActivity : BaseActivity() {
                     IntentUtil.shareDeal(root, savedMehResponse)
                     return@setOnMenuItemClickListener true
                 }
-                R.id.action_refresh -> {
-                    loadMeh()
-                    return@setOnMenuItemClickListener true
-                }
                 R.id.action_post_notification -> ReminderTestJob.scheduleNow()
                 R.id.nav_about -> {
                     Navigator.navigateToAbout(this@MehActivity, theme)
@@ -102,7 +102,6 @@ class MehActivity : BaseActivity() {
             }
             false
         }
-        swipeRefreshLayout.setProgressViewOffset(false, 0, resources.getDimensionPixelOffset(R.dimen.swipe_refresh_offset))
         imagePagerAdapter = ImageAdapter(false, object : ImageAdapter.Listener {
             override fun onImageClicked(view: View, position: Int) {
                 val photos = savedMehResponse?.deal?.photos
@@ -111,7 +110,11 @@ class MehActivity : BaseActivity() {
                 }
             }
         })
+        syncer = SwipeRefreshViewPagerSyncer(swipeRefreshLayout)
         viewPager.adapter = imagePagerAdapter
+        viewPager.addOnPageScrollStateChange {
+            syncer.sync(it)
+        }
 
         rootFailed.setOnClickListener {
             loadMeh()
@@ -123,6 +126,7 @@ class MehActivity : BaseActivity() {
                 IntentUtil.openUrl(this, topicUrl, color)
             }
         }
+        swipeRefreshLayout.setOnRefreshListener { loadMeh() }
         loadMeh()
     }
 
@@ -144,7 +148,6 @@ class MehActivity : BaseActivity() {
     }
 
     private fun loadMeh() {
-        swipeRefreshLayout.isEnabled = true
         swipeRefreshLayout.isRefreshing = true
         rootFailed.visibility = View.GONE
         rootContent.visibility = View.GONE
@@ -152,12 +155,10 @@ class MehActivity : BaseActivity() {
         App.get().meh.getMeh()
                 .bind(this)
                 .subscribe({ response ->
-                    swipeRefreshLayout.isEnabled = false
                     swipeRefreshLayout.isRefreshing = false
                     savedMehResponse = response
                     bindDeal(response.deal)
                 }, {
-                    swipeRefreshLayout.isEnabled = false
                     swipeRefreshLayout.isRefreshing = false
                     Timber.e(it)
                     showError()
@@ -166,7 +167,6 @@ class MehActivity : BaseActivity() {
 
     @SuppressLint("SetTextI18n")
     private fun bindDeal(deal: Deal) {
-        swipeRefreshLayout.isEnabled = false
         swipeRefreshLayout.isRefreshing = false
         rootFailed.visibility = View.GONE
         imagePagerAdapter.setData(deal.photos)

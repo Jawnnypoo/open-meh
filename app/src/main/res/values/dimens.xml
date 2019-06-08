@@ -14,5 +14,4 @@
     <dimen name="border_size">2dp</dimen>
     <dimen name="image_size">300dp</dimen>
     <dimen name="circle_size">96dp</dimen>
-    <dimen name="swipe_refresh_offset">64dp</dimen>
 </resources>

@@ -2,6 +2,7 @@ package com.jawnnypoo.openmeh.activity
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.graphics.PorterDuff
 import android.os.Bundle
 import com.commit451.easel.tint
@@ -61,7 +62,6 @@ class NotificationActivity : BaseActivity() {
         timePickerDialog = supportFragmentManager.findFragmentByTag(TAG_TIME_PICKER) as? TimePickerDialog
         if (timePickerDialog == null) {
             timePickerDialog = TimePickerDialog.newInstance(onTimeSetListener, timeToAlert.get(Calendar.HOUR_OF_DAY), timeToAlert.get(Calendar.MINUTE), false)
-            timePickerDialog?.version = TimePickerDialog.Version.VERSION_1
             timePickerDialog?.vibrate(false)
         }
         val theme = intent.getParcelableExtra<ParsedTheme>(EXTRA_THEME)
@@ -71,10 +71,10 @@ class NotificationActivity : BaseActivity() {
     }
 
     private fun applyTheme(theme: ParsedTheme) {
-        //Tint widgets
+        // Tint widgets
         val accentColor = theme.safeAccentColor()
-        val foreGround = theme.safeForegroundColor()
-        switchNotifications.tint(accentColor, foreGround)
+        val foreground = theme.safeForegroundColor()
+        switchNotifications.tint(accentColor, foreground)
         checkBoxSound.tint(accentColor)
         checkBoxVibrate.tint(accentColor)
         textToolbarTitle.setTextColor(theme.safeBackgroundColor())
@@ -83,12 +83,14 @@ class NotificationActivity : BaseActivity() {
         window.statusBarColor = accentColor
         window.navigationBarColor = accentColor
         window.decorView.setBackgroundColor(theme.safeBackgroundColor())
-        textLabelNotifications.setTextColor(foreGround)
-        textTime.setTextColor(foreGround)
-        textLabelTime.setTextColor(foreGround)
-        textLabelSound.setTextColor(foreGround)
-        textLabelVibrate.setTextColor(foreGround)
-        timePickerDialog?.accentColor = theme.safeAccentColor()
+        textLabelNotifications.setTextColor(foreground)
+        textTime.setTextColor(foreground)
+        textLabelTime.setTextColor(foreground)
+        textLabelSound.setTextColor(foreground)
+        textLabelVibrate.setTextColor(foreground)
+        timePickerDialog?.accentColor = accentColor
+        timePickerDialog?.setOkColor(Color.WHITE)
+        timePickerDialog?.setCancelColor(Color.WHITE)
     }
 
     override fun finish() {

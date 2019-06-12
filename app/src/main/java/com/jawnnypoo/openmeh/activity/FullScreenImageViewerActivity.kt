@@ -23,11 +23,11 @@ class FullScreenImageViewerActivity : BaseActivity() {
         private const val EXTRA_INDEX = "index"
 
         fun newInstance(context: Context, theme: ParsedTheme?, images: ArrayList<String>, index: Int): Intent {
-            val intent = Intent(context, FullScreenImageViewerActivity::class.java)
-            intent.putExtra(EXTRA_THEME, theme)
-            intent.putExtra(EXTRA_IMAGES, images)
-            intent.putExtra(EXTRA_INDEX, index)
-            return intent
+            return Intent(context, FullScreenImageViewerActivity::class.java).apply {
+                putExtra(EXTRA_THEME, theme)
+                putExtra(EXTRA_IMAGES, images)
+                putExtra(EXTRA_INDEX, index)
+            }
         }
     }
 

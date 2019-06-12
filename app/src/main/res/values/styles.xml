@@ -31,4 +31,7 @@
         <item name="android:textSize">@dimen/text_size_huge</item>
     </style>
 
+    <!-- https://github.com/wdullaer/MaterialDateTimePicker#why-do-the-ok-and-cancel-buttons-have-the-accent-color-as-a-background-when-combined-with-the-material-components-library -->
+    <style name="mdtp_ActionButton.Text" parent="Widget.MaterialComponents.Button.TextButton.Dialog"/>
+
 </resources>

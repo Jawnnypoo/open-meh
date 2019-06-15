@@ -20,14 +20,16 @@ import com.commit451.bypassglideimagegetter.BypassGlideImageGetter
 import com.commit451.easel.Easel
 import com.commit451.easel.tint
 import com.commit451.easel.tintOverflow
+import com.commit451.repeater.Repeater
+import com.commit451.repeater.RepeaterConfiguration
 import com.google.android.material.snackbar.Snackbar
 import com.jawnnypoo.openmeh.App
 import com.jawnnypoo.openmeh.BuildConfig
 import com.jawnnypoo.openmeh.R
+import com.jawnnypoo.openmeh.TAG_REMINDER
 import com.jawnnypoo.openmeh.adapter.ImageAdapter
 import com.jawnnypoo.openmeh.extension.addOnPageScrollStateChange
 import com.jawnnypoo.openmeh.extension.bind
-import com.jawnnypoo.openmeh.job.ReminderJob
 import com.jawnnypoo.openmeh.model.ParsedTheme
 import com.jawnnypoo.openmeh.shared.extension.getCheckoutUrl
 import com.jawnnypoo.openmeh.shared.extension.getPriceRange
@@ -87,7 +89,12 @@ class MehActivity : BaseActivity() {
                     val timeToAlert = Calendar.getInstance()
                     val hourOfDay = timeToAlert.get(Calendar.HOUR_OF_DAY)
                     val minute = timeToAlert.get(Calendar.MINUTE)
-                    ReminderJob.schedule(hourOfDay, minute + 1)
+                    val config = RepeaterConfiguration(
+                            TAG_REMINDER,
+                            hourOfDay,
+                            minute + 1
+                    )
+                    Repeater.schedule(this, config)
                     Toast.makeText(this, "Scheduled for one minute from now", Toast.LENGTH_SHORT)
                             .show()
                 }

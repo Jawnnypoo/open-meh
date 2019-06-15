@@ -5,11 +5,11 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
 import android.os.Build
+import com.commit451.repeater.Repeater
 import com.crashlytics.android.Crashlytics
-import com.evernote.android.job.JobManager
 import com.jawnnypoo.openmeh.github.GitHubClient
-import com.jawnnypoo.openmeh.job.MehJobCreator
 import com.jawnnypoo.openmeh.shared.api.MehClient
+import com.jawnnypoo.openmeh.util.MehNotificationManager
 import com.novoda.simplechromecustomtabs.SimpleChromeCustomTabs
 import io.fabric.sdk.android.Fabric
 import timber.log.Timber
@@ -38,14 +38,18 @@ class App : Application() {
         } else {
             Fabric.with(this, Crashlytics())
         }
+        Repeater.init(this) {
+            when(it) {
+                TAG_REMINDER -> {
+                    MehNotificationManager.postDailyNotification(this)
+                }
+            }
+        }
         meh = MehClient(BuildConfig.MEH_API_KEY, BuildConfig.DEBUG)
         GitHubClient.init()
         SimpleChromeCustomTabs.initialize(this)
 
         setupNotificationChannelsIfNeeded(this)
-
-        JobManager.create(this)
-                .addJobCreator(MehJobCreator())
     }
 
     private fun setupNotificationChannelsIfNeeded(context: Context) {

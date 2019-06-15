@@ -7,8 +7,11 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.media.RingtoneManager
+import android.text.format.DateFormat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.TaskStackBuilder
+import com.bumptech.glide.Glide
+import com.jawnnypoo.openmeh.App
 import com.jawnnypoo.openmeh.R
 import com.jawnnypoo.openmeh.activity.MehActivity
 import com.jawnnypoo.openmeh.model.ParsedTheme
@@ -16,6 +19,8 @@ import com.jawnnypoo.openmeh.shared.extension.getPriceRange
 import com.jawnnypoo.openmeh.shared.extension.isSoldOut
 import com.jawnnypoo.openmeh.shared.model.Theme
 import com.jawnnypoo.openmeh.shared.response.MehResponse
+import timber.log.Timber
+import java.util.*
 
 /**
  * Manages notification stuff
@@ -24,7 +29,31 @@ object MehNotificationManager {
 
     private const val UNIQUE_ID = 42
 
-    fun postDailyNotification(context: Context, response: MehResponse, icon: Bitmap?) {
+    fun postDailyNotification(context: Context) {
+        val response: MehResponse
+        try {
+            response = App.get().meh.getMeh()
+                    .blockingGet()
+        } catch (error: Exception) {
+            Timber.e(error)
+            return
+        }
+
+
+        val deal = response.deal
+        var icon: Bitmap? = null
+        // Shoot for the highest resolution
+        // http://graphicdesign.stackexchange.com/questions/15776/issues-with-creating-a-hi-res-large-icon-for-android-notifications-in-jelly-bean
+        try {
+            icon = Glide.with(context)
+                    .asBitmap()
+                    .load(deal.photos.firstOrNull())
+                    .submit()
+                    .get()
+        } catch (e: Exception) {
+            Timber.e(e)
+        }
+        Timber.d("Posting daily notification for ${DateFormat.getDateFormat(context).format(Date())}")
         postIt(context, response, icon)
     }
 

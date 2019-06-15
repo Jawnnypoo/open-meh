@@ -6,8 +6,10 @@ import android.graphics.Color
 import android.graphics.PorterDuff
 import android.os.Bundle
 import com.commit451.easel.tint
+import com.commit451.repeater.Repeater
+import com.commit451.repeater.RepeaterConfiguration
 import com.jawnnypoo.openmeh.R
-import com.jawnnypoo.openmeh.job.ReminderJob
+import com.jawnnypoo.openmeh.TAG_REMINDER
 import com.jawnnypoo.openmeh.model.ParsedTheme
 import com.jawnnypoo.openmeh.util.Prefs
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog
@@ -38,9 +40,12 @@ class NotificationActivity : BaseActivity() {
         timeToAlert.set(Calendar.HOUR_OF_DAY, hourOfDay)
         timeToAlert.set(Calendar.MINUTE, minute)
         textTime.text = timeFormat().format(timeToAlert.time)
-        Prefs.setNotificationPreferenceHour(this@NotificationActivity, hourOfDay)
-        Prefs.setNotificationPreferenceMinute(this@NotificationActivity, minute)
-        ReminderJob.schedule(hourOfDay, minute)
+        val config = RepeaterConfiguration(
+                TAG_REMINDER,
+                hourOfDay,
+                minute
+        )
+        Repeater.schedule(this, config)
         //Recreate for next time, starting with the newly set time
         timePickerDialog?.setInitialSelection(hourOfDay, minute)
     }
@@ -52,8 +57,11 @@ class NotificationActivity : BaseActivity() {
         toolbar.setNavigationOnClickListener { onBackPressed() }
         textToolbarTitle.setText(R.string.action_notifications)
 
-        timeToAlert.set(Calendar.HOUR_OF_DAY, Prefs.getNotificationPreferenceHour(this))
-        timeToAlert.set(Calendar.MINUTE, Prefs.getNotificationPreferenceMinute(this))
+        val config = Repeater.config(TAG_REMINDER)
+        if (config.isScheduled()) {
+            timeToAlert.set(Calendar.HOUR_OF_DAY, config.hour)
+            timeToAlert.set(Calendar.MINUTE, config.minute)
+        }
         setupUi()
         rootNotifications.setOnClickListener { switchNotifications.toggle() }
         rootNotificationTime.setOnClickListener { timePickerDialog?.show(supportFragmentManager, TAG_TIME_PICKER) }
@@ -99,17 +107,16 @@ class NotificationActivity : BaseActivity() {
     }
 
     private fun setupUi() {
-        switchNotifications.isChecked = Prefs.getNotificationsPreference(this)
+        val config = Repeater.config(TAG_REMINDER)
+        switchNotifications.isChecked = config.isScheduled()
         checkBoxSound.isChecked = Prefs.getNotificationSound(this)
         checkBoxVibrate.isChecked = Prefs.getNotificationVibrate(this)
         switchNotifications.setOnCheckedChangeListener { _, isChecked ->
-            Prefs.setNotificationsPreference(this@NotificationActivity, isChecked)
             if (isChecked) {
-                val hourOfDay = Prefs.getNotificationPreferenceHour(this)
-                val minuteOfDay = Prefs.getNotificationPreferenceMinute(this)
-                ReminderJob.schedule(hourOfDay, minuteOfDay)
+                val previousConfig = Repeater.config(TAG_REMINDER)
+                Repeater.schedule(this, previousConfig)
             } else {
-                ReminderJob.cancel()
+                Repeater.cancel(this, TAG_REMINDER)
             }
         }
 

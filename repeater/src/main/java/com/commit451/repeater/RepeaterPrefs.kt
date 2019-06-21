@@ -25,6 +25,10 @@ internal object RepeaterPrefs {
         modifySet {
             it.add(configuration.tag)
         }
+        prefs().edit {
+            putInt("${configuration.tag}-$KEY_SUFFIX_HOUR", configuration.hour)
+            putInt("${configuration.tag}-$KEY_SUFFIX_MINUTE", configuration.minute)
+        }
     }
 
     fun remove(tag: String) {

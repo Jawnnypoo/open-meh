@@ -35,6 +35,9 @@ class App : Application() {
 
         instance = this
         FirebaseShim.init(this, BuildConfig.DEBUG)
+        if (BuildConfig.DEBUG) {
+            Timber.plant(Timber.DebugTree())
+        }
         Repeater.init(this) {
             when(it) {
                 TAG_REMINDER -> {

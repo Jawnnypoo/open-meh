@@ -18,7 +18,7 @@ object BuildHelper {
     }
 
     fun mehApiKey(project: Project): String {
-        return project.propertyOrEmpty("MEH_API_KEY")
+        return "\"${project.propertyOrEmpty("MEH_API_KEY")}\""
     }
 
     fun keystoreFile(project: Project): File {

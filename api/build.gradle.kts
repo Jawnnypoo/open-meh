@@ -1,20 +1,17 @@
-apply plugin: 'java-library'
+import org.jetbrains.kotlin.config.KotlinCompilerVersion
 
-apply plugin: 'kotlin'
-
-apply plugin: 'kotlin-kapt'
-
-sourceCompatibility = "1.8"
-targetCompatibility = "1.8"
-
-ext {
-    okhttpVersion = "4.0.0-RC1"
-    retrofitVersion = "2.6.0"
-    moshiVersion = "1.8.0"
+plugins {
+    id("kotlin")
+    id("kotlin-kapt")
 }
 
 dependencies {
-    api("org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version")
+
+    val okhttpVersion = "4.0.0-RC1"
+    val retrofitVersion = "2.6.0"
+    val moshiVersion = "1.8.0"
+
+    api(kotlin("stdlib-jdk7", KotlinCompilerVersion.VERSION))
 
     api("com.squareup.retrofit2:retrofit:$retrofitVersion")
     api("com.squareup.retrofit2:converter-moshi:$retrofitVersion")

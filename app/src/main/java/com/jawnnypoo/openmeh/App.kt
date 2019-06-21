@@ -5,6 +5,7 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
 import android.os.Build
+import com.commit451.firebaseshim.FirebaseShim
 import com.commit451.repeater.Repeater
 import com.crashlytics.android.Crashlytics
 import com.jawnnypoo.openmeh.github.GitHubClient
@@ -33,11 +34,7 @@ class App : Application() {
         super.onCreate()
 
         instance = this
-        if (BuildConfig.DEBUG) {
-            Timber.plant(Timber.DebugTree())
-        } else {
-            Fabric.with(this, Crashlytics())
-        }
+        FirebaseShim.init(this, BuildConfig.DEBUG)
         Repeater.init(this) {
             when(it) {
                 TAG_REMINDER -> {

@@ -14,10 +14,6 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
 
-        <meta-data
-            android:name="com.crashlytics.ApiKey"
-            android:value="${fabric_key}" />
-
         <activity
             android:name=".activity.MehActivity"
             android:launchMode="singleTask">

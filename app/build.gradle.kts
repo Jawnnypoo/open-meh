@@ -28,7 +28,7 @@ android {
 
     signingConfigs {
         register("release") {
-            storeFile = file(BuildHelper.keystorePath(project))
+            storeFile = BuildHelper.keystoreFile(project)
             storePassword = BuildHelper.keystorePassword(project)
             keyAlias = "Jawnnypoo"
             keyPassword = BuildHelper.keyPassword(project)

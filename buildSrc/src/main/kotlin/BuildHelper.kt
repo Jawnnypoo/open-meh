@@ -1,4 +1,5 @@
 import org.gradle.api.Project
+import java.io.File
 
 object BuildHelper {
 
@@ -20,8 +21,8 @@ object BuildHelper {
         return project.propertyOrEmpty("MEH_API_KEY")
     }
 
-    fun keystorePath(project: Project): String {
-        return project.propertyOrEmpty("KEYSTORE_PATH")
+    fun keystoreFile(project: Project): File {
+        return project.file("${project.rootDir}/app/${project.propertyOrEmpty("KEYSTORE_NAME")}")
     }
 
     fun keystorePassword(project: Project): String {

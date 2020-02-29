@@ -5,11 +5,17 @@ plugins {
     id("kotlin-kapt")
 }
 
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+}
+
 dependencies {
 
-    val okhttpVersion = "4.0.0-RC1"
-    val retrofitVersion = "2.6.0"
-    val moshiVersion = "1.8.0"
+    val okhttpVersion = "4.4.0"
+    val retrofitVersion = "2.7.1"
+    val moshiVersion = "1.9.2"
 
     api(kotlin("stdlib-jdk7", KotlinCompilerVersion.VERSION))
 
@@ -21,5 +27,5 @@ dependencies {
     api("com.squareup.okhttp3:okhttp:$okhttpVersion")
     api("com.squareup.okhttp3:logging-interceptor:$okhttpVersion")
 
-    api("io.reactivex.rxjava2:rxjava:2.2.9")
+    api("io.reactivex.rxjava2:rxjava:2.2.18")
 }

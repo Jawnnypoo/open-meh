@@ -54,6 +54,12 @@ android {
     }
 }
 
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+}
+
 androidExtensions {
     isExperimental = true
 }
@@ -65,12 +71,13 @@ dependencies {
 
     implementation(kotlin("stdlib-jdk7", KotlinCompilerVersion.VERSION))
 
-    implementation("androidx.core:core-ktx:1.0.2")
-    implementation("androidx.appcompat:appcompat:1.0.2")
-    implementation("androidx.recyclerview:recyclerview:1.0.0")
-    implementation("androidx.browser:browser:1.0.0")
+    implementation("androidx.core:core-ktx:1.2.0")
+    implementation("androidx.appcompat:appcompat:1.1.0")
+    implementation("androidx.recyclerview:recyclerview:1.1.0")
+    implementation("androidx.browser:browser:1.2.0")
+    implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.0.0")
 
-    implementation("com.google.android.material:material:1.0.0")
+    implementation("com.google.android.material:material:1.1.0")
 
     implementation("io.reactivex.rxjava2:rxandroid:2.1.1")
 

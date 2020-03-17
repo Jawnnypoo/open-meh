@@ -42,15 +42,13 @@ android {
 
     buildTypes {
         named("release") {
-            isMinifyEnabled = true
+            isMinifyEnabled = false
             setProguardFiles(listOf(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"))
-            extra.set("enableCrashlytics", true)
             signingConfig = signingConfigs.getByName("release")
         }
         named("debug") {
             isMinifyEnabled = false
             setProguardFiles(listOf(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"))
-            extra.set("enableCrashlytics", false)
         }
     }
 

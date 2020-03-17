@@ -12,6 +12,7 @@ import com.jawnnypoo.openmeh.R
 import com.jawnnypoo.openmeh.TAG_REMINDER
 import com.jawnnypoo.openmeh.model.ParsedTheme
 import com.jawnnypoo.openmeh.util.Prefs
+import com.jawnnypoo.openmeh.worker.ReminderWorker
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog
 import kotlinx.android.synthetic.main.activity_notifications.*
 import java.text.SimpleDateFormat
@@ -107,16 +108,15 @@ class NotificationActivity : BaseActivity() {
     }
 
     private fun setupUi() {
-        val config = Repeater.config(TAG_REMINDER)
-        switchNotifications.isChecked = config.isScheduled()
+        switchNotifications.isChecked = Prefs.areNotificationsEnabled
         checkBoxSound.isChecked = Prefs.getNotificationSound(this)
         checkBoxVibrate.isChecked = Prefs.getNotificationVibrate(this)
         switchNotifications.setOnCheckedChangeListener { _, isChecked ->
+            Prefs.areNotificationsEnabled = isChecked
             if (isChecked) {
-                val previousConfig = Repeater.config(TAG_REMINDER)
-                Repeater.schedule(this, previousConfig)
+                ReminderWorker.cancel(this)
             } else {
-                Repeater.cancel(this, TAG_REMINDER)
+                ReminderWorker.schedule()
             }
         }
 

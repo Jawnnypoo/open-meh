@@ -33,7 +33,7 @@ object MehNotificationManager {
     fun postDailyNotification(context: Context) {
         val response: MehResponse
         try {
-            response = App.get().meh.getMeh()
+            response = App.get().meh.meh()
                     .blockingGet()
         } catch (error: Exception) {
             Timber.e(error)

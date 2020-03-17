@@ -53,7 +53,10 @@ class MehClient(
         mehService = restAdapter.create(MehService::class.java)
     }
 
-    fun getMeh(): Single<MehResponse> {
-        return mehService.getMeh()
+    /**
+     * The meh deal of the day!
+     */
+    fun meh(): Single<MehResponse> {
+        return mehService.meh()
     }
 }

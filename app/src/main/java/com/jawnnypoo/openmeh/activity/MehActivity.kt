@@ -164,7 +164,7 @@ class MehActivity : BaseActivity() {
         rootFailed.visibility = View.GONE
         rootContent.visibility = View.GONE
         imageDealBackground.visibility = View.GONE
-        App.get().meh.getMeh()
+        App.get().meh.meh()
                 .bind(this)
                 .subscribe({ response ->
                     swipeRefreshLayout.isRefreshing = false

@@ -6,10 +6,9 @@ import android.app.NotificationManager
 import android.content.Context
 import android.os.Build
 import com.commit451.firebaseshim.FirebaseShim
-import com.commit451.repeater.Repeater
 import com.jawnnypoo.openmeh.github.GitHubClient
 import com.jawnnypoo.openmeh.shared.api.MehClient
-import com.jawnnypoo.openmeh.util.MehNotificationManager
+import com.jawnnypoo.openmeh.util.Prefs
 import com.novoda.simplechromecustomtabs.SimpleChromeCustomTabs
 import timber.log.Timber
 
@@ -36,13 +35,7 @@ class App : Application() {
         if (BuildConfig.DEBUG) {
             Timber.plant(Timber.DebugTree())
         }
-        Repeater.init(this) {
-            when(it) {
-                TAG_REMINDER -> {
-                    MehNotificationManager.postDailyNotification(this)
-                }
-            }
-        }
+        Prefs.init(this)
         meh = MehClient(BuildConfig.MEH_API_KEY, BuildConfig.DEBUG)
         GitHubClient.init()
         SimpleChromeCustomTabs.initialize(this)

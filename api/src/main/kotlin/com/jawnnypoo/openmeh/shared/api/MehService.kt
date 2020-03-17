@@ -6,5 +6,5 @@ import retrofit2.http.GET
 
 interface MehService {
     @GET("1/current.json")
-    fun getMeh(): Single<MehResponse>
+    fun meh(): Single<MehResponse>
 }

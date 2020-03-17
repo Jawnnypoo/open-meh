@@ -16,8 +16,8 @@ android {
         applicationId = "com.jawnnypoo.openmeh"
         minSdkVersion(21)
         targetSdkVersion(BuildHelper.sdkVersion())
-        versionCode = 132
-        versionName = "1.3.2"
+        versionCode = 200
+        versionName = "2.0.0"
         buildConfigField("String", "MEH_API_KEY", BuildHelper.mehApiKey(project))
     }
 
@@ -66,7 +66,6 @@ androidExtensions {
 
 dependencies {
     val addendumVersion = "2.1.1"
-    val autodisposeVersion = "1.2.0"
     val hyperionVersion = "0.9.27"
     val workManagerVersion = "2.3.0"
     val coroutinesVersion = "1.3.3"
@@ -83,17 +82,10 @@ dependencies {
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.0.0")
     implementation("androidx.work:work-runtime:$workManagerVersion")
     implementation("androidx.work:work-runtime-ktx:$workManagerVersion")
-    implementation("androidx.work:work-rxjava2:$workManagerVersion")
 
     implementation("com.google.android.material:material:1.1.0")
 
-    implementation("io.reactivex.rxjava2:rxandroid:2.1.1")
-
     implementation("com.jakewharton.threetenabp:threetenabp:1.2.2")
-
-    implementation("com.uber.autodispose:autodispose-ktx:$autodisposeVersion")
-    implementation("com.uber.autodispose:autodispose-android-ktx:$autodisposeVersion")
-    implementation("com.uber.autodispose:autodispose-android-archcomponents-ktx:$autodisposeVersion")
 
     implementation("io.coil-kt:coil:0.9.5")
 

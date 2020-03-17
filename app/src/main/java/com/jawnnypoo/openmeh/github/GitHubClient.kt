@@ -1,12 +1,9 @@
 package com.jawnnypoo.openmeh.github
 
-import io.reactivex.Single
 import retrofit2.Retrofit
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Path
-
 
 /**
  * GitHub!
@@ -17,9 +14,9 @@ object GitHubClient {
 
     interface GitHub {
         @GET("/repos/{owner}/{repo}/contributors")
-        fun contributors(
+        suspend fun contributors(
                 @Path("owner") owner: String,
-                @Path("repo") repo: String): Single<List<Contributor>>
+                @Path("repo") repo: String): List<Contributor>
     }
 
     private lateinit var gitHub: GitHub
@@ -27,13 +24,12 @@ object GitHubClient {
     fun init() {
         val restAdapter = Retrofit.Builder()
                 .addConverterFactory(MoshiConverterFactory.create())
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .baseUrl(API_URL)
                 .build()
         gitHub = restAdapter.create(GitHub::class.java)
     }
 
-    fun contributors(owner: String, repo: String): Single<List<Contributor>> {
+    suspend fun contributors(owner: String, repo: String): List<Contributor> {
         return gitHub.contributors(owner, repo)
     }
 }

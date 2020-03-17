@@ -1,6 +1,6 @@
 # open meh
 
-Open source meh.com Android App
+Open source meh.com Android App using Kotlin, Retrofit, Coroutines, Coil, WorkManager, and more!
 
 ![screenshot](https://github.com/Jawnnypoo/open-meh/raw/master/assets/screenshot-1.png)
 
@@ -26,7 +26,7 @@ Pull requests are welcomed and encouraged. If you experience any bugs, please [f
 License
 =======
 
-    Copyright 2019 John Carlson
+    Copyright 2020 John Carlson
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.

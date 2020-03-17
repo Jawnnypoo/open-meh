@@ -2,7 +2,6 @@ package com.jawnnypoo.openmeh.activity
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -31,5 +30,4 @@ abstract class BaseActivity : AppCompatActivity(), CoroutineScope {
         super.onDestroy()
         job.cancel()
     }
-    val scopeProvider: AndroidLifecycleScopeProvider by lazy { AndroidLifecycleScopeProvider.from(this) }
 }

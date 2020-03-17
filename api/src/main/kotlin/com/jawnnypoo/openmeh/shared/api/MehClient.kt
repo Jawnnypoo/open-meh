@@ -2,11 +2,9 @@ package com.jawnnypoo.openmeh.shared.api
 
 import com.jawnnypoo.openmeh.shared.response.MehResponse
 import com.squareup.moshi.Moshi
-import io.reactivex.Single
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.moshi.MoshiConverterFactory
 
 /**
@@ -47,7 +45,6 @@ class MehClient(
         val restAdapter = Retrofit.Builder()
                 .baseUrl(API_URL)
                 .addConverterFactory(MoshiConverterFactory.create(moshi))
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .client(clientBuilder.build())
                 .build()
         mehService = restAdapter.create(MehService::class.java)
@@ -56,7 +53,7 @@ class MehClient(
     /**
      * The meh deal of the day!
      */
-    fun meh(): Single<MehResponse> {
+    suspend fun meh(): MehResponse {
         return mehService.meh()
     }
 }

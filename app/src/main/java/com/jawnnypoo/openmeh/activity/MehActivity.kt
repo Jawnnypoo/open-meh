@@ -24,7 +24,6 @@ import com.jawnnypoo.openmeh.BuildConfig
 import com.jawnnypoo.openmeh.R
 import com.jawnnypoo.openmeh.adapter.ImageAdapter
 import com.jawnnypoo.openmeh.extension.addOnPageScrollStateChange
-import com.jawnnypoo.openmeh.extension.bind
 import com.jawnnypoo.openmeh.extension.setMarkdownText
 import com.jawnnypoo.openmeh.model.ParsedTheme
 import com.jawnnypoo.openmeh.shared.extension.getCheckoutUrl
@@ -134,7 +133,7 @@ class MehActivity : BaseActivity() {
             }
         }
         swipeRefreshLayout.setOnRefreshListener { loadMeh() }
-        loadMeh()
+        //loadMeh()
     }
 
     override fun onResume() {
@@ -159,17 +158,18 @@ class MehActivity : BaseActivity() {
         rootFailed.visibility = View.GONE
         rootContent.visibility = View.GONE
         imageDealBackground.visibility = View.GONE
-        App.get().meh.meh()
-                .bind(this)
-                .subscribe({ response ->
-                    swipeRefreshLayout.isRefreshing = false
-                    savedMehResponse = response
-                    bindDeal(response.deal)
-                }, {
-                    swipeRefreshLayout.isRefreshing = false
-                    Timber.e(it)
-                    showError()
-                })
+        launch {
+            try {
+                val response = App.get().meh.meh()
+                savedMehResponse = response
+                bindDeal(response.deal)
+            } catch (e: Exception) {
+                Timber.e(e)
+                showError()
+            } finally {
+                swipeRefreshLayout.isRefreshing = false
+            }
+        }
     }
 
     @SuppressLint("SetTextI18n")

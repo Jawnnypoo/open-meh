@@ -21,11 +21,8 @@ dependencies {
 
     api("com.squareup.retrofit2:retrofit:$retrofitVersion")
     api("com.squareup.retrofit2:converter-moshi:$retrofitVersion")
-    api("com.squareup.retrofit2:adapter-rxjava2:$retrofitVersion")
     api("com.squareup.moshi:moshi:$moshiVersion")
     kapt("com.squareup.moshi:moshi-kotlin-codegen:$moshiVersion")
     api("com.squareup.okhttp3:okhttp:$okhttpVersion")
     api("com.squareup.okhttp3:logging-interceptor:$okhttpVersion")
-
-    api("io.reactivex.rxjava2:rxjava:2.2.19")
 }

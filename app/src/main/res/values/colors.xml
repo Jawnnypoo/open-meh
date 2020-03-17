@@ -3,4 +3,6 @@
     <color name="black">#000000</color>
     <color name="white">#ffffff</color>
     <color name="scrim">#99323232</color>
+    <color name="primary">@color/white</color>
+    <color name="secondary">@color/black</color>
 </resources>

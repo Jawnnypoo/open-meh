@@ -30,11 +30,13 @@ object MehNotificationManager {
 
     private const val UNIQUE_ID = 42
 
-    fun postDailyNotification(context: Context) {
+    /**
+     * Fetches the daily deal and posts a notification about it
+     */
+    suspend fun postDailyNotification(context: Context) {
         val response: MehResponse
         try {
             response = App.get().meh.meh()
-                    .blockingGet()
         } catch (error: Exception) {
             Timber.e(error)
             return
@@ -48,7 +50,7 @@ object MehNotificationManager {
         try {
             val url = deal.photos.firstOrNull()
             if (url != null) {
-                //icon = (CoilCompat.getBlocking(url) as? BitmapDrawable)?.bitmap
+                icon = (CoilCompat.getBlocking(url) as? BitmapDrawable)?.bitmap
             }
         } catch (e: Exception) {
             Timber.e(e)

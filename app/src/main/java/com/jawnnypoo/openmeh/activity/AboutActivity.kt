@@ -13,7 +13,6 @@ import coil.api.load
 import com.commit451.gimbal.Gimbal
 import com.google.android.material.snackbar.Snackbar
 import com.jawnnypoo.openmeh.R
-import com.jawnnypoo.openmeh.extension.bind
 import com.jawnnypoo.openmeh.github.Contributor
 import com.jawnnypoo.openmeh.github.GitHubClient
 import com.jawnnypoo.openmeh.model.ParsedTheme
@@ -23,6 +22,7 @@ import com.jawnnypoo.physicslayout.PhysicsConfig
 import com.wefika.flowlayout.FlowLayout
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.activity_about.*
+import kotlinx.coroutines.launch
 import org.jbox2d.common.Vec2
 import timber.log.Timber
 
@@ -79,15 +79,16 @@ class AboutActivity : BaseActivity() {
             applyTheme(it)
         }
 
-        GitHubClient.contributors(REPO_USER, REPO_NAME)
-                .bind(this)
-                .subscribe({
-                    physicsLayout.post { addContributors(it) }
-                }, {
-                    Timber.e(it)
-                    Snackbar.make(window.decorView, R.string.error_getting_contributors, Snackbar.LENGTH_SHORT)
+        launch {
+            try {
+                val contributors = GitHubClient.contributors(REPO_USER, REPO_NAME)
+                physicsLayout.post { addContributors(contributors) }
+            } catch (e: Exception) {
+                Timber.e(e)
+                Snackbar.make(window.decorView, R.string.error_getting_contributors, Snackbar.LENGTH_SHORT)
                         .show()
-                })
+            }
+        }
 
         rootSource.setOnClickListener {
             val color = theme?.safeAccentColor() ?: Color.WHITE

@@ -71,8 +71,8 @@
                         android:paddingTop="16dp"
                         android:paddingEnd="16dp"
                         android:paddingBottom="16dp"
-                        app:cornerRadius="16dp"
-                        android:text="@string/buy_it" />
+                        android:text="@string/buy_it"
+                        app:cornerRadius="16dp" />
 
                     <TextView
                         android:id="@+id/textTitle"
@@ -141,9 +141,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:background="?attr/selectableItemBackground"
+        android:background="?attr/selectableItemBackgroundBorderless"
         android:orientation="vertical"
-        android:visibility="gone">
+        android:visibility="gone"
+        tools:visibility="visible">
 
         <ImageView
             android:layout_width="wrap_content"
@@ -152,11 +153,8 @@
             android:src="@drawable/ic_empty" />
 
         <TextView
-            style="@style/Base.TextAppearance.AppCompat.Headline"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:padding="@dimen/padding_medium"
             android:text="@string/tap_to_load_again" />
     </LinearLayout>
 

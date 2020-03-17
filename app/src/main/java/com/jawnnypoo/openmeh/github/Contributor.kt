@@ -1,13 +1,13 @@
 package com.jawnnypoo.openmeh.github
 
 import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
 /**
  * GitHub contributor
  */
-class Contributor {
-    var login: String? = null
-    var contributions: Int = 0
-    @field:Json(name = "avatar_url")
-    var avatarUrl: String? = null
-}
+@JsonClass(generateAdapter = true)
+data class Contributor(
+        @Json(name = "avatar_url")
+        var avatarUrl: String? = null
+)

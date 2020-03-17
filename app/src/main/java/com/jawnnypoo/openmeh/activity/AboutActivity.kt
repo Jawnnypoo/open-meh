@@ -10,6 +10,7 @@ import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.os.Bundle
 import coil.api.load
+import com.commit451.addendum.design.snackbar
 import com.commit451.gimbal.Gimbal
 import com.google.android.material.snackbar.Snackbar
 import com.jawnnypoo.openmeh.R
@@ -85,8 +86,7 @@ class AboutActivity : BaseActivity() {
                 physicsLayout.post { addContributors(contributors) }
             } catch (e: Exception) {
                 Timber.e(e)
-                Snackbar.make(window.decorView, R.string.error_getting_contributors, Snackbar.LENGTH_SHORT)
-                        .show()
+                root.snackbar(R.string.error_getting_contributors)
             }
         }
 

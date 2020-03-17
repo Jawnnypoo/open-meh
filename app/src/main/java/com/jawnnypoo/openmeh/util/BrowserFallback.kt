@@ -12,15 +12,15 @@ import com.novoda.simplechromecustomtabs.navigation.NavigationFallback
 /**
  * A fallback to open the url in the browser
  */
-class BrowserFallback(private val mActivity: Activity) : NavigationFallback {
+class BrowserFallback(private val activity: Activity) : NavigationFallback {
 
     override fun onFallbackNavigateTo(url: Uri) {
         val intent = Intent(Intent.ACTION_VIEW)
         intent.data = url
         try {
-            mActivity.startActivity(intent)
+            activity.startActivity(intent)
         } catch (e: ActivityNotFoundException) {
-            Snackbar.make(mActivity.window.decorView, R.string.error_no_browser, Snackbar.LENGTH_SHORT)
+            Snackbar.make(activity.window.decorView, R.string.error_no_browser, Snackbar.LENGTH_SHORT)
                     .show()
         }
 

@@ -5,6 +5,7 @@ import android.content.Intent
 import android.net.Uri
 import com.google.android.material.snackbar.Snackbar
 import android.view.View
+import com.commit451.addendum.design.snackbar
 
 import com.jawnnypoo.openmeh.R
 import com.jawnnypoo.openmeh.shared.response.MehResponse
@@ -20,8 +21,7 @@ object IntentUtil {
     fun shareDeal(root: View, mehResponse: MehResponse?) {
         val deal = mehResponse?.deal
         if (deal == null) {
-            Snackbar.make(root, R.string.error_nothing_to_share, Snackbar.LENGTH_SHORT)
-                    .show()
+            root.snackbar(R.string.error_nothing_to_share)
         } else {
             val shareIntent = Intent(Intent.ACTION_SEND)
             shareIntent.type = "text/plain"

@@ -5,6 +5,9 @@ import android.os.Parcelable
 import com.jawnnypoo.openmeh.shared.model.Theme
 import kotlinx.android.parcel.Parcelize
 
+/**
+ * [Theme], but parsed into colors that are safe and make sense
+ */
 @Parcelize
 data class ParsedTheme(
         val accentColor: String? = null,

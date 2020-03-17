@@ -11,10 +11,11 @@ import android.media.RingtoneManager
 import android.text.format.DateFormat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.TaskStackBuilder
+import coil.Coil
+import coil.api.get
 import com.jawnnypoo.openmeh.App
 import com.jawnnypoo.openmeh.R
 import com.jawnnypoo.openmeh.activity.MehActivity
-import com.jawnnypoo.openmeh.image.CoilCompat
 import com.jawnnypoo.openmeh.model.ParsedTheme
 import com.jawnnypoo.openmeh.shared.extension.getPriceRange
 import com.jawnnypoo.openmeh.shared.extension.isSoldOut
@@ -50,7 +51,7 @@ object MehNotificationManager {
         try {
             val url = deal.photos.firstOrNull()
             if (url != null) {
-                icon = (CoilCompat.getBlocking(url) as? BitmapDrawable)?.bitmap
+                icon = (Coil.get(url) as? BitmapDrawable)?.bitmap
             }
         } catch (e: Exception) {
             Timber.e(e)
@@ -83,10 +84,10 @@ object MehNotificationManager {
                     .setSummaryText(priceString))
         }
 
-        if (Prefs.getNotificationSound()) {
+        if (Prefs.isNotificationSound) {
             notificationBuilder.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
         }
-        if (Prefs.getNotificationVibrate()) {
+        if (Prefs.isNotificationVibrate) {
             notificationBuilder.setVibrate(longArrayOf(100, 200, 100, 200))
         }
 

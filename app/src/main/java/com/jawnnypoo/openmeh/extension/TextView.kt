@@ -1,6 +1,7 @@
 package com.jawnnypoo.openmeh.extension
 
 import android.widget.TextView
+import androidx.core.text.parseAsHtml
 import com.commit451.coilimagegetter.CoilImageGetter
 import org.commonmark.parser.Parser
 import org.commonmark.renderer.html.HtmlRenderer
@@ -15,7 +16,6 @@ private val parser: Parser = Parser.builder().build()
 fun TextView.setMarkdownText(text: String) {
     val document = parser.parse(text)
     val html = renderer.render(document)
-
     val getter = CoilImageGetter(this)
-    this.text = html.formatAsHtml(getter)
+    this.text = html.parseAsHtml(imageGetter = getter)
 }

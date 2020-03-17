@@ -93,8 +93,8 @@ class NotificationActivity : BaseActivity() {
 
     private fun setupUi() {
         switchNotifications.isChecked = Prefs.areNotificationsEnabled
-        checkBoxSound.isChecked = Prefs.getNotificationSound()
-        checkBoxVibrate.isChecked = Prefs.getNotificationVibrate()
+        checkBoxSound.isChecked = Prefs.isNotificationSound
+        checkBoxVibrate.isChecked = Prefs.isNotificationVibrate
         switchNotifications.setOnCheckedChangeListener { _, isChecked ->
             Prefs.areNotificationsEnabled = isChecked
             launch {
@@ -107,8 +107,8 @@ class NotificationActivity : BaseActivity() {
         }
 
         textTime.text = timeFormat().format(timeToAlert.time)
-        checkBoxSound.setOnCheckedChangeListener { _, isChecked -> Prefs.setNotificationSound(isChecked) }
-        checkBoxVibrate.setOnCheckedChangeListener { _, isChecked -> Prefs.setNotificationVibrate(isChecked) }
+        checkBoxSound.setOnCheckedChangeListener { _, isChecked -> Prefs.isNotificationSound = isChecked }
+        checkBoxVibrate.setOnCheckedChangeListener { _, isChecked -> Prefs.isNotificationVibrate = isChecked }
     }
 
     private fun timeFormat(): SimpleDateFormat {

@@ -10,15 +10,14 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
-import androidx.core.view.ViewCompat
 import coil.api.load
+import com.commit451.addendum.design.snackbar
 import com.commit451.alakazam.backgroundColorAnimator
 import com.commit451.alakazam.navigationBarColorAnimator
 import com.commit451.alakazam.statusBarColorAnimator
 import com.commit451.easel.Easel
 import com.commit451.easel.tint
 import com.commit451.easel.tintOverflow
-import com.google.android.material.snackbar.Snackbar
 import com.jawnnypoo.openmeh.App
 import com.jawnnypoo.openmeh.BuildConfig
 import com.jawnnypoo.openmeh.R
@@ -32,7 +31,6 @@ import com.jawnnypoo.openmeh.shared.extension.isSoldOut
 import com.jawnnypoo.openmeh.shared.model.Deal
 import com.jawnnypoo.openmeh.shared.model.Video
 import com.jawnnypoo.openmeh.shared.response.MehResponse
-import com.jawnnypoo.openmeh.util.ColorUtil
 import com.jawnnypoo.openmeh.util.IntentUtil
 import com.jawnnypoo.openmeh.util.Navigator
 import com.jawnnypoo.openmeh.util.SwipeRefreshViewPagerSyncer
@@ -133,7 +131,7 @@ class MehActivity : BaseActivity() {
             }
         }
         swipeRefreshLayout.setOnRefreshListener { loadMeh() }
-        // loadMeh()
+        loadMeh()
     }
 
     override fun onResume() {
@@ -241,7 +239,7 @@ class MehActivity : BaseActivity() {
             buttonBuy.background.setColorFilter(foreGround, PorterDuff.Mode.MULTIPLY)
             buttonBuy.setTextColor(foreGroundInverse)
         } else {
-            ViewCompat.setBackgroundTintList(buttonBuy, ColorUtil.createColorStateList(accentColor, Easel.darkerColor(accentColor)))
+            buttonBuy.setBackgroundColor(Easel.darkerColor(accentColor))
             buttonBuy.setTextColor(theme.safeBackgroundColor())
         }
         textFullSpecs.setTextColor(foreGround)
@@ -270,8 +268,7 @@ class MehActivity : BaseActivity() {
 
     private fun showError() {
         rootFailed.visibility = View.VISIBLE
-        Snackbar.make(root, R.string.error_with_server, Snackbar.LENGTH_SHORT)
-                .show()
+        root.snackbar(R.string.error_with_server)
     }
 
     private fun safeAccentColor(): Int {

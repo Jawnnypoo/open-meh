@@ -21,21 +21,23 @@ object Prefs {
         sharedPreferences = context.getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE)
     }
 
-    fun getNotificationSound(): Boolean {
-        return sharedPreferences.getBoolean(KEY_SOUND, false)
-    }
+    var isNotificationSound: Boolean
+        get() = sharedPreferences
+                .getBoolean(KEY_SOUND, false)
+        set(value) {
+            sharedPreferences.edit()
+                    .putBoolean(KEY_SOUND, value)
+                    .apply()
+        }
 
-    fun setNotificationSound(value: Boolean) {
-        sharedPreferences.edit().putBoolean(KEY_SOUND, value).apply()
-    }
-
-    fun getNotificationVibrate(): Boolean {
-        return sharedPreferences.getBoolean(KEY_VIBRATE, false)
-    }
-
-    fun setNotificationVibrate(value: Boolean) {
-        sharedPreferences.edit().putBoolean(KEY_VIBRATE, value).apply()
-    }
+    var isNotificationVibrate: Boolean
+        get() = sharedPreferences
+                .getBoolean(KEY_VIBRATE, false)
+        set(value) {
+            sharedPreferences.edit()
+                    .putBoolean(KEY_VIBRATE, value)
+                    .apply()
+        }
 
     var notificationHour: Int
         get() = sharedPreferences

@@ -4,6 +4,7 @@ plugins {
     id("com.android.application")
     id("kotlin-android")
     id("kotlin-android-extensions")
+    id("kotlin-kapt")
     id("io.fabric") apply false
     id("com.google.gms.google-services") apply false
 }
@@ -88,6 +89,8 @@ dependencies {
     implementation("com.google.android.material:material:1.1.0")
 
     implementation("com.jakewharton.threetenabp:threetenabp:1.2.2")
+
+    kapt("com.squareup.moshi:moshi-kotlin-codegen:${BuildHelper.moshiVersion()}")
 
     implementation("io.coil-kt:coil:0.9.5")
 

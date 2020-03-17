@@ -17,6 +17,10 @@ object BuildHelper {
         return "4.7.1"
     }
 
+    fun moshiVersion(): String {
+        return "1.9.2"
+    }
+
     fun mehApiKey(project: Project): String {
         return "\"${project.propertyOrEmpty("MEH_API_KEY")}\""
     }

@@ -18,13 +18,10 @@ import com.commit451.alakazam.statusBarColorAnimator
 import com.commit451.easel.Easel
 import com.commit451.easel.tint
 import com.commit451.easel.tintOverflow
-import com.commit451.repeater.Repeater
-import com.commit451.repeater.RepeaterConfiguration
 import com.google.android.material.snackbar.Snackbar
 import com.jawnnypoo.openmeh.App
 import com.jawnnypoo.openmeh.BuildConfig
 import com.jawnnypoo.openmeh.R
-import com.jawnnypoo.openmeh.TAG_REMINDER
 import com.jawnnypoo.openmeh.adapter.ImageAdapter
 import com.jawnnypoo.openmeh.extension.addOnPageScrollStateChange
 import com.jawnnypoo.openmeh.extension.bind
@@ -40,10 +37,12 @@ import com.jawnnypoo.openmeh.util.ColorUtil
 import com.jawnnypoo.openmeh.util.IntentUtil
 import com.jawnnypoo.openmeh.util.Navigator
 import com.jawnnypoo.openmeh.util.SwipeRefreshViewPagerSyncer
+import com.jawnnypoo.openmeh.worker.ReminderWorker
 import com.novoda.simplechromecustomtabs.SimpleChromeCustomTabs
 import kotlinx.android.synthetic.main.activity_meh.*
+import kotlinx.coroutines.launch
+import org.threeten.bp.LocalDateTime
 import timber.log.Timber
-import java.util.*
 
 /**
  * Activity that shows the meh.com deal of the day
@@ -83,15 +82,11 @@ class MehActivity : BaseActivity() {
                     return@setOnMenuItemClickListener true
                 }
                 R.id.action_post_notification -> {
-                    val timeToAlert = Calendar.getInstance()
-                    val hourOfDay = timeToAlert.get(Calendar.HOUR_OF_DAY)
-                    val minute = timeToAlert.get(Calendar.MINUTE)
-                    val config = RepeaterConfiguration(
-                            TAG_REMINDER,
-                            hourOfDay,
-                            minute + 1
-                    )
-                    Repeater.schedule(this, config)
+                    var timeToAlert = LocalDateTime.now()
+                    timeToAlert = timeToAlert.plusMinutes(1)
+                    launch {
+                        ReminderWorker.schedule(this@MehActivity, timeToAlert.hour, timeToAlert.minute)
+                    }
                     Toast.makeText(this, "Scheduled for one minute from now", Toast.LENGTH_SHORT)
                             .show()
                 }

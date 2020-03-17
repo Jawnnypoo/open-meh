@@ -1,15 +1,35 @@
 package com.jawnnypoo.openmeh.activity
 
+import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlin.coroutines.CoroutineContext
 
 /**
- * The Activity to father them all
+ * The Activity to rule them all
  */
-abstract class BaseActivity : AppCompatActivity() {
+abstract class BaseActivity : AppCompatActivity(), CoroutineScope {
+
     companion object {
         const val EXTRA_THEME = "EXTRA_THEME"
     }
 
+    private lateinit var job: Job
+
+    override val coroutineContext: CoroutineContext
+        get() = job + Dispatchers.Main
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        job = Job()
+        super.onCreate(savedInstanceState)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        job.cancel()
+    }
     val scopeProvider: AndroidLifecycleScopeProvider by lazy { AndroidLifecycleScopeProvider.from(this) }
 }

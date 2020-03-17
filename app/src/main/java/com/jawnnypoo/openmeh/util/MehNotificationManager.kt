@@ -48,7 +48,7 @@ object MehNotificationManager {
         try {
             val url = deal.photos.firstOrNull()
             if (url != null) {
-                icon = (CoilCompat.getBlocking(url) as? BitmapDrawable)?.bitmap
+                //icon = (CoilCompat.getBlocking(url) as? BitmapDrawable)?.bitmap
             }
         } catch (e: Exception) {
             Timber.e(e)
@@ -81,10 +81,10 @@ object MehNotificationManager {
                     .setSummaryText(priceString))
         }
 
-        if (Prefs.getNotificationSound(context)) {
+        if (Prefs.getNotificationSound()) {
             notificationBuilder.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
         }
-        if (Prefs.getNotificationVibrate(context)) {
+        if (Prefs.getNotificationVibrate()) {
             notificationBuilder.setVibrate(longArrayOf(100, 200, 100, 200))
         }
 

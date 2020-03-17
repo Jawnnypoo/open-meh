@@ -9,9 +9,11 @@ import android.content.SharedPreferences
 object Prefs {
 
     private const val SHARED_PREFS = "meh_shared_prefs"
-    private const val SHARED_PREFS_NOTIFICATION_VIBRATE = "notification_vibrate"
-    private const val SHARED_PREFS_NOTIFICATION_SOUND = "notification_sound"
-    private const val SHARED_PREFS_NOTIFICATION_ENABLED = "notification_enabled"
+    private const val KEY_VIBRATE = "notification_vibrate"
+    private const val KEY_SOUND = "notification_sound"
+    private const val KEY_ENABLED = "notification_enabled"
+    private const val KEY_HOUR = "notification_hour"
+    private const val KEY_MINUTE = "notification_minute"
 
     private lateinit var sharedPreferences: SharedPreferences
 
@@ -19,28 +21,46 @@ object Prefs {
         sharedPreferences = context.getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE)
     }
 
-    fun getNotificationSound(context: Context): Boolean {
-        return sharedPreferences.getBoolean(SHARED_PREFS_NOTIFICATION_SOUND, false)
+    fun getNotificationSound(): Boolean {
+        return sharedPreferences.getBoolean(KEY_SOUND, false)
     }
 
-    fun setNotificationSound(context: Context, value: Boolean) {
-        sharedPreferences.edit().putBoolean(SHARED_PREFS_NOTIFICATION_SOUND, value).apply()
+    fun setNotificationSound(value: Boolean) {
+        sharedPreferences.edit().putBoolean(KEY_SOUND, value).apply()
     }
 
-    fun getNotificationVibrate(context: Context): Boolean {
-        return sharedPreferences.getBoolean(SHARED_PREFS_NOTIFICATION_VIBRATE, false)
+    fun getNotificationVibrate(): Boolean {
+        return sharedPreferences.getBoolean(KEY_VIBRATE, false)
     }
 
-    fun setNotificationVibrate(context: Context, value: Boolean) {
-        sharedPreferences.edit().putBoolean(SHARED_PREFS_NOTIFICATION_VIBRATE, value).apply()
+    fun setNotificationVibrate(value: Boolean) {
+        sharedPreferences.edit().putBoolean(KEY_VIBRATE, value).apply()
     }
+
+    var notificationHour: Int
+        get() = sharedPreferences
+                .getInt(KEY_HOUR, 6)
+        set(value) {
+            sharedPreferences.edit()
+                    .putInt(KEY_HOUR, value)
+                    .apply()
+        }
+
+    var notificationMinute: Int
+        get() = sharedPreferences
+                .getInt(KEY_MINUTE, 30)
+        set(value) {
+            sharedPreferences.edit()
+                    .putInt(KEY_MINUTE, value)
+                    .apply()
+        }
 
     var areNotificationsEnabled: Boolean
         get() = sharedPreferences
-                .getBoolean(SHARED_PREFS_NOTIFICATION_ENABLED, false)
+                .getBoolean(KEY_ENABLED, false)
         set(removed) {
             sharedPreferences.edit()
-                    .putBoolean(SHARED_PREFS_NOTIFICATION_ENABLED, removed)
+                    .putBoolean(KEY_ENABLED, removed)
                     .apply()
         }
 }

@@ -19,6 +19,6 @@ data class Deal(
         @Json(name = "soldOutAt") val soldOutAt: String? = null,
         @Json(name = "story") val story: Story,
         @Json(name = "theme") val theme: Theme,
-        @Json(name = "topic") val topic: Topic,
+        @Json(name = "topic") val topic: Topic? = null,
         @Json(name = "url") val url: String
 )

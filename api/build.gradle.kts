@@ -14,7 +14,7 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
 dependencies {
 
     val okhttpVersion = "4.4.0"
-    val retrofitVersion = "2.7.1"
+    val retrofitVersion = "2.7.2"
     val moshiVersion = "1.9.2"
 
     api(kotlin("stdlib-jdk7", KotlinCompilerVersion.VERSION))

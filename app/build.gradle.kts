@@ -27,9 +27,13 @@ android {
         targetCompatibility = JavaVersion.VERSION_1_8
     }
 
+    packagingOptions {
+        exclude("META-INF/library_release.kotlin_module")
+    }
+
     signingConfigs {
         register("release") {
-            storeFile = BuildHelper.keystoreFile(project)
+            storeFile = rootProject.file("app/${project.propertyOrEmpty("KEYSTORE_NAME")}")
             storePassword = BuildHelper.keystorePassword(project)
             keyAlias = "Jawnnypoo"
             keyPassword = BuildHelper.keyPassword(project)

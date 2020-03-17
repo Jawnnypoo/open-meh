@@ -9,7 +9,6 @@ import android.view.View
 import com.jawnnypoo.openmeh.R
 import com.jawnnypoo.openmeh.adapter.ImageAdapter
 import com.jawnnypoo.openmeh.model.ParsedTheme
-import com.jawnnypoo.openmeh.shared.model.Theme
 import kotlinx.android.synthetic.main.activity_full_screen_image_viewer.*
 
 /**
@@ -24,7 +23,7 @@ class FullScreenImageViewerActivity : BaseActivity() {
 
         fun newInstance(context: Context, theme: ParsedTheme?, images: ArrayList<String>, index: Int): Intent {
             return Intent(context, FullScreenImageViewerActivity::class.java).apply {
-                putExtra(EXTRA_THEME, theme)
+                putExtra(KEY_THEME, theme)
                 putExtra(EXTRA_IMAGES, images)
                 putExtra(EXTRA_INDEX, index)
             }
@@ -39,7 +38,7 @@ class FullScreenImageViewerActivity : BaseActivity() {
 
         val images = intent.getStringArrayListExtra(EXTRA_IMAGES)
 
-        val theme = intent.getParcelableExtra<ParsedTheme>(EXTRA_THEME)
+        val theme = intent.getParcelableExtra<ParsedTheme>(KEY_THEME)
 
         pagerAdapter = ImageAdapter(true, object : ImageAdapter.Listener {
             override fun onImageClicked(view: View, position: Int) {

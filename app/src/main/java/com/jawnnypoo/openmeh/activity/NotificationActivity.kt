@@ -1,8 +1,8 @@
 package com.jawnnypoo.openmeh.activity
 
+import android.app.TimePickerDialog
 import android.content.Context
 import android.content.Intent
-import android.graphics.Color
 import android.graphics.PorterDuff
 import android.os.Bundle
 import com.commit451.easel.tint
@@ -10,7 +10,6 @@ import com.jawnnypoo.openmeh.R
 import com.jawnnypoo.openmeh.model.ParsedTheme
 import com.jawnnypoo.openmeh.util.Prefs
 import com.jawnnypoo.openmeh.worker.ReminderWorker
-import com.wdullaer.materialdatetimepicker.time.TimePickerDialog
 import kotlinx.android.synthetic.main.activity_notifications.*
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
@@ -23,27 +22,24 @@ class NotificationActivity : BaseActivity() {
 
     companion object {
 
-        private const val TAG_TIME_PICKER = "timepicker"
-
         fun newInstance(context: Context, theme: ParsedTheme?): Intent {
             val intent = Intent(context, NotificationActivity::class.java)
-            intent.putExtra(EXTRA_THEME, theme)
+            intent.putExtra(KEY_THEME, theme)
             return intent
         }
     }
 
     private var timeToAlert: Calendar = Calendar.getInstance()
-    private var timePickerDialog: TimePickerDialog? = null
 
-    private val onTimeSetListener = TimePickerDialog.OnTimeSetListener { _, hourOfDay, minute, _ ->
+    private val onTimeSetListener = TimePickerDialog.OnTimeSetListener { _, hourOfDay, minute ->
         timeToAlert.set(Calendar.HOUR_OF_DAY, hourOfDay)
         timeToAlert.set(Calendar.MINUTE, minute)
+        Prefs.notificationHour = hourOfDay
+        Prefs.notificationMinute = minute
         textTime.text = timeFormat().format(timeToAlert.time)
         launch {
             ReminderWorker.schedule(this@NotificationActivity, hourOfDay, minute)
         }
-        // Recreate for next time, starting with the newly set time
-        timePickerDialog?.setInitialSelection(hourOfDay, minute)
     }
 
     public override fun onCreate(savedInstanceState: Bundle?) {
@@ -57,15 +53,14 @@ class NotificationActivity : BaseActivity() {
         timeToAlert.set(Calendar.MINUTE, Prefs.notificationMinute)
         setupUi()
         rootNotifications.setOnClickListener { switchNotifications.toggle() }
-        rootNotificationTime.setOnClickListener { timePickerDialog?.show(supportFragmentManager, TAG_TIME_PICKER) }
+        rootNotificationTime.setOnClickListener {
+            val timePickerDialog = TimePickerDialog(this, onTimeSetListener, timeToAlert.get(Calendar.HOUR_OF_DAY), timeToAlert.get(Calendar.MINUTE), false)
+            timePickerDialog.updateTime(Prefs.notificationHour, Prefs.notificationMinute)
+            timePickerDialog.show()
+        }
         rootNotificationSound.setOnClickListener { checkBoxSound.toggle() }
         rootVibrate.setOnClickListener { checkBoxVibrate.toggle() }
-        timePickerDialog = supportFragmentManager.findFragmentByTag(TAG_TIME_PICKER) as? TimePickerDialog
-        if (timePickerDialog == null) {
-            timePickerDialog = TimePickerDialog.newInstance(onTimeSetListener, timeToAlert.get(Calendar.HOUR_OF_DAY), timeToAlert.get(Calendar.MINUTE), false)
-            timePickerDialog?.vibrate(false)
-        }
-        val theme = intent.getParcelableExtra<ParsedTheme>(EXTRA_THEME)
+        val theme = intent.getParcelableExtra<ParsedTheme>(KEY_THEME)
         if (theme != null) {
             applyTheme(theme)
         }
@@ -89,9 +84,6 @@ class NotificationActivity : BaseActivity() {
         textLabelTime.setTextColor(foreground)
         textLabelSound.setTextColor(foreground)
         textLabelVibrate.setTextColor(foreground)
-        timePickerDialog?.accentColor = accentColor
-        timePickerDialog?.setOkColor(Color.WHITE)
-        timePickerDialog?.setCancelColor(Color.WHITE)
     }
 
     override fun finish() {
@@ -105,12 +97,10 @@ class NotificationActivity : BaseActivity() {
         checkBoxVibrate.isChecked = Prefs.getNotificationVibrate()
         switchNotifications.setOnCheckedChangeListener { _, isChecked ->
             Prefs.areNotificationsEnabled = isChecked
-            if (isChecked) {
-                launch {
+            launch {
+                if (isChecked) {
                     ReminderWorker.cancel(this@NotificationActivity)
-                }
-            } else {
-                launch {
+                } else {
                     ReminderWorker.schedule(this@NotificationActivity, Prefs.notificationHour, Prefs.notificationMinute)
                 }
             }

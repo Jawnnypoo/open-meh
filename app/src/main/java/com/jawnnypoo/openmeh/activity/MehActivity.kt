@@ -133,7 +133,7 @@ class MehActivity : BaseActivity() {
             }
         }
         swipeRefreshLayout.setOnRefreshListener { loadMeh() }
-        //loadMeh()
+        loadMeh()
     }
 
     override fun onResume() {

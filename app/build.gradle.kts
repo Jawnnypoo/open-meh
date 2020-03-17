@@ -36,13 +36,13 @@ android {
     }
 
     buildTypes {
-        named("release"){
+        named("release") {
             isMinifyEnabled = true
             setProguardFiles(listOf(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"))
             extra.set("enableCrashlytics", true)
             signingConfig = signingConfigs.getByName("release")
         }
-        named("debug"){
+        named("debug") {
             isMinifyEnabled = false
             setProguardFiles(listOf(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"))
             extra.set("enableCrashlytics", false)
@@ -64,6 +64,8 @@ androidExtensions {
     isExperimental = true
 }
 
+val firebaseEnabled = BuildHelper.firebaseEnabled(project)
+
 dependencies {
     val addendumVersion = "2.1.1"
     val hyperionVersion = "0.9.27"
@@ -74,7 +76,7 @@ dependencies {
 
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion")
-    
+
     implementation("androidx.core:core-ktx:1.2.0")
     implementation("androidx.appcompat:appcompat:1.1.0")
     implementation("androidx.recyclerview:recyclerview:1.1.0")
@@ -95,8 +97,6 @@ dependencies {
 
     implementation("de.hdodenhof:circleimageview:3.1.0")
 
-    implementation("com.wdullaer:materialdatetimepicker:4.2.3")
-
     implementation("com.github.Jawnnypoo:PhysicsLayout:2.2.0")
     implementation("com.github.Jawnnypoo:CircleIndicator:1.4.0")
 
@@ -111,7 +111,7 @@ dependencies {
 
     // https://github.com/blazsolar/FlowLayout/issues/31
     implementation("com.wefika:flowlayout:0.4.1") {
-        exclude (group = "com.intellij", module = "annotations")
+        exclude(group = "com.intellij", module = "annotations")
     }
 
     implementation("com.github.chrisbanes:PhotoView:2.3.0")
@@ -125,13 +125,13 @@ dependencies {
     implementation(project(":api"))
 
     implementation(project(":firebaseshim"))
-    if (BuildHelper.firebaseEnabled(project)) {
-        implementation("com.google.firebase:firebase-core:17.0.0")
-        implementation("com.crashlytics.sdk.android:crashlytics:2.10.1")
+    if (firebaseEnabled) {
+        implementation("com.google.firebase:firebase-core:17.2.3")
+        implementation("com.crashlytics.sdk.android:crashlytics:${BuildHelper.crashlyticsVersion()}")
     }
 }
 
-if (BuildHelper.firebaseEnabled(project)) {
+if (firebaseEnabled) {
     apply(mapOf("plugin" to "com.google.gms.google-services"))
     apply(mapOf("plugin" to "io.fabric"))
 }

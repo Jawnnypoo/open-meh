@@ -13,7 +13,7 @@ import kotlin.coroutines.CoroutineContext
 abstract class BaseActivity : AppCompatActivity(), CoroutineScope {
 
     companion object {
-        const val EXTRA_THEME = "EXTRA_THEME"
+        const val KEY_THEME = "theme"
     }
 
     private lateinit var job: Job

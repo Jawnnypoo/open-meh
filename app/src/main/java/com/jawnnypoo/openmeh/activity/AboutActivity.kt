@@ -39,7 +39,7 @@ class AboutActivity : BaseActivity() {
         fun newInstance(context: Context, theme: ParsedTheme?): Intent {
             val intent = Intent(context, AboutActivity::class.java)
             if (theme != null) {
-                intent.putExtra(EXTRA_THEME, theme)
+                intent.putExtra(KEY_THEME, theme)
             }
             return intent
         }
@@ -74,7 +74,7 @@ class AboutActivity : BaseActivity() {
         physicsLayout.physics.enableFling()
         sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
         gravitySensor = sensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY)
-        theme = intent.getParcelableExtra(EXTRA_THEME)
+        theme = intent.getParcelableExtra(KEY_THEME)
         theme?.let {
             applyTheme(it)
         }

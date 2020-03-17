@@ -39,7 +39,7 @@ object Prefs {
 
     var notificationHour: Int
         get() = sharedPreferences
-                .getInt(KEY_HOUR, 6)
+                .getInt(KEY_HOUR, 18)
         set(value) {
             sharedPreferences.edit()
                     .putInt(KEY_HOUR, value)

@@ -1,6 +1,5 @@
 package com.jawnnypoo.openmeh.activity
 
-import `in`.uncod.android.bypass.Bypass
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Color
@@ -12,11 +11,10 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.view.ViewCompat
-import com.bumptech.glide.Glide
+import coil.api.load
 import com.commit451.alakazam.backgroundColorAnimator
 import com.commit451.alakazam.navigationBarColorAnimator
 import com.commit451.alakazam.statusBarColorAnimator
-import com.commit451.bypassglideimagegetter.BypassGlideImageGetter
 import com.commit451.easel.Easel
 import com.commit451.easel.tint
 import com.commit451.easel.tintOverflow
@@ -30,6 +28,7 @@ import com.jawnnypoo.openmeh.TAG_REMINDER
 import com.jawnnypoo.openmeh.adapter.ImageAdapter
 import com.jawnnypoo.openmeh.extension.addOnPageScrollStateChange
 import com.jawnnypoo.openmeh.extension.bind
+import com.jawnnypoo.openmeh.extension.setMarkdownText
 import com.jawnnypoo.openmeh.model.ParsedTheme
 import com.jawnnypoo.openmeh.shared.extension.getCheckoutUrl
 import com.jawnnypoo.openmeh.shared.extension.getPriceRange
@@ -56,7 +55,6 @@ class MehActivity : BaseActivity() {
     }
 
     private lateinit var imagePagerAdapter: ImageAdapter
-    private lateinit var bypass: Bypass
     private lateinit var syncer: SwipeRefreshViewPagerSyncer
 
     private var savedMehResponse: MehResponse? = null
@@ -65,7 +63,6 @@ class MehActivity : BaseActivity() {
         layoutInflater.factory = this
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_meh)
-        bypass = Bypass(this)
         toolbar.setTitle(R.string.app_name)
         toolbar.inflateMenu(R.menu.menu_main)
         if (BuildConfig.DEBUG) {
@@ -205,10 +202,10 @@ class MehActivity : BaseActivity() {
         imageDealBackground.alpha = 0f
         imageDealBackground.animate().alpha(1.0f).setStartDelay(ANIMATION_TIME.toLong()).setDuration(ANIMATION_TIME.toLong()).startDelay = ANIMATION_TIME.toLong()
         textTitle.text = deal.title
-        textDescription.text = markdownToCharSequence(textDescription, deal.features)
+        textDescription.setMarkdownText(deal.features)
         textDescription.movementMethod = LinkMovementMethod.getInstance()
         textStoryTitle.text = deal.story.title
-        textStoryBody.text = markdownToCharSequence(textStoryBody, deal.story.body)
+        textStoryBody.setMarkdownText(deal.story.body)
         textStoryBody.movementMethod = LinkMovementMethod.getInstance()
         val video = savedMehResponse?.video
         if (video != null) {
@@ -273,13 +270,7 @@ class MehActivity : BaseActivity() {
                 .start()
         toolbar.menu.tint(backgroundColor)
         toolbar.tintOverflow(backgroundColor)
-        Glide.with(this)
-                .load(theme.backgroundImage)
-                .into(imageDealBackground)
-    }
-
-    private fun markdownToCharSequence(textView: TextView, markdownString: String): CharSequence {
-        return bypass.markdownToSpannable(markdownString, BypassGlideImageGetter(textView, Glide.with(this)))
+        imageDealBackground.load(theme.backgroundImage)
     }
 
     private fun showError() {

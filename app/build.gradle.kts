@@ -65,7 +65,7 @@ androidExtensions {
 }
 
 dependencies {
-    val addendumVersion = "2.1.0"
+    val addendumVersion = "2.1.1"
     val autodisposeVersion = "1.2.0"
     val hyperionVersion = "0.9.27"
 
@@ -85,11 +85,15 @@ dependencies {
     implementation("com.uber.autodispose:autodispose-android-ktx:$autodisposeVersion")
     implementation("com.uber.autodispose:autodispose-android-archcomponents-ktx:$autodisposeVersion")
 
-    implementation("com.github.bumptech.glide:glide:4.9.0")
+    implementation("io.coil-kt:coil:0.9.5")
 
-    implementation("de.hdodenhof:circleimageview:3.0.0")
+    implementation("com.github.Commit451:CoilImageGetter:1.0.1")
 
-    implementation("com.wdullaer:materialdatetimepicker:4.1.2")
+    implementation("com.atlassian.commonmark:commonmark:0.13.1")
+
+    implementation("de.hdodenhof:circleimageview:3.1.0")
+
+    implementation("com.wdullaer:materialdatetimepicker:4.2.3")
 
     implementation("com.github.Jawnnypoo:PhysicsLayout:2.2.0")
     implementation("com.github.Jawnnypoo:CircleIndicator:1.4.0")
@@ -100,7 +104,6 @@ dependencies {
     implementation("com.github.Commit451.Addendum:addendum:$addendumVersion")
     implementation("com.github.Commit451.Addendum:addendum-design:$addendumVersion")
     implementation("com.github.Commit451.Addendum:addendum-recyclerview:$addendumVersion")
-    implementation("com.github.Commit451:BypassGlideImageGetter:1.0.1")
     implementation("com.github.Commit451:Gimbal:2.0.2")
     implementation("com.github.Commit451:Alakazam:2.1.0")
 

@@ -27,5 +27,5 @@ dependencies {
     api("com.squareup.okhttp3:okhttp:$okhttpVersion")
     api("com.squareup.okhttp3:logging-interceptor:$okhttpVersion")
 
-    api("io.reactivex.rxjava2:rxjava:2.2.18")
+    api("io.reactivex.rxjava2:rxjava:2.2.19")
 }

@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import com.bumptech.glide.Glide
+import coil.api.load
 import com.jawnnypoo.openmeh.R
 import java.util.*
 
@@ -22,9 +22,7 @@ class ImageAdapter(private val allowZoom: Boolean, private val listener: Listene
             LayoutInflater.from(collection.context).inflate(R.layout.item_deal_image, collection, false)
         }
         val imageView = v.findViewById<ImageView>(R.id.imageView)
-        Glide.with(collection.context)
-                .load(data[position])
-                .into(imageView)
+        imageView.load(data[position])
 
         collection.addView(v, 0)
         v.setOnClickListener { view -> listener.onImageClicked(view, position) }

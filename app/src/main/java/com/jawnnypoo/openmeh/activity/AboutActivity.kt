@@ -9,7 +9,7 @@ import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.os.Bundle
-import com.bumptech.glide.Glide
+import coil.api.load
 import com.commit451.gimbal.Gimbal
 import com.google.android.material.snackbar.Snackbar
 import com.jawnnypoo.openmeh.R
@@ -138,9 +138,7 @@ class AboutActivity : BaseActivity() {
             Physics.setPhysicsConfig(imageView, config)
             physicsLayout.addView(imageView)
 
-            Glide.with(this)
-                    .load(contributor.avatarUrl)
-                    .into(imageView)
+            imageView.load(contributor.avatarUrl)
         }
         physicsLayout.requestLayout()
     }

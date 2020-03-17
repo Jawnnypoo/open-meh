@@ -6,14 +6,15 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Color
+import android.graphics.drawable.BitmapDrawable
 import android.media.RingtoneManager
 import android.text.format.DateFormat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.TaskStackBuilder
-import com.bumptech.glide.Glide
 import com.jawnnypoo.openmeh.App
 import com.jawnnypoo.openmeh.R
 import com.jawnnypoo.openmeh.activity.MehActivity
+import com.jawnnypoo.openmeh.image.CoilCompat
 import com.jawnnypoo.openmeh.model.ParsedTheme
 import com.jawnnypoo.openmeh.shared.extension.getPriceRange
 import com.jawnnypoo.openmeh.shared.extension.isSoldOut
@@ -45,11 +46,10 @@ object MehNotificationManager {
         // Shoot for the highest resolution
         // http://graphicdesign.stackexchange.com/questions/15776/issues-with-creating-a-hi-res-large-icon-for-android-notifications-in-jelly-bean
         try {
-            icon = Glide.with(context)
-                    .asBitmap()
-                    .load(deal.photos.firstOrNull())
-                    .submit()
-                    .get()
+            val url = deal.photos.firstOrNull()
+            if (url != null) {
+                icon = (CoilCompat.getBlocking(url) as? BitmapDrawable)?.bitmap
+            }
         } catch (e: Exception) {
             Timber.e(e)
         }

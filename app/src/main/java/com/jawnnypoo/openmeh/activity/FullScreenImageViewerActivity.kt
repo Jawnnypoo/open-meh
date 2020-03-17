@@ -2,12 +2,14 @@ package com.jawnnypoo.openmeh.activity
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
 import android.os.Bundle
 import android.view.View
 import com.jawnnypoo.openmeh.R
 import com.jawnnypoo.openmeh.adapter.ImageAdapter
+import com.jawnnypoo.openmeh.extension.lightStatusBar
 import com.jawnnypoo.openmeh.model.ParsedTheme
 import kotlinx.android.synthetic.main.activity_full_screen_image_viewer.*
 
@@ -49,10 +51,13 @@ class FullScreenImageViewerActivity : BaseActivity() {
         viewPager.adapter = pagerAdapter
         pagerAdapter.setData(images)
         if (theme != null) {
-            buttonClose.drawable.colorFilter = PorterDuffColorFilter(theme.safeForegroundColor(), PorterDuff.Mode.MULTIPLY)
-            root.setBackgroundColor(theme.safeBackgroundColor())
-            indicator.setIndicatorBackgroundTint(theme.safeForegroundColor())
-            window.statusBarColor = theme.safeBackgroundColor()
+            val safeForegroundColor = theme.safeForegroundColor()
+            val safeBackgroundColor = theme.safeBackgroundColor()
+            buttonClose.drawable.colorFilter = PorterDuffColorFilter(safeForegroundColor, PorterDuff.Mode.MULTIPLY)
+            root.setBackgroundColor(safeBackgroundColor)
+            indicator.setIndicatorBackgroundTint(safeForegroundColor)
+            window.statusBarColor = safeBackgroundColor
+            lightStatusBar(safeForegroundColor == Color.BLACK)
         }
         indicator.setViewPager(viewPager)
         buttonClose.setOnClickListener { onBackPressed() }

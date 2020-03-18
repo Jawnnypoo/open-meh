@@ -38,9 +38,10 @@ class NotificationActivity : BaseActivity() {
         Prefs.notificationHour = hourOfDay
         Prefs.notificationMinute = minute
         textTime.text = timeFormat().format(timeToAlert.time)
-        launch {
-            ReminderWorker.schedule(this@NotificationActivity, hourOfDay, minute)
-            root.snackbar(R.string.notification_scheduled)
+        if (switchNotifications.isChecked) {
+            schedule()
+        } else {
+            switchNotifications.isChecked = true
         }
     }
 
@@ -94,14 +95,10 @@ class NotificationActivity : BaseActivity() {
         checkBoxVibrate.isChecked = Prefs.isNotificationVibrate
         switchNotifications.setOnCheckedChangeListener { _, isChecked ->
             Prefs.areNotificationsEnabled = isChecked
-            launch {
-                if (isChecked) {
-                    ReminderWorker.cancel(this@NotificationActivity)
-                    root.snackbar(R.string.notification_canceled)
-                } else {
-                    ReminderWorker.schedule(this@NotificationActivity, Prefs.notificationHour, Prefs.notificationMinute)
-                    root.snackbar(R.string.notification_scheduled)
-                }
+            if (isChecked) {
+                schedule()
+            } else {
+                cancel()
             }
         }
 
@@ -112,5 +109,19 @@ class NotificationActivity : BaseActivity() {
 
     private fun timeFormat(): SimpleDateFormat {
         return SimpleDateFormat("h:mm a", Locale.getDefault())
+    }
+
+    private fun schedule() {
+        launch {
+            ReminderWorker.schedule(this@NotificationActivity, Prefs.notificationHour, Prefs.notificationMinute)
+            root.snackbar(R.string.notification_scheduled)
+        }
+    }
+
+    private fun cancel() {
+        launch {
+            ReminderWorker.cancel(this@NotificationActivity)
+            root.snackbar(R.string.notification_canceled)
+        }
     }
 }

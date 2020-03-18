@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.PorterDuff
 import android.os.Bundle
+import com.commit451.addendum.design.snackbar
 import com.commit451.easel.tint
 import com.jawnnypoo.openmeh.R
 import com.jawnnypoo.openmeh.model.ParsedTheme
@@ -39,6 +40,7 @@ class NotificationActivity : BaseActivity() {
         textTime.text = timeFormat().format(timeToAlert.time)
         launch {
             ReminderWorker.schedule(this@NotificationActivity, hourOfDay, minute)
+            root.snackbar(R.string.notification_scheduled)
         }
     }
 
@@ -86,11 +88,6 @@ class NotificationActivity : BaseActivity() {
         textLabelVibrate.setTextColor(foreground)
     }
 
-    override fun finish() {
-        super.finish()
-        overridePendingTransition(R.anim.do_nothing, R.anim.fade_out)
-    }
-
     private fun setupUi() {
         switchNotifications.isChecked = Prefs.areNotificationsEnabled
         checkBoxSound.isChecked = Prefs.isNotificationSound
@@ -100,8 +97,10 @@ class NotificationActivity : BaseActivity() {
             launch {
                 if (isChecked) {
                     ReminderWorker.cancel(this@NotificationActivity)
+                    root.snackbar(R.string.notification_canceled)
                 } else {
                     ReminderWorker.schedule(this@NotificationActivity, Prefs.notificationHour, Prefs.notificationMinute)
+                    root.snackbar(R.string.notification_scheduled)
                 }
             }
         }

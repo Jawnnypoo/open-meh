@@ -62,16 +62,18 @@
             android:src="@drawable/ic_github" />
 
         <TextView
+            android:id="@+id/textSource"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:padding="@dimen/activity_horizontal_margin"
-            android:text="@string/sauce"
+            android:text="@string/source"
             android:textSize="22sp" />
 
     </LinearLayout>
 
     <TextView
+        android:id="@+id/textSecret"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="4dp"

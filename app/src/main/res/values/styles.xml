@@ -32,13 +32,10 @@
     <style name="Activity.Translucent.FullScreenImageViewer" parent="Activity.Translucent" />
 
 
-    <style name="Text" parent="TextAppearance.AppCompat" />
+    <style name="Text" parent="TextAppearance.MaterialComponents.Body1" />
 
     <style name="Text.Huge">
         <item name="android:textSize">@dimen/text_size_huge</item>
     </style>
-
-    <!-- https://github.com/wdullaer/MaterialDateTimePicker#why-do-the-ok-and-cancel-buttons-have-the-accent-color-as-a-background-when-combined-with-the-material-components-library -->
-    <style name="mdtp_ActionButton.Text" parent="Widget.MaterialComponents.Button.TextButton.Dialog" />
 
 </resources>

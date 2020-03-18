@@ -18,12 +18,10 @@ object Navigator {
 
     fun navigateToNotifications(activity: Activity, theme: ParsedTheme?) {
         activity.startActivity(NotificationActivity.newInstance(activity, theme))
-        activity.overridePendingTransition(R.anim.fade_in, R.anim.do_nothing)
     }
 
     fun navigateToAbout(activity: Activity, theme: ParsedTheme?) {
         activity.startActivity(AboutActivity.newInstance(activity, theme))
-        activity.overridePendingTransition(R.anim.fade_in, R.anim.do_nothing)
     }
 
     fun navigateToFullScreenImageViewer(activity: AppCompatActivity, image: View, theme: ParsedTheme?, images: List<String>, index: Int) {

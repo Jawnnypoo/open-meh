@@ -19,12 +19,14 @@
     <string name="notify_if">notify if...</string>
     <string name="sound">sound</string>
     <string name="vibrate">vibrate</string>
-    <string name="contains_words">contains words</string>
+    <string name="notification_scheduled">notification scheduled</string>
+    <string name="notification_canceled">notification canceled</string>
+    <string name="unable_to_load_deal">unable to load deal</string>
 
     <!-- About -->
     <string name="about">about</string>
     <string name="contributors">contributors</string>
-    <string name="sauce">see the sauce</string>
+    <string name="source">see the source</string>
     <string name="source_url">https://github.com/Jawnnypoo/open-meh</string>
 
     <!--errors-->

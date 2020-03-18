@@ -2,6 +2,7 @@ package com.jawnnypoo.openmeh.activity
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.jawnnypoo.openmeh.R
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job

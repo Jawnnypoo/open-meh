@@ -3,7 +3,6 @@ package com.jawnnypoo.openmeh.util
 import android.app.Activity
 import android.content.Intent
 import android.net.Uri
-import com.google.android.material.snackbar.Snackbar
 import android.view.View
 import com.commit451.addendum.design.snackbar
 
@@ -34,16 +33,14 @@ object IntentUtil {
     fun openUrl(activity: Activity, url: String, toolbarColor: Int) {
         SimpleChromeCustomTabs.getInstance()
                 .withFallback(BrowserFallback(activity))
-                .withIntentCustomizer(MehIntentCustomizer(activity, toolbarColor))
+                .withIntentCustomizer(MehIntentCustomizer(toolbarColor))
                 .navigateTo(Uri.parse(url), activity)
     }
 
-    private class MehIntentCustomizer(private val mActivity: Activity, private val mToolbarColor: Int) : IntentCustomizer {
+    private class MehIntentCustomizer(private val toolbarColor: Int) : IntentCustomizer {
 
         override fun onCustomiseIntent(simpleChromeCustomTabsIntentBuilder: SimpleChromeCustomTabsIntentBuilder): SimpleChromeCustomTabsIntentBuilder {
-            return simpleChromeCustomTabsIntentBuilder.withToolbarColor(mToolbarColor)
-                    .withStartAnimations(mActivity, R.anim.fade_in, R.anim.do_nothing)
-                    .withExitAnimations(mActivity, R.anim.do_nothing, R.anim.fade_out)
+            return simpleChromeCustomTabsIntentBuilder.withToolbarColor(toolbarColor)
         }
     }
 

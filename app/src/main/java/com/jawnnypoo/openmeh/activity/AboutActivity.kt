@@ -12,7 +12,6 @@ import android.os.Bundle
 import coil.api.load
 import com.commit451.addendum.design.snackbar
 import com.commit451.gimbal.Gimbal
-import com.google.android.material.snackbar.Snackbar
 import com.jawnnypoo.openmeh.R
 import com.jawnnypoo.openmeh.github.Contributor
 import com.jawnnypoo.openmeh.github.GitHubClient
@@ -106,17 +105,16 @@ class AboutActivity : BaseActivity() {
         sensorManager.unregisterListener(sensorEventListener)
     }
 
-    override fun finish() {
-        super.finish()
-        overridePendingTransition(R.anim.do_nothing, R.anim.fade_out)
-    }
-
     private fun applyTheme(theme: ParsedTheme) {
         //Tint widgets
         val accentColor = theme.safeAccentColor()
         textToolbarTitle.setTextColor(theme.safeBackgroundColor())
         toolbar.setBackgroundColor(theme.safeAccentColor())
         toolbar.navigationIcon?.setColorFilter(theme.safeBackgroundColor(), PorterDuff.Mode.MULTIPLY)
+        val safeForegroundColor = theme.safeForegroundColor()
+        textContributors.setTextColor(safeForegroundColor)
+        textSource.setTextColor(safeForegroundColor)
+        textSecret.setTextColor(safeForegroundColor)
         window.statusBarColor = accentColor
         window.navigationBarColor = accentColor
         window.decorView.setBackgroundColor(theme.safeBackgroundColor())

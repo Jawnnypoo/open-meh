@@ -11,5 +11,5 @@ import com.squareup.moshi.JsonClass
 @JsonClass(generateAdapter = true)
 data class MehResponse(
         @Json(name = "deal") var deal: Deal,
-        @Json(name = "video") var video: Video
+        @Json(name = "video") var video: Video? = null
 )

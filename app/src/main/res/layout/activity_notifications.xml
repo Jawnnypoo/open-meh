@@ -5,6 +5,7 @@
     android:layout_height="match_parent">
 
     <androidx.core.widget.NestedScrollView
+        android:id="@+id/root"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 

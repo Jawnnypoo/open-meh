@@ -1,8 +1,8 @@
 # open meh
 
-Open source meh.com Android App using Kotlin, Retrofit, Coroutines, Coil, WorkManager, and more!
+meh.com Android app using Kotlin, Retrofit, Moshi, Coroutines, Coil, WorkManager, and more!
 
-![screenshot](https://github.com/Jawnnypoo/open-meh/raw/master/assets/screenshot-1.png)
+![screenshot](assets/screenshot-1.png)
 
 <a href="https://play.google.com/store/apps/details?id=com.jawnnypoo.openmeh">
   <img alt="Get it on Google Play"

@@ -32,55 +32,51 @@ object MehNotificationManager {
     private const val UNIQUE_ID = 42
 
     /**
-     * Fetches the daily deal and posts a notification about it
+     * Fetches the daily deal and posts a notification about it. If it fails to load the deal, it
+     * will post a notification prompting the user to try again.
      */
     suspend fun postDailyNotification(context: Context) {
-        val response: MehResponse
+        var response: MehResponse? = null
         try {
             response = App.get().meh.meh()
-        } catch (error: Exception) {
-            Timber.e(error)
-            return
+        } catch (e: Exception) {
+            Timber.e(e)
         }
 
-
-        val deal = response.deal
+        val deal = response?.deal
         var icon: Bitmap? = null
-        // Shoot for the highest resolution
-        // http://graphicdesign.stackexchange.com/questions/15776/issues-with-creating-a-hi-res-large-icon-for-android-notifications-in-jelly-bean
         try {
-            val url = deal.photos.firstOrNull()
+            val url = deal?.photos?.firstOrNull()
             if (url != null) {
                 icon = (Coil.get(url) as? BitmapDrawable)?.bitmap
             }
         } catch (e: Exception) {
             Timber.e(e)
         }
-        Timber.d("Posting daily notification for ${DateFormat.getDateFormat(context).format(Date())}")
+        Timber.d("Posting notification")
         postIt(context, response, icon)
     }
 
-    private fun postIt(context: Context, response: MehResponse, icon: Bitmap?) {
-        val deal = response.deal
-        val theme = ParsedTheme.fromTheme(deal.theme)
+    private fun postIt(context: Context, response: MehResponse?, icon: Bitmap?) {
+        val deal = response?.deal
+        val theme = ParsedTheme.fromTheme(deal?.theme)
         val color = theme?.safeBackgroundColor() ?: Color.WHITE
-        val priceString = if (deal.isSoldOut()) {
+        val priceString = if (deal?.isSoldOut() == true) {
             context.getString(R.string.sold_out)
         } else {
-            deal.getPriceRange()
+            deal?.getPriceRange()
         }
         val notificationBuilder = NotificationCompat.Builder(context, context.getString(R.string.notification_channel_reminders))
-                .setContentTitle(deal.title)
-                .setTicker(priceString)
-                .setContentText(priceString)
+                .setContentTitle(deal?.title ?: context.getString(R.string.unable_to_load_deal))
+                .setTicker(priceString ?: context.getString(R.string.tap_to_load_again))
+                .setContentText(priceString ?: context.getString(R.string.tap_to_load_again))
                 .setColor(color)
                 .setAutoCancel(true)
         if (icon != null) {
             notificationBuilder.setLargeIcon(icon)
             notificationBuilder.setStyle(NotificationCompat.BigPictureStyle()
                     .bigPicture(icon)
-                    .bigPicture(icon)
-                    .setBigContentTitle(deal.title)
+                    .setBigContentTitle(deal?.title)
                     .setSummaryText(priceString))
         }
 

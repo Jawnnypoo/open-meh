@@ -71,7 +71,6 @@ val firebaseEnabled = BuildHelper.firebaseEnabled(project)
 
 dependencies {
     val addendumVersion = "2.1.1"
-    val hyperionVersion = "0.9.27"
     val workManagerVersion = "2.3.0"
     val coroutinesVersion = "1.3.3"
 
@@ -122,10 +121,6 @@ dependencies {
     implementation("com.github.chrisbanes:PhotoView:2.3.0")
 
     implementation("com.github.novoda:simple-chrome-custom-tabs:0.1.6")
-
-    debugImplementation("com.willowtreeapps.hyperion:hyperion-core:$hyperionVersion")
-    debugImplementation("com.willowtreeapps.hyperion:hyperion-crash:$hyperionVersion")
-    debugImplementation("com.willowtreeapps.hyperion:hyperion-timber:$hyperionVersion")
 
     implementation(project(":api"))
 

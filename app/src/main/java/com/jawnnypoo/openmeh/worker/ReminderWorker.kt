@@ -5,11 +5,9 @@ import androidx.work.*
 import com.jawnnypoo.openmeh.util.MehNotificationManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import org.threeten.bp.DateTimeUtils
 import org.threeten.bp.LocalDateTime
 import org.threeten.bp.temporal.ChronoUnit
 import timber.log.Timber
-import java.sql.ResultSet
 import java.util.concurrent.TimeUnit
 
 class ReminderWorker(
@@ -40,8 +38,7 @@ class ReminderWorker(
             }
             val delay = now.until(timeToNotify, ChronoUnit.MILLIS)
 
-            val workManager = WorkManager.getInstance(context)
-            workManager.cancelAllWorkByTag(TAG).await()
+            cancel(context)
 
             val request = OneTimeWorkRequestBuilder<ReminderWorker>()
                     .setInputData(data)
@@ -50,6 +47,7 @@ class ReminderWorker(
                     .build()
             Timber.d("Reminder scheduled for $timeToNotify")
 
+            val workManager = WorkManager.getInstance(context)
             workManager.enqueue(request)
         }
 

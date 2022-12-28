@@ -8,6 +8,6 @@ import com.squareup.moshi.JsonClass
  */
 @JsonClass(generateAdapter = true)
 data class Contributor(
-        @Json(name = "avatar_url")
-        var avatarUrl: String? = null
+    @Json(name = "avatar_url")
+    var avatarUrl: String? = null
 )

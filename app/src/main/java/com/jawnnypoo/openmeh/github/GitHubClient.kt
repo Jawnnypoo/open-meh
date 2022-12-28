@@ -14,9 +14,9 @@ object GitHubClient {
 
     fun init() {
         val restAdapter = Retrofit.Builder()
-                .addConverterFactory(MoshiConverterFactory.create())
-                .baseUrl(API_URL)
-                .build()
+            .addConverterFactory(MoshiConverterFactory.create())
+            .baseUrl(API_URL)
+            .build()
         gitHub = restAdapter.create(GitHub::class.java)
     }
 

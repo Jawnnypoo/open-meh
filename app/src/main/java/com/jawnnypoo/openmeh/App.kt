@@ -5,7 +5,6 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
 import android.os.Build
-import com.commit451.firebaseshim.FirebaseShim
 import com.jakewharton.threetenabp.AndroidThreeTen
 import com.jawnnypoo.openmeh.github.GitHubClient
 import com.jawnnypoo.openmeh.shared.api.MehClient
@@ -32,7 +31,6 @@ class App : Application() {
         super.onCreate()
 
         instance = this
-        FirebaseShim.init(this, BuildConfig.DEBUG)
         if (BuildConfig.DEBUG) {
             Timber.plant(Timber.DebugTree())
         }
@@ -47,11 +45,16 @@ class App : Application() {
 
     private fun setupNotificationChannelsIfNeeded(context: Context) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            val notificationManager =
+                context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
             val channelName = "Reminders"
             val importance = NotificationManager.IMPORTANCE_HIGH
-            val notificationChannel = NotificationChannel(context.getString(R.string.notification_channel_reminders), channelName, importance)
+            val notificationChannel = NotificationChannel(
+                context.getString(R.string.notification_channel_reminders),
+                channelName,
+                importance
+            )
             notificationChannel.description = "Reminders of the deal of the day"
             notificationManager.createNotificationChannel(notificationChannel)
         }

@@ -23,47 +23,47 @@ object Prefs {
 
     var isNotificationSound: Boolean
         get() = sharedPreferences
-                .getBoolean(KEY_SOUND, false)
+            .getBoolean(KEY_SOUND, false)
         set(value) {
             sharedPreferences.edit()
-                    .putBoolean(KEY_SOUND, value)
-                    .apply()
+                .putBoolean(KEY_SOUND, value)
+                .apply()
         }
 
     var isNotificationVibrate: Boolean
         get() = sharedPreferences
-                .getBoolean(KEY_VIBRATE, false)
+            .getBoolean(KEY_VIBRATE, false)
         set(value) {
             sharedPreferences.edit()
-                    .putBoolean(KEY_VIBRATE, value)
-                    .apply()
+                .putBoolean(KEY_VIBRATE, value)
+                .apply()
         }
 
     var notificationHour: Int
         get() = sharedPreferences
-                .getInt(KEY_HOUR, 18)
+            .getInt(KEY_HOUR, 18)
         set(value) {
             sharedPreferences.edit()
-                    .putInt(KEY_HOUR, value)
-                    .apply()
+                .putInt(KEY_HOUR, value)
+                .apply()
         }
 
     var notificationMinute: Int
         get() = sharedPreferences
-                .getInt(KEY_MINUTE, 30)
+            .getInt(KEY_MINUTE, 30)
         set(value) {
             sharedPreferences.edit()
-                    .putInt(KEY_MINUTE, value)
-                    .apply()
+                .putInt(KEY_MINUTE, value)
+                .apply()
         }
 
     var areNotificationsEnabled: Boolean
         get() = sharedPreferences
-                .getBoolean(KEY_ENABLED, false)
+            .getBoolean(KEY_ENABLED, false)
         set(removed) {
             sharedPreferences.edit()
-                    .putBoolean(KEY_ENABLED, removed)
-                    .apply()
+                .putBoolean(KEY_ENABLED, removed)
+                .apply()
         }
 }
 

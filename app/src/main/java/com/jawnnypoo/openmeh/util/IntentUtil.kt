@@ -24,17 +24,25 @@ object IntentUtil {
         } else {
             val shareIntent = Intent(Intent.ACTION_SEND)
             shareIntent.type = "text/plain"
-            shareIntent.putExtra(Intent.EXTRA_SUBJECT, root.context.getString(R.string.share_subject))
+            shareIntent.putExtra(
+                Intent.EXTRA_SUBJECT,
+                root.context.getString(R.string.share_subject)
+            )
             shareIntent.putExtra(Intent.EXTRA_TEXT, deal.url)
-            root.context.startActivity(Intent.createChooser(shareIntent, root.context.getString(R.string.share_subject)))
+            root.context.startActivity(
+                Intent.createChooser(
+                    shareIntent,
+                    root.context.getString(R.string.share_subject)
+                )
+            )
         }
     }
 
     fun openUrl(activity: Activity, url: String, toolbarColor: Int) {
         SimpleChromeCustomTabs.getInstance()
-                .withFallback(BrowserFallback(activity))
-                .withIntentCustomizer(MehIntentCustomizer(toolbarColor))
-                .navigateTo(Uri.parse(url), activity)
+            .withFallback(BrowserFallback(activity))
+            .withIntentCustomizer(MehIntentCustomizer(toolbarColor))
+            .navigateTo(Uri.parse(url), activity)
     }
 
     private class MehIntentCustomizer(private val toolbarColor: Int) : IntentCustomizer {

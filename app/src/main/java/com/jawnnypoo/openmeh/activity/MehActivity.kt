@@ -10,7 +10,7 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
-import coil.api.load
+import coil.load
 import com.commit451.addendum.design.snackbar
 import com.commit451.alakazam.backgroundColorAnimator
 import com.commit451.alakazam.navigationBarColorAnimator
@@ -22,6 +22,8 @@ import com.jawnnypoo.openmeh.App
 import com.jawnnypoo.openmeh.BuildConfig
 import com.jawnnypoo.openmeh.R
 import com.jawnnypoo.openmeh.adapter.ImageAdapter
+import com.jawnnypoo.openmeh.databinding.ActivityMehBinding
+import com.jawnnypoo.openmeh.databinding.ActivityNotificationsBinding
 import com.jawnnypoo.openmeh.extension.addOnPageScrollStateChange
 import com.jawnnypoo.openmeh.extension.setMarkdownText
 import com.jawnnypoo.openmeh.model.ParsedTheme
@@ -36,7 +38,6 @@ import com.jawnnypoo.openmeh.util.Navigator
 import com.jawnnypoo.openmeh.util.SwipeRefreshViewPagerSyncer
 import com.jawnnypoo.openmeh.worker.ReminderWorker
 import com.novoda.simplechromecustomtabs.SimpleChromeCustomTabs
-import kotlinx.android.synthetic.main.activity_meh.*
 import kotlinx.coroutines.launch
 import org.threeten.bp.LocalDateTime
 import timber.log.Timber
@@ -50,6 +51,7 @@ class MehActivity : BaseActivity() {
         private const val ANIMATION_TIME = 800
     }
 
+    private lateinit var binding: ActivityMehBinding
     private lateinit var imagePagerAdapter: ImageAdapter
     private lateinit var syncer: SwipeRefreshViewPagerSyncer
 
@@ -58,13 +60,14 @@ class MehActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         layoutInflater.factory = this
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_meh)
-        toolbar.setTitle(R.string.app_name)
-        toolbar.inflateMenu(R.menu.menu_main)
+        binding = ActivityMehBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        binding.toolbar.setTitle(R.string.app_name)
+        binding.toolbar.inflateMenu(R.menu.menu_main)
         if (BuildConfig.DEBUG) {
-            toolbar.inflateMenu(R.menu.post_notification)
+            binding.toolbar.inflateMenu(R.menu.post_notification)
         }
-        toolbar.setOnMenuItemClickListener { item ->
+        binding.toolbar.setOnMenuItemClickListener { item ->
             val theme: ParsedTheme? = savedMehResponse?.deal?.theme?.let {
                 ParsedTheme.fromTheme(it)
             }
@@ -75,24 +78,32 @@ class MehActivity : BaseActivity() {
                     return@setOnMenuItemClickListener true
                 }
                 R.id.action_share -> {
-                    IntentUtil.shareDeal(root, savedMehResponse)
+                    IntentUtil.shareDeal(binding.root, savedMehResponse)
                     return@setOnMenuItemClickListener true
                 }
                 R.id.action_post_notification -> {
                     var timeToAlert = LocalDateTime.now()
                     timeToAlert = timeToAlert.plusMinutes(1)
                     launch {
-                        ReminderWorker.schedule(this@MehActivity, timeToAlert.hour, timeToAlert.minute)
+                        ReminderWorker.schedule(
+                            this@MehActivity,
+                            timeToAlert.hour,
+                            timeToAlert.minute
+                        )
                     }
                     Toast.makeText(this, "Scheduled for one minute from now", Toast.LENGTH_SHORT)
-                            .show()
+                        .show()
                 }
                 R.id.nav_about -> {
                     Navigator.navigateToAbout(this@MehActivity, theme)
                     return@setOnMenuItemClickListener true
                 }
                 R.id.nav_account -> {
-                    IntentUtil.openUrl(this@MehActivity, getString(R.string.url_account), accentColor)
+                    IntentUtil.openUrl(
+                        this@MehActivity,
+                        getString(R.string.url_account),
+                        accentColor
+                    )
                     return@setOnMenuItemClickListener true
                 }
                 R.id.nav_forum -> {
@@ -100,7 +111,11 @@ class MehActivity : BaseActivity() {
                     return@setOnMenuItemClickListener true
                 }
                 R.id.nav_orders -> {
-                    IntentUtil.openUrl(this@MehActivity, getString(R.string.url_orders), accentColor)
+                    IntentUtil.openUrl(
+                        this@MehActivity,
+                        getString(R.string.url_orders),
+                        accentColor
+                    )
                     return@setOnMenuItemClickListener true
                 }
             }
@@ -110,27 +125,33 @@ class MehActivity : BaseActivity() {
             override fun onImageClicked(view: View, position: Int) {
                 val photos = savedMehResponse?.deal?.photos
                 if (photos != null) {
-                    Navigator.navigateToFullScreenImageViewer(this@MehActivity, view, theme(), photos, viewPager.currentItem)
+                    Navigator.navigateToFullScreenImageViewer(
+                        this@MehActivity,
+                        view,
+                        theme(),
+                        photos,
+                        binding.viewPager.currentItem
+                    )
                 }
             }
         })
-        syncer = SwipeRefreshViewPagerSyncer(swipeRefreshLayout)
-        viewPager.adapter = imagePagerAdapter
-        viewPager.addOnPageScrollStateChange {
+        syncer = SwipeRefreshViewPagerSyncer(binding.swipeRefreshLayout)
+        binding.viewPager.adapter = imagePagerAdapter
+        binding.viewPager.addOnPageScrollStateChange {
             syncer.sync(it)
         }
 
-        rootFailed.setOnClickListener {
+        binding.rootFailed.setOnClickListener {
             loadMeh()
         }
-        textFullSpecs.setOnClickListener {
+        binding.textFullSpecs.setOnClickListener {
             val topicUrl = savedMehResponse?.deal?.topic?.url
             if (topicUrl != null) {
                 val color = safeAccentColor()
                 IntentUtil.openUrl(this, topicUrl, color)
             }
         }
-        swipeRefreshLayout.setOnRefreshListener { loadMeh() }
+        binding.swipeRefreshLayout.setOnRefreshListener { loadMeh() }
         loadMeh()
     }
 
@@ -152,10 +173,10 @@ class MehActivity : BaseActivity() {
     }
 
     private fun loadMeh() {
-        swipeRefreshLayout.isRefreshing = true
-        rootFailed.visibility = View.GONE
-        rootContent.visibility = View.GONE
-        imageDealBackground.visibility = View.GONE
+        binding.swipeRefreshLayout.isRefreshing = true
+        binding.rootFailed.visibility = View.GONE
+        binding.rootContent.visibility = View.GONE
+        binding.imageDealBackground.visibility = View.GONE
         launch {
             try {
                 val response = App.get().meh.meh()
@@ -165,41 +186,43 @@ class MehActivity : BaseActivity() {
                 Timber.e(e)
                 showError()
             } finally {
-                swipeRefreshLayout.isRefreshing = false
+                binding.swipeRefreshLayout.isRefreshing = false
             }
         }
     }
 
     @SuppressLint("SetTextI18n")
     private fun bindDeal(deal: Deal) {
-        swipeRefreshLayout.isRefreshing = false
-        rootFailed.visibility = View.GONE
+        binding.swipeRefreshLayout.isRefreshing = false
+        binding.rootFailed.visibility = View.GONE
         imagePagerAdapter.setData(deal.photos)
         val color = theme()?.safeForegroundColor() ?: Color.WHITE
-        indicator.setIndicatorBackgroundTint(color)
-        indicator.setViewPager(viewPager)
+        binding.indicator.setIndicatorBackgroundTint(color)
+        binding.indicator.setViewPager(binding.viewPager)
         if (deal.isSoldOut()) {
-            buttonBuy.isEnabled = false
-            buttonBuy.setText(R.string.sold_out)
+            binding.buttonBuy.isEnabled = false
+            binding.buttonBuy.setText(R.string.sold_out)
         } else {
-            buttonBuy.text = "${deal.getPriceRange()}\n${getString(R.string.buy_it)}"
-            buttonBuy.setOnClickListener {
+            binding.buttonBuy.text = "${deal.getPriceRange()}\n${getString(R.string.buy_it)}"
+            binding.buttonBuy.setOnClickListener {
                 val accentColor = safeAccentColor()
                 IntentUtil.openUrl(this@MehActivity, deal.getCheckoutUrl(), accentColor)
             }
         }
-        rootContent.visibility = View.VISIBLE
-        imageDealBackground.visibility = View.VISIBLE
-        rootContent.alpha = 0f
-        rootContent.animate().alpha(1.0f).setDuration(ANIMATION_TIME.toLong()).startDelay = ANIMATION_TIME.toLong()
-        imageDealBackground.alpha = 0f
-        imageDealBackground.animate().alpha(1.0f).setStartDelay(ANIMATION_TIME.toLong()).setDuration(ANIMATION_TIME.toLong()).startDelay = ANIMATION_TIME.toLong()
-        textTitle.text = deal.title
-        textDescription.setMarkdownText(deal.features)
-        textDescription.movementMethod = LinkMovementMethod.getInstance()
-        textStoryTitle.text = deal.story.title
-        textStoryBody.setMarkdownText(deal.story.body)
-        textStoryBody.movementMethod = LinkMovementMethod.getInstance()
+        binding.rootContent.visibility = View.VISIBLE
+        binding.imageDealBackground.visibility = View.VISIBLE
+        binding.rootContent.alpha = 0f
+        binding.rootContent.animate().alpha(1.0f).setDuration(ANIMATION_TIME.toLong()).startDelay =
+            ANIMATION_TIME.toLong()
+        binding.imageDealBackground.alpha = 0f
+        binding.imageDealBackground.animate().alpha(1.0f).setStartDelay(ANIMATION_TIME.toLong())
+            .setDuration(ANIMATION_TIME.toLong()).startDelay = ANIMATION_TIME.toLong()
+        binding.textTitle.text = deal.title
+        binding.textDescription.setMarkdownText(deal.features)
+        binding.textDescription.movementMethod = LinkMovementMethod.getInstance()
+        binding.textStoryTitle.text = deal.story.title
+        binding.textStoryBody.setMarkdownText(deal.story.body)
+        binding.textStoryBody.movementMethod = LinkMovementMethod.getInstance()
         val video = savedMehResponse?.video
         if (video != null) {
             bindVideo(video)
@@ -212,13 +235,13 @@ class MehActivity : BaseActivity() {
     }
 
     private fun bindVideoLink(video: Video) {
-        layoutInflater.inflate(R.layout.view_link_video, rootVideo)
-        rootVideo.setOnClickListener {
+        layoutInflater.inflate(R.layout.view_link_video, binding.rootVideo)
+        binding.rootVideo.setOnClickListener {
             val color = theme()?.safeAccentColor() ?: Color.WHITE
             IntentUtil.openUrl(this@MehActivity, video.url, color)
         }
-        val playIcon = rootVideo.findViewById<ImageView>(R.id.video_play)
-        val title = rootVideo.findViewById<TextView>(R.id.video_title)
+        val playIcon = binding.rootVideo.findViewById<ImageView>(R.id.video_play)
+        val title = binding.rootVideo.findViewById<TextView>(R.id.video_title)
         title.text = video.title
         val color = theme()?.safeAccentColor() ?: Color.WHITE
         playIcon.drawable.setColorFilter(color, PorterDuff.Mode.MULTIPLY)
@@ -231,44 +254,44 @@ class MehActivity : BaseActivity() {
         val foreGround = theme.safeForegroundColor()
         val foreGroundInverse = theme.safeForegroundColorInverse()
 
-        textTitle.setTextColor(foreGround)
-        textDescription.setTextColor(foreGround)
-        textDescription.setLinkTextColor(foreGround)
+        binding.textTitle.setTextColor(foreGround)
+        binding.textDescription.setTextColor(foreGround)
+        binding.textDescription.setLinkTextColor(foreGround)
 
         if (deal.isSoldOut()) {
-            buttonBuy.background.setColorFilter(foreGround, PorterDuff.Mode.MULTIPLY)
-            buttonBuy.setTextColor(foreGroundInverse)
+            binding.buttonBuy.background.setColorFilter(foreGround, PorterDuff.Mode.MULTIPLY)
+            binding.buttonBuy.setTextColor(foreGroundInverse)
         } else {
-            buttonBuy.setBackgroundColor(Easel.darkerColor(accentColor))
-            buttonBuy.setTextColor(theme.safeBackgroundColor())
+            binding.buttonBuy.setBackgroundColor(Easel.darkerColor(accentColor))
+            binding.buttonBuy.setTextColor(theme.safeBackgroundColor())
         }
-        textFullSpecs.setTextColor(foreGround)
-        textStoryTitle.setTextColor(accentColor)
-        textStoryBody.setTextColor(foreGround)
-        textStoryBody.setLinkTextColor(foreGround)
-        toolbar.setTitleTextColor(backgroundColor)
+        binding.textFullSpecs.setTextColor(foreGround)
+        binding.textStoryTitle.setTextColor(accentColor)
+        binding.textStoryBody.setTextColor(foreGround)
+        binding.textStoryBody.setLinkTextColor(foreGround)
+        binding.toolbar.setTitleTextColor(backgroundColor)
 
         val decorView = window.decorView
-        toolbar.backgroundColorAnimator(accentColor)
-                .setDuration(ANIMATION_TIME.toLong())
-                .start()
+        binding.toolbar.backgroundColorAnimator(accentColor)
+            .setDuration(ANIMATION_TIME.toLong())
+            .start()
         window.statusBarColorAnimator(accentColor)
-                .setDuration(ANIMATION_TIME.toLong())
-                .start()
+            .setDuration(ANIMATION_TIME.toLong())
+            .start()
         window.navigationBarColorAnimator(accentColor)
-                .setDuration(ANIMATION_TIME.toLong())
-                .start()
+            .setDuration(ANIMATION_TIME.toLong())
+            .start()
         decorView.backgroundColorAnimator(backgroundColor)
-                .setDuration(ANIMATION_TIME.toLong())
-                .start()
-        toolbar.menu.tint(backgroundColor)
-        toolbar.tintOverflow(backgroundColor)
-        imageDealBackground.load(theme.backgroundImage)
+            .setDuration(ANIMATION_TIME.toLong())
+            .start()
+        binding.toolbar.menu.tint(backgroundColor)
+        binding.toolbar.tintOverflow(backgroundColor)
+        binding.imageDealBackground.load(theme.backgroundImage)
     }
 
     private fun showError() {
-        rootFailed.visibility = View.VISIBLE
-        root.snackbar(R.string.error_with_server)
+        binding.rootFailed.visibility = View.VISIBLE
+        binding.root.snackbar(R.string.error_with_server)
     }
 
     private fun safeAccentColor(): Int {

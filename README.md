@@ -6,7 +6,7 @@ meh.com Android app using Kotlin, Retrofit, Moshi, Coroutines, Coil, WorkManager
 
 <a href="https://play.google.com/store/apps/details?id=com.jawnnypoo.openmeh">
   <img alt="Get it on Google Play"
-       src="https://github.com/Jawnnypoo/open-meh/raw/master/assets/google-play-badge-small.png" />
+       src="https://github.com/Jawnnypoo/open-meh/raw/main/assets/google-play-badge-small.png" />
 </a>
 
 [meh.com](https://meh.com/) is a deal of the day shopping experience filled with humorous writing and great personality. Once they opened up support for an API, an Android app was born.
@@ -26,7 +26,7 @@ Pull requests are welcomed and encouraged. If you experience any bugs, please [f
 License
 =======
 
-    Copyright 2020 John Carlson
+    Copyright 2023 John Carlson
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.

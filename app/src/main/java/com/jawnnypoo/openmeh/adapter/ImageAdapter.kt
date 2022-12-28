@@ -4,22 +4,24 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import coil.api.load
+import coil.load
 import com.jawnnypoo.openmeh.R
-import java.util.*
 
 /**
  * Simple PagerAdapter that shows images
  */
-class ImageAdapter(private val allowZoom: Boolean, private val listener: Listener) : androidx.viewpager.widget.PagerAdapter() {
+class ImageAdapter(private val allowZoom: Boolean, private val listener: Listener) :
+    androidx.viewpager.widget.PagerAdapter() {
 
     private val data: ArrayList<String> = ArrayList()
 
     override fun instantiateItem(collection: ViewGroup, position: Int): Any {
         val v: View = if (allowZoom) {
-            LayoutInflater.from(collection.context).inflate(R.layout.item_zoomable_image, collection, false)
+            LayoutInflater.from(collection.context)
+                .inflate(R.layout.item_zoomable_image, collection, false)
         } else {
-            LayoutInflater.from(collection.context).inflate(R.layout.item_deal_image, collection, false)
+            LayoutInflater.from(collection.context)
+                .inflate(R.layout.item_deal_image, collection, false)
         }
         val imageView = v.findViewById<ImageView>(R.id.imageView)
         imageView.load(data[position])

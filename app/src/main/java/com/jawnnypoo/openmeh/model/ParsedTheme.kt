@@ -3,17 +3,17 @@ package com.jawnnypoo.openmeh.model
 import android.graphics.Color
 import android.os.Parcelable
 import com.jawnnypoo.openmeh.shared.model.Theme
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 
 /**
  * [Theme], but parsed into colors that are safe and make sense
  */
 @Parcelize
 data class ParsedTheme(
-        val accentColor: String? = null,
-        val foreground: String? = null,
-        val backgroundColor: String? = null,
-        val backgroundImage: String? = null
+    val accentColor: String? = null,
+    val foreground: String? = null,
+    val backgroundColor: String? = null,
+    val backgroundImage: String? = null
 ) : Parcelable {
 
     companion object {
@@ -39,10 +39,10 @@ data class ParsedTheme(
                 return null
             }
             return ParsedTheme(
-                    accentColor = theme.accentColor,
-                    foreground = theme.foreground,
-                    backgroundColor = theme.backgroundColor,
-                    backgroundImage = theme.backgroundImage
+                accentColor = theme.accentColor,
+                foreground = theme.foreground,
+                backgroundColor = theme.backgroundColor,
+                backgroundImage = theme.backgroundImage
             )
         }
     }

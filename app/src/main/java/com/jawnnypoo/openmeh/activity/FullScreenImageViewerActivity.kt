@@ -7,11 +7,10 @@ import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
 import android.os.Bundle
 import android.view.View
-import com.jawnnypoo.openmeh.R
 import com.jawnnypoo.openmeh.adapter.ImageAdapter
+import com.jawnnypoo.openmeh.databinding.ActivityFullScreenImageViewerBinding
 import com.jawnnypoo.openmeh.extension.lightStatusBar
 import com.jawnnypoo.openmeh.model.ParsedTheme
-import kotlinx.android.synthetic.main.activity_full_screen_image_viewer.*
 
 /**
  * Shows the full screen images
@@ -23,7 +22,12 @@ class FullScreenImageViewerActivity : BaseActivity() {
         private const val EXTRA_IMAGES = "images"
         private const val EXTRA_INDEX = "index"
 
-        fun newInstance(context: Context, theme: ParsedTheme?, images: ArrayList<String>, index: Int): Intent {
+        fun newInstance(
+            context: Context,
+            theme: ParsedTheme?,
+            images: ArrayList<String>,
+            index: Int
+        ): Intent {
             return Intent(context, FullScreenImageViewerActivity::class.java).apply {
                 putExtra(KEY_THEME, theme)
                 putExtra(EXTRA_IMAGES, images)
@@ -32,11 +36,13 @@ class FullScreenImageViewerActivity : BaseActivity() {
         }
     }
 
+    private lateinit var binding: ActivityFullScreenImageViewerBinding
     private lateinit var pagerAdapter: ImageAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_full_screen_image_viewer)
+        binding = ActivityFullScreenImageViewerBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         val images = intent.getStringArrayListExtra(EXTRA_IMAGES)
 
@@ -48,21 +54,22 @@ class FullScreenImageViewerActivity : BaseActivity() {
             }
 
         })
-        viewPager.adapter = pagerAdapter
+        binding.viewPager.adapter = pagerAdapter
         pagerAdapter.setData(images)
         if (theme != null) {
             val safeForegroundColor = theme.safeForegroundColor()
             val safeBackgroundColor = theme.safeBackgroundColor()
-            buttonClose.drawable.colorFilter = PorterDuffColorFilter(safeForegroundColor, PorterDuff.Mode.MULTIPLY)
-            root.setBackgroundColor(safeBackgroundColor)
-            indicator.setIndicatorBackgroundTint(safeForegroundColor)
+            binding.buttonClose.drawable.colorFilter =
+                PorterDuffColorFilter(safeForegroundColor, PorterDuff.Mode.MULTIPLY)
+            binding.root.setBackgroundColor(safeBackgroundColor)
+            binding.indicator.setIndicatorBackgroundTint(safeForegroundColor)
             window.statusBarColor = safeBackgroundColor
             lightStatusBar(safeForegroundColor == Color.BLACK)
         }
-        indicator.setViewPager(viewPager)
-        buttonClose.setOnClickListener { onBackPressed() }
+        binding.indicator.setViewPager(binding.viewPager)
+        binding.buttonClose.setOnClickListener { onBackPressed() }
         val index = intent.getIntExtra(EXTRA_INDEX, 0)
-        viewPager.setCurrentItem(index, false)
+        binding.viewPager.setCurrentItem(index, false)
     }
 
     override fun onBackPressed() {

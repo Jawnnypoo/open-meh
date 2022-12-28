@@ -9,19 +9,20 @@ import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.os.Bundle
-import coil.api.load
+import coil.load
 import com.commit451.addendum.design.snackbar
 import com.commit451.gimbal.Gimbal
 import com.jawnnypoo.openmeh.R
+import com.jawnnypoo.openmeh.databinding.ActivityAboutBinding
 import com.jawnnypoo.openmeh.github.Contributor
 import com.jawnnypoo.openmeh.github.GitHubClient
 import com.jawnnypoo.openmeh.model.ParsedTheme
 import com.jawnnypoo.openmeh.util.IntentUtil
 import com.jawnnypoo.physicslayout.Physics
 import com.jawnnypoo.physicslayout.PhysicsConfig
+import com.jawnnypoo.physicslayout.Shape
 import com.wefika.flowlayout.FlowLayout
 import de.hdodenhof.circleimageview.CircleImageView
-import kotlinx.android.synthetic.main.activity_about.*
 import kotlinx.coroutines.launch
 import org.jbox2d.common.Vec2
 import timber.log.Timber
@@ -45,6 +46,7 @@ class AboutActivity : BaseActivity() {
         }
     }
 
+    private lateinit var binding: ActivityAboutBinding
     private lateinit var sensorManager: SensorManager
     private var gravitySensor: Sensor? = null
     private lateinit var gimbal: Gimbal
@@ -53,9 +55,10 @@ class AboutActivity : BaseActivity() {
     private val sensorEventListener = object : SensorEventListener {
         override fun onSensorChanged(event: SensorEvent) {
             if (event.sensor.type == Sensor.TYPE_GRAVITY) {
-                if (physicsLayout.physics.world != null) {
+                val world = binding.physicsLayout.physics.world
+                if (world != null) {
                     gimbal.normalizeGravityEvent(event)
-                    physicsLayout.physics.world.gravity = Vec2(-event.values[0], event.values[1])
+                    world.gravity = Vec2(-event.values[0], event.values[1])
                 }
             }
         }
@@ -67,11 +70,12 @@ class AboutActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         gimbal = Gimbal(this)
         gimbal.lock()
-        setContentView(R.layout.activity_about)
-        toolbar.setNavigationIcon(R.drawable.ic_arrow_back_24dp)
-        toolbar.setNavigationOnClickListener { onBackPressed() }
-        textToolbarTitle.setText(R.string.about)
-        physicsLayout.physics.enableFling()
+        binding = ActivityAboutBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        binding.toolbar.setNavigationIcon(R.drawable.ic_arrow_back_24dp)
+        binding.toolbar.setNavigationOnClickListener { onBackPressed() }
+        binding.textToolbarTitle.setText(R.string.about)
+        binding.physicsLayout.physics.isFlingEnabled = true
         sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
         gravitySensor = sensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY)
         theme = intent.getParcelableExtra(KEY_THEME)
@@ -82,14 +86,14 @@ class AboutActivity : BaseActivity() {
         launch {
             try {
                 val contributors = GitHubClient.contributors(REPO_USER, REPO_NAME)
-                physicsLayout.post { addContributors(contributors) }
+                binding.physicsLayout.post { addContributors(contributors) }
             } catch (e: Exception) {
                 Timber.e(e)
-                root.snackbar(R.string.error_getting_contributors)
+                binding.root.snackbar(R.string.error_getting_contributors)
             }
         }
 
-        rootSource.setOnClickListener {
+        binding.rootSource.setOnClickListener {
             val color = theme?.safeAccentColor() ?: Color.WHITE
             IntentUtil.openUrl(this, getString(R.string.source_url), color)
         }
@@ -97,7 +101,11 @@ class AboutActivity : BaseActivity() {
 
     override fun onResume() {
         super.onResume()
-        sensorManager.registerListener(sensorEventListener, gravitySensor, SensorManager.SENSOR_DELAY_GAME)
+        sensorManager.registerListener(
+            sensorEventListener,
+            gravitySensor,
+            SensorManager.SENSOR_DELAY_GAME
+        )
     }
 
     override fun onPause() {
@@ -108,38 +116,43 @@ class AboutActivity : BaseActivity() {
     private fun applyTheme(theme: ParsedTheme) {
         //Tint widgets
         val accentColor = theme.safeAccentColor()
-        textToolbarTitle.setTextColor(theme.safeBackgroundColor())
-        toolbar.setBackgroundColor(theme.safeAccentColor())
-        toolbar.navigationIcon?.setColorFilter(theme.safeBackgroundColor(), PorterDuff.Mode.MULTIPLY)
+        binding.textToolbarTitle.setTextColor(theme.safeBackgroundColor())
+        binding.toolbar.setBackgroundColor(theme.safeAccentColor())
+        binding.toolbar.navigationIcon?.setColorFilter(
+            theme.safeBackgroundColor(),
+            PorterDuff.Mode.MULTIPLY
+        )
         val safeForegroundColor = theme.safeForegroundColor()
-        textContributors.setTextColor(safeForegroundColor)
-        textSource.setTextColor(safeForegroundColor)
-        textSecret.setTextColor(safeForegroundColor)
+        binding.textContributors.setTextColor(safeForegroundColor)
+        binding.textSource.setTextColor(safeForegroundColor)
+        binding.textSecret.setTextColor(safeForegroundColor)
         window.statusBarColor = accentColor
         window.navigationBarColor = accentColor
         window.decorView.setBackgroundColor(theme.safeBackgroundColor())
     }
 
     private fun addContributors(contributors: List<Contributor>) {
-        val config = PhysicsConfig.create()
-        config.shapeType = PhysicsConfig.SHAPE_TYPE_CIRCLE
+        val config = PhysicsConfig(
+            shape = Shape.CIRCLE
+        )
         val borderSize = resources.getDimensionPixelSize(R.dimen.border_size)
         val imageSize = resources.getDimensionPixelSize(R.dimen.circle_size)
         for (i in contributors.indices) {
             val contributor = contributors[i]
             val imageView = CircleImageView(this)
             val llp = FlowLayout.LayoutParams(
-                    imageSize,
-                    imageSize)
+                imageSize,
+                imageSize
+            )
             imageView.layoutParams = llp
             imageView.borderWidth = borderSize
             imageView.borderColor = Color.BLACK
             Physics.setPhysicsConfig(imageView, config)
-            physicsLayout.addView(imageView)
+            binding.physicsLayout.addView(imageView)
 
             imageView.load(contributor.avatarUrl)
         }
-        physicsLayout.requestLayout()
+        binding.physicsLayout.requestLayout()
     }
 
 }

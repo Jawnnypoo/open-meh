@@ -20,8 +20,12 @@ class BrowserFallback(private val activity: Activity) : NavigationFallback {
         try {
             activity.startActivity(intent)
         } catch (e: ActivityNotFoundException) {
-            Snackbar.make(activity.window.decorView, R.string.error_no_browser, Snackbar.LENGTH_SHORT)
-                    .show()
+            Snackbar.make(
+                activity.window.decorView,
+                R.string.error_no_browser,
+                Snackbar.LENGTH_SHORT
+            )
+                .show()
         }
 
     }

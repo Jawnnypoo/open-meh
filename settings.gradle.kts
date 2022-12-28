@@ -1,1 +1,1 @@
-include(":app", ":api", ":firebaseshim")
+include(":app", ":api")

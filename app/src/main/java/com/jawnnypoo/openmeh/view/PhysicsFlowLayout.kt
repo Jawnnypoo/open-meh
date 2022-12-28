@@ -11,7 +11,7 @@ import com.jawnnypoo.physicslayout.PhysicsLayoutParamsProcessor
 import com.wefika.flowlayout.FlowLayout
 
 /**
- * Typical FrameLayout with some physics added on. Call [.getPhysics] to get the
+ * Typical FlowLayout with some physics added on. Call [physics] to get the
  * physics component.
  */
 class PhysicsFlowLayout : FlowLayout {
@@ -58,16 +58,11 @@ class PhysicsFlowLayout : FlowLayout {
         return physics.onTouchEvent(event)
     }
 
-    override fun generateLayoutParams(attrs: AttributeSet?): LayoutParams {
+    override fun generateLayoutParams(attrs: AttributeSet): LayoutParams {
         return LayoutParams(context, attrs)
     }
 
-    class LayoutParams(c: Context, attrs: AttributeSet?) : FlowLayout.LayoutParams(c, attrs), PhysicsLayoutParams {
-
-        private var config: PhysicsConfig = PhysicsLayoutParamsProcessor.process(c, attrs)
-
-        override fun getConfig(): PhysicsConfig {
-            return config
-        }
+    class LayoutParams(c: Context, attrs: AttributeSet) : FlowLayout.LayoutParams(c, attrs), PhysicsLayoutParams {
+        override var config: PhysicsConfig = PhysicsLayoutParamsProcessor.process(c, attrs)
     }
 }

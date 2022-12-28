@@ -1,25 +1,24 @@
-import org.jetbrains.kotlin.config.KotlinCompilerVersion
-
 plugins {
     id("com.android.application")
     id("kotlin-android")
-    id("kotlin-android-extensions")
-    id("kotlin-kapt")
-    id("io.fabric") apply false
-    id("com.google.gms.google-services") apply false
+    id("kotlin-parcelize")
 }
 
 android {
 
-    compileSdkVersion(BuildHelper.sdkVersion())
+    compileSdk = BuildHelper.sdkVersion()
 
     defaultConfig {
         applicationId = "com.jawnnypoo.openmeh"
-        minSdkVersion(21)
-        targetSdkVersion(BuildHelper.sdkVersion())
+        minSdk = 23
+        targetSdk = BuildHelper.sdkVersion()
         versionCode = 200
         versionName = "2.0.0"
         buildConfigField("String", "MEH_API_KEY", BuildHelper.mehApiKey(project))
+    }
+
+    buildFeatures {
+        viewBinding = true
     }
 
     compileOptions {
@@ -28,7 +27,7 @@ android {
     }
 
     packagingOptions {
-        exclude("META-INF/library_release.kotlin_module")
+        resources.excludes.add("META-INF/library_release.kotlin_module")
     }
 
     signingConfigs {
@@ -43,17 +42,23 @@ android {
     buildTypes {
         named("release") {
             isMinifyEnabled = false
-            setProguardFiles(listOf(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"))
+            setProguardFiles(
+                listOf(
+                    getDefaultProguardFile("proguard-android.txt"),
+                    "proguard-rules.pro"
+                )
+            )
             signingConfig = signingConfigs.getByName("release")
         }
         named("debug") {
             isMinifyEnabled = false
-            setProguardFiles(listOf(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"))
+            setProguardFiles(
+                listOf(
+                    getDefaultProguardFile("proguard-android.txt"),
+                    "proguard-rules.pro"
+                )
+            )
         }
-    }
-
-    lintOptions {
-        isAbortOnError = false
     }
 }
 
@@ -63,48 +68,38 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
     }
 }
 
-androidExtensions {
-    isExperimental = true
-}
-
-val firebaseEnabled = BuildHelper.firebaseEnabled(project)
-
 dependencies {
     val addendumVersion = "2.1.1"
-    val workManagerVersion = "2.3.0"
-    val coroutinesVersion = "1.3.3"
-
-    implementation(kotlin("stdlib-jdk7", KotlinCompilerVersion.VERSION))
+    val workManagerVersion = "2.7.1"
+    val coroutinesVersion = "1.6.4"
 
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion")
 
-    implementation("androidx.core:core-ktx:1.2.0")
-    implementation("androidx.appcompat:appcompat:1.1.0")
-    implementation("androidx.recyclerview:recyclerview:1.1.0")
-    implementation("androidx.browser:browser:1.2.0")
-    implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.0.0")
+    implementation("androidx.core:core-ktx:1.9.0")
+    implementation("androidx.appcompat:appcompat:1.5.1")
+    implementation("androidx.recyclerview:recyclerview:1.2.1")
+    implementation("androidx.browser:browser:1.4.0")
+    implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
     implementation("androidx.work:work-runtime:$workManagerVersion")
     implementation("androidx.work:work-runtime-ktx:$workManagerVersion")
 
-    implementation("com.google.android.material:material:1.1.0")
+    implementation("com.google.android.material:material:1.7.0")
 
-    implementation("com.jakewharton.threetenabp:threetenabp:1.2.2")
+    implementation("com.jakewharton.threetenabp:threetenabp:1.4.4")
 
-    kapt("com.squareup.moshi:moshi-kotlin-codegen:${BuildHelper.moshiVersion()}")
+    implementation("io.coil-kt:coil:2.2.2")
 
-    implementation("io.coil-kt:coil:0.9.5")
+    implementation("com.github.Commit451:CoilImageGetter:3.0.0")
 
-    implementation("com.github.Commit451:CoilImageGetter:1.0.1")
-
-    implementation("com.atlassian.commonmark:commonmark:0.13.1")
+    implementation("com.atlassian.commonmark:commonmark:0.17.0")
 
     implementation("de.hdodenhof:circleimageview:3.1.0")
 
-    implementation("com.github.Jawnnypoo:PhysicsLayout:2.2.0")
+    implementation("com.github.Jawnnypoo:PhysicsLayout:3.0.1")
     implementation("com.github.Jawnnypoo:CircleIndicator:1.4.0")
 
-    implementation("com.jakewharton.timber:timber:${BuildHelper.timberVersion()}")
+    implementation("com.jakewharton.timber:timber:5.0.1")
 
     implementation("com.github.Commit451:Easel:3.1.0")
     implementation("com.github.Commit451.Addendum:addendum:$addendumVersion")
@@ -123,16 +118,4 @@ dependencies {
     implementation("com.github.novoda:simple-chrome-custom-tabs:0.1.6")
 
     implementation(project(":api"))
-
-    implementation(project(":firebaseshim"))
-    if (firebaseEnabled) {
-        implementation("com.google.firebase:firebase-core:17.2.3")
-        implementation("com.crashlytics.sdk.android:crashlytics:${BuildHelper.crashlyticsVersion()}")
-    }
 }
-
-if (firebaseEnabled) {
-    apply(mapOf("plugin" to "com.google.gms.google-services"))
-    apply(mapOf("plugin" to "io.fabric"))
-}
-

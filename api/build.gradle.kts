@@ -10,8 +10,8 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
 
 dependencies {
 
-    val okhttpVersion = "4.4.0"
-    val retrofitVersion = "2.7.2"
+    val okhttpVersion = "4.10.0"
+    val retrofitVersion = "2.9.0"
 
     api("com.squareup.retrofit2:retrofit:$retrofitVersion")
     api("com.squareup.retrofit2:converter-moshi:$retrofitVersion")

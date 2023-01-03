@@ -12,8 +12,8 @@ android {
         applicationId = "com.jawnnypoo.openmeh"
         minSdk = 23
         targetSdk = BuildHelper.sdkVersion()
-        versionCode = 200
-        versionName = "2.0.0"
+        versionCode = 201
+        versionName = "2.0.1"
         buildConfigField("String", "MEH_API_KEY", BuildHelper.mehApiKey(project))
     }
 

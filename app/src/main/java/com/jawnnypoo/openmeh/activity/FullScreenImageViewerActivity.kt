@@ -67,7 +67,7 @@ class FullScreenImageViewerActivity : BaseActivity() {
             lightStatusBar(safeForegroundColor == Color.BLACK)
         }
         binding.indicator.setViewPager(binding.viewPager)
-        binding.buttonClose.setOnClickListener { onBackPressed() }
+        binding.buttonClose.setOnClickListener { goBack() }
         val index = intent.getIntExtra(EXTRA_INDEX, 0)
         binding.viewPager.setCurrentItem(index, false)
     }

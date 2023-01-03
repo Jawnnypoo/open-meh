@@ -73,7 +73,7 @@ class AboutActivity : BaseActivity() {
         binding = ActivityAboutBinding.inflate(layoutInflater)
         setContentView(binding.root)
         binding.toolbar.setNavigationIcon(R.drawable.ic_arrow_back_24dp)
-        binding.toolbar.setNavigationOnClickListener { onBackPressed() }
+        binding.toolbar.setNavigationOnClickListener { goBack() }
         binding.textToolbarTitle.setText(R.string.about)
         binding.physicsLayout.physics.isFlingEnabled = true
         sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager

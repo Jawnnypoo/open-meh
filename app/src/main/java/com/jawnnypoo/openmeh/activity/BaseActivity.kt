@@ -30,4 +30,8 @@ abstract class BaseActivity : AppCompatActivity(), CoroutineScope {
         super.onDestroy()
         job.cancel()
     }
+
+    internal fun goBack() {
+        onBackPressedDispatcher.onBackPressed()
+    }
 }

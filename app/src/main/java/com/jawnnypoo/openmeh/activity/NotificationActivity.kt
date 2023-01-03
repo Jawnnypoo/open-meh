@@ -59,7 +59,7 @@ class NotificationActivity : BaseActivity() {
         binding = ActivityNotificationsBinding.inflate(layoutInflater)
         setContentView(binding.root)
         binding.toolbar.setNavigationIcon(R.drawable.ic_arrow_back_24dp)
-        binding.toolbar.setNavigationOnClickListener { onBackPressed() }
+        binding.toolbar.setNavigationOnClickListener { goBack() }
         binding.textToolbarTitle.setText(R.string.action_notifications)
 
         timeToAlert.set(Calendar.HOUR_OF_DAY, Prefs.notificationHour)

@@ -19,6 +19,10 @@ KEYSTORE_NAME=file_name_of_keystore_if_you_care.jks
 KEYSTORE_PASSWORD=keystorepasswordifyoucare
 KEY_PASSWORD=keypasswordifyoucare
 ```
+You can then generate a release build via:
+```
+./gradlew app:bundleRelease
+```
 
 ## Contribution
 Pull requests are welcomed and encouraged. If you experience any bugs, please [file an issue](https://github.com/Jawnnypoo/open-meh/issues/new)

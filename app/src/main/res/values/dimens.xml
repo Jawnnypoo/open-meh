@@ -4,11 +4,7 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
 
     <dimen name="padding_medium">8dp</dimen>
-    <dimen name="elevation_large">8dp</dimen>
 
-    <dimen name="refresh_pull_amount">32dp</dimen>
-
-    <dimen name="text_size_large">32sp</dimen>
     <dimen name="text_size_huge">42sp</dimen>
 
     <dimen name="border_size">2dp</dimen>

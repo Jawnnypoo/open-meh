@@ -22,8 +22,8 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
 
     packagingOptions {
@@ -64,7 +64,7 @@ android {
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = JavaVersion.VERSION_11.toString()
     }
 }
 
@@ -77,14 +77,14 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion")
 
     implementation("androidx.core:core-ktx:1.9.0")
-    implementation("androidx.appcompat:appcompat:1.5.1")
+    implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("androidx.recyclerview:recyclerview:1.2.1")
-    implementation("androidx.browser:browser:1.4.0")
+    implementation("androidx.browser:browser:1.5.0")
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
     implementation("androidx.work:work-runtime:$workManagerVersion")
     implementation("androidx.work:work-runtime-ktx:$workManagerVersion")
 
-    implementation("com.google.android.material:material:1.7.0")
+    implementation("com.google.android.material:material:1.8.0")
 
     implementation("com.jakewharton.threetenabp:threetenabp:1.4.4")
 
@@ -97,7 +97,7 @@ dependencies {
     implementation("de.hdodenhof:circleimageview:3.1.0")
 
     implementation("com.github.Jawnnypoo:PhysicsLayout:3.0.1")
-    implementation("com.github.Jawnnypoo:CircleIndicator:1.4.0")
+    implementation("com.github.Jawnnypoo:CircleIndicator:1.4.1")
 
     implementation("com.jakewharton.timber:timber:5.0.1")
 
@@ -114,8 +114,6 @@ dependencies {
     }
 
     implementation("com.github.chrisbanes:PhotoView:2.3.0")
-
-    implementation("com.github.novoda:simple-chrome-custom-tabs:0.1.6")
 
     implementation(project(":api"))
 }

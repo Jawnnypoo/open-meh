@@ -4,13 +4,11 @@ import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.view.View
+import androidx.browser.customtabs.CustomTabColorSchemeParams
+import androidx.browser.customtabs.CustomTabsIntent
 import com.commit451.addendum.design.snackbar
-
 import com.jawnnypoo.openmeh.R
 import com.jawnnypoo.openmeh.shared.response.MehResponse
-import com.novoda.simplechromecustomtabs.SimpleChromeCustomTabs
-import com.novoda.simplechromecustomtabs.navigation.IntentCustomizer
-import com.novoda.simplechromecustomtabs.navigation.SimpleChromeCustomTabsIntentBuilder
 
 /**
  * All the intents
@@ -39,17 +37,12 @@ object IntentUtil {
     }
 
     fun openUrl(activity: Activity, url: String, toolbarColor: Int) {
-        SimpleChromeCustomTabs.getInstance()
-            .withFallback(BrowserFallback(activity))
-            .withIntentCustomizer(MehIntentCustomizer(toolbarColor))
-            .navigateTo(Uri.parse(url), activity)
+        val builder = CustomTabsIntent.Builder()
+        val defaultColors = CustomTabColorSchemeParams.Builder()
+            .setToolbarColor(toolbarColor)
+            .build()
+        builder.setDefaultColorSchemeParams(defaultColors)
+        val customTabsIntent = builder.build()
+        customTabsIntent.launchUrl(activity, Uri.parse(url))
     }
-
-    private class MehIntentCustomizer(private val toolbarColor: Int) : IntentCustomizer {
-
-        override fun onCustomiseIntent(simpleChromeCustomTabsIntentBuilder: SimpleChromeCustomTabsIntentBuilder): SimpleChromeCustomTabsIntentBuilder {
-            return simpleChromeCustomTabsIntentBuilder.withToolbarColor(toolbarColor)
-        }
-    }
-
 }

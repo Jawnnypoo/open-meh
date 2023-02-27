@@ -37,7 +37,6 @@ import com.jawnnypoo.openmeh.util.IntentUtil
 import com.jawnnypoo.openmeh.util.Navigator
 import com.jawnnypoo.openmeh.util.SwipeRefreshViewPagerSyncer
 import com.jawnnypoo.openmeh.worker.ReminderWorker
-import com.novoda.simplechromecustomtabs.SimpleChromeCustomTabs
 import kotlinx.coroutines.launch
 import org.threeten.bp.LocalDateTime
 import timber.log.Timber
@@ -153,18 +152,6 @@ class MehActivity : BaseActivity() {
         }
         binding.swipeRefreshLayout.setOnRefreshListener { loadMeh() }
         loadMeh()
-    }
-
-    override fun onResume() {
-        super.onResume()
-        SimpleChromeCustomTabs.getInstance().connectTo(this)
-    }
-
-    override fun onPause() {
-        if (SimpleChromeCustomTabs.getInstance().isConnected) {
-            SimpleChromeCustomTabs.getInstance().disconnectFrom(this)
-        }
-        super.onPause()
     }
 
     override fun onNewIntent(intent: Intent?) {

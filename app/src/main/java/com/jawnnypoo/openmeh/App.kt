@@ -9,7 +9,6 @@ import com.jakewharton.threetenabp.AndroidThreeTen
 import com.jawnnypoo.openmeh.github.GitHubClient
 import com.jawnnypoo.openmeh.shared.api.MehClient
 import com.jawnnypoo.openmeh.util.Prefs
-import com.novoda.simplechromecustomtabs.SimpleChromeCustomTabs
 import timber.log.Timber
 
 /**
@@ -38,7 +37,6 @@ class App : Application() {
         AndroidThreeTen.init(this)
         meh = MehClient(BuildConfig.MEH_API_KEY, BuildConfig.DEBUG)
         GitHubClient.init()
-        SimpleChromeCustomTabs.initialize(this)
 
         setupNotificationChannelsIfNeeded(this)
     }

@@ -7,9 +7,11 @@
     <string name="action_account">account</string>
     <string name="action_orders">orders</string>
     <string name="action_forum">forum</string>
+    <string name="action_refresh">refresh</string>
     <string name="share_subject">today\'s meh.com deal</string>
     <string name="tap_to_load_again">tap to load again</string>
-    <string name="full_product_specs"><u>more specifications</u></string>
+    <string name="full_product_specs">more specifications</string>
+    <string name="post_notification">Post notification</string>
 
     <!--Notification-->
     <string name="notifications">notifications</string>
@@ -27,7 +29,6 @@
     <string name="source_url">https://github.com/Jawnnypoo/open-meh</string>
 
     <!--errors-->
-    <string name="error_no_browser">no browser found. how...</string>
     <string name="error_with_server">sorry, something went wrong</string>
     <string name="error_nothing_to_share">no deal to share!</string>
     <string name="error_getting_contributors">failed to load contributors</string>

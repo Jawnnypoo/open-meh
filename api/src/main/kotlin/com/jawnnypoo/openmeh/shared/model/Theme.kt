@@ -1,8 +1,11 @@
 package com.jawnnypoo.openmeh.shared.model
 
+import kotlinx.serialization.Serializable
+
 /**
  * Pretty cool theme. Tells us all about the colors we want to show
  */
+@Serializable
 data class Theme(
     val accentColor: String,
     val foreground: String,

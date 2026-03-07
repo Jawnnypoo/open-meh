@@ -2,6 +2,7 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     id("org.jetbrains.kotlin.jvm")
+    id("org.jetbrains.kotlin.plugin.serialization")
 }
 
 kotlin {
@@ -12,12 +13,12 @@ kotlin {
 }
 
 dependencies {
-    val okhttpVersion = "4.12.0"
-    val retrofitVersion = "2.11.0"
+    val ktorVersion = "3.1.1"
 
-    api("com.squareup.retrofit2:retrofit:$retrofitVersion")
-    api("com.squareup.retrofit2:converter-moshi:$retrofitVersion")
-    api("com.squareup.moshi:moshi-kotlin:1.15.2")
-    api("com.squareup.okhttp3:okhttp:$okhttpVersion")
-    api("com.squareup.okhttp3:logging-interceptor:$okhttpVersion")
+    api("io.ktor:ktor-client-core:$ktorVersion")
+    api("io.ktor:ktor-client-cio:$ktorVersion")
+    api("io.ktor:ktor-client-content-negotiation:$ktorVersion")
+    api("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
+    api("io.ktor:ktor-client-logging:$ktorVersion")
+    api("org.jetbrains.kotlinx:kotlinx-serialization-json:1.9.0")
 }

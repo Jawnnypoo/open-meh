@@ -2,6 +2,8 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     id("com.android.application")
+    id("org.jetbrains.kotlin.plugin.compose")
+    id("org.jetbrains.kotlin.plugin.serialization")
     id("kotlin-parcelize")
 }
 
@@ -20,7 +22,7 @@ android {
 
     buildFeatures {
         buildConfig = true
-        viewBinding = true
+        compose = true
     }
 
     compileOptions {
@@ -73,49 +75,52 @@ kotlin {
 }
 
 dependencies {
-    val addendumVersion = "2.1.2"
+    val composeBom = platform("androidx.compose:compose-bom:2026.01.01")
+    val activityComposeVersion = "1.12.4"
+    val lifecycleVersion = "2.10.0"
+    val navigation3Version = "1.0.1"
     val workManagerVersion = "2.10.5"
     val coroutinesVersion = "1.10.2"
+    val ktorVersion = "3.1.1"
+
+    implementation(composeBom)
 
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.9.0")
 
     implementation("androidx.core:core-ktx:1.17.0")
-    implementation("androidx.appcompat:appcompat:1.7.1")
-    implementation("androidx.recyclerview:recyclerview:1.4.0")
+    implementation("androidx.activity:activity-compose:$activityComposeVersion")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:$lifecycleVersion")
+    implementation("androidx.lifecycle:lifecycle-runtime-compose:$lifecycleVersion")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:$lifecycleVersion")
+
+    implementation("androidx.compose.ui:ui")
+    implementation("androidx.compose.ui:ui-tooling-preview")
+    implementation("androidx.compose.foundation:foundation")
+    implementation("androidx.compose.material3:material3")
+    debugImplementation("androidx.compose.ui:ui-tooling")
+
+    implementation("androidx.navigation3:navigation3-runtime:$navigation3Version")
+    implementation("androidx.navigation3:navigation3-ui:$navigation3Version")
+
     implementation("androidx.browser:browser:1.9.0")
-    implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
     implementation("androidx.work:work-runtime:$workManagerVersion")
     implementation("androidx.work:work-runtime-ktx:$workManagerVersion")
 
     implementation("com.google.android.material:material:1.13.0")
-
     implementation("com.jakewharton.threetenabp:threetenabp:1.4.9")
 
     implementation("io.coil-kt:coil:2.7.0")
+    implementation("io.coil-kt:coil-compose:2.7.0")
 
-
-    implementation("com.atlassian.commonmark:commonmark:0.17.0")
-
-    implementation("de.hdodenhof:circleimageview:3.1.0")
-
-    implementation("com.jawnnypoo:physicslayout:3.0.2")
-    implementation("me.relex:circleindicator:2.1.6")
+    implementation("io.ktor:ktor-client-core:$ktorVersion")
+    implementation("io.ktor:ktor-client-cio:$ktorVersion")
+    implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
+    implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
+    implementation("io.ktor:ktor-client-logging:$ktorVersion")
 
     implementation("com.jakewharton.timber:timber:5.0.1")
-
-    implementation("com.commit451:easel:3.1.1")
-    implementation("com.commit451:addendum:$addendumVersion")
-    implementation("com.commit451:addendum-design:$addendumVersion")
-    implementation("com.commit451:addendum-recyclerview:$addendumVersion")
-    implementation("com.commit451:gimbal:3.1.0")
-    implementation("com.commit451:alakazam:2.1.1")
-
-    // https://github.com/blazsolar/FlowLayout/issues/31
-    implementation("com.wefika:flowlayout:0.4.1") {
-        exclude(group = "com.intellij", module = "annotations")
-    }
-
 
     implementation(project(":api"))
 }

@@ -1,10 +1,9 @@
 import org.gradle.api.Project
-import java.io.File
 
 object BuildHelper {
 
     fun sdkVersion(): Int {
-        return 33
+        return 36
     }
 
     fun mehApiKey(project: Project): String {

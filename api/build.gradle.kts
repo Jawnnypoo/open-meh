@@ -1,21 +1,23 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 plugins {
-    id("kotlin")
+    id("org.jetbrains.kotlin.jvm")
 }
 
-tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-    kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_11.toString()
+kotlin {
+    jvmToolchain(17)
+    compilerOptions {
+        jvmTarget.set(JvmTarget.JVM_17)
     }
 }
 
 dependencies {
-
-    val okhttpVersion = "4.10.0"
-    val retrofitVersion = "2.9.0"
+    val okhttpVersion = "4.12.0"
+    val retrofitVersion = "2.11.0"
 
     api("com.squareup.retrofit2:retrofit:$retrofitVersion")
     api("com.squareup.retrofit2:converter-moshi:$retrofitVersion")
-    api("com.squareup.moshi:moshi-kotlin:1.14.0")
+    api("com.squareup.moshi:moshi-kotlin:1.15.2")
     api("com.squareup.okhttp3:okhttp:$okhttpVersion")
     api("com.squareup.okhttp3:logging-interceptor:$okhttpVersion")
 }

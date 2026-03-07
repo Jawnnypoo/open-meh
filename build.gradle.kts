@@ -1,26 +1,9 @@
-buildscript {
-    repositories {
-        google()
-        mavenCentral()
-    }
-    dependencies {
-        classpath("com.android.tools.build:gradle:7.3.1")
-        classpath(kotlin("gradle-plugin", version = "1.8.0"))
-    }
-}
-
 plugins {
-    id("com.github.ben-manes.versions") version "0.44.0"
+    id("com.android.application") version "9.1.0" apply false
+    id("org.jetbrains.kotlin.jvm") version "2.3.10" apply false
+    id("com.github.ben-manes.versions") version "0.52.0"
 }
 
-allprojects {
-    repositories {
-        google()
-        mavenCentral()
-        maven("https://jitpack.io")
-    }
+tasks.register<Delete>("clean") {
+    delete(layout.buildDirectory)
 }
-
-tasks.register<Delete>("clean").configure {
-    delete(rootProject.buildDir)
- }

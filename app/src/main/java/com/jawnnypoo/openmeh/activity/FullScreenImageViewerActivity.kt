@@ -62,7 +62,7 @@ class FullScreenImageViewerActivity : BaseActivity() {
             binding.buttonClose.drawable.colorFilter =
                 PorterDuffColorFilter(safeForegroundColor, PorterDuff.Mode.MULTIPLY)
             binding.root.setBackgroundColor(safeBackgroundColor)
-            binding.indicator.setIndicatorBackgroundTint(safeForegroundColor)
+            binding.indicator.tintIndicator(safeForegroundColor)
             window.statusBarColor = safeBackgroundColor
             lightStatusBar(safeForegroundColor == Color.BLACK)
         }

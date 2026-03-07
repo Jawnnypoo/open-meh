@@ -184,7 +184,7 @@ class MehActivity : BaseActivity() {
         binding.rootFailed.visibility = View.GONE
         imagePagerAdapter.setData(deal.photos)
         val color = theme()?.safeForegroundColor() ?: Color.WHITE
-        binding.indicator.setIndicatorBackgroundTint(color)
+        binding.indicator.tintIndicator(color)
         binding.indicator.setViewPager(binding.viewPager)
         if (deal.isSoldOut()) {
             binding.buttonBuy.isEnabled = false

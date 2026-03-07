@@ -73,7 +73,7 @@ kotlin {
 }
 
 dependencies {
-    val addendumVersion = "2.1.1"
+    val addendumVersion = "2.1.2"
     val workManagerVersion = "2.10.5"
     val coroutinesVersion = "1.10.2"
 
@@ -94,30 +94,28 @@ dependencies {
 
     implementation("io.coil-kt:coil:2.7.0")
 
-    implementation("com.github.Commit451:CoilImageGetter:3.0.0")
 
     implementation("com.atlassian.commonmark:commonmark:0.17.0")
 
     implementation("de.hdodenhof:circleimageview:3.1.0")
 
-    implementation("com.github.Jawnnypoo:PhysicsLayout:3.0.1")
-    implementation("com.github.Jawnnypoo:CircleIndicator:1.4.1")
+    implementation("com.jawnnypoo:physicslayout:3.0.2")
+    implementation("me.relex:circleindicator:2.1.6")
 
     implementation("com.jakewharton.timber:timber:5.0.1")
 
-    implementation("com.github.Commit451:Easel:3.1.0")
-    implementation("com.github.Commit451.Addendum:addendum:$addendumVersion")
-    implementation("com.github.Commit451.Addendum:addendum-design:$addendumVersion")
-    implementation("com.github.Commit451.Addendum:addendum-recyclerview:$addendumVersion")
-    implementation("com.github.Commit451:Gimbal:3.0.0")
-    implementation("com.github.Commit451:Alakazam:2.1.0")
+    implementation("com.commit451:easel:3.1.1")
+    implementation("com.commit451:addendum:$addendumVersion")
+    implementation("com.commit451:addendum-design:$addendumVersion")
+    implementation("com.commit451:addendum-recyclerview:$addendumVersion")
+    implementation("com.commit451:gimbal:3.1.0")
+    implementation("com.commit451:alakazam:2.1.1")
 
     // https://github.com/blazsolar/FlowLayout/issues/31
     implementation("com.wefika:flowlayout:0.4.1") {
         exclude(group = "com.intellij", module = "annotations")
     }
 
-    implementation("com.github.chrisbanes:PhotoView:2.3.0")
 
     implementation(project(":api"))
 }

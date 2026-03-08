@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import com.jawnnypoo.openmeh.ui.navigation.OpenMehNavHost
 import com.jawnnypoo.openmeh.ui.theme.OpenMehTheme
 import com.jawnnypoo.openmeh.util.IntentUtil
@@ -13,6 +14,7 @@ class MehActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         WindowCompat.setDecorFitsSystemWindows(window, true)
+        WindowInsetsControllerCompat(window, window.decorView).isAppearanceLightStatusBars = true
 
         setContent {
             OpenMehTheme {

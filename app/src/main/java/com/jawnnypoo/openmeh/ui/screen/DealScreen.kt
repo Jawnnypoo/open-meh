@@ -323,7 +323,6 @@ private fun DealContent(
                         Spacer(modifier = Modifier.width(12.dp))
                         Text(
                             text = video.title,
-                            color = Color(foregroundColor),
                             style = MaterialTheme.typography.titleMedium,
                         )
                     }

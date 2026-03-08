@@ -1,19 +1,19 @@
 [versions]
-composeBom = "2026.01.01"
+composeBom = "2026.02.01"
 activityCompose = "1.12.4"
 lifecycle = "2.10.0"
 navigation3 = "1.0.1"
-workManager = "2.10.5"
+workManager = "2.11.1"
 coroutines = "1.10.2"
-serializationJson = "1.9.0"
+serializationJson = "1.10.0"
 androidxCore = "1.17.0"
 androidxBrowser = "1.9.0"
 materialComponents = "1.13.0"
 threeTenAbp = "1.4.9"
-coil = "2.7.0"
-ktor = "3.1.1"
+coil = "3.4.0"
+ktor = "3.4.1"
 timber = "5.0.1"
-richText = "0.17.0"
+richText = "0.20.0"
 
 [libraries]
 composeBom = { module = "androidx.compose:compose-bom", version.ref = "composeBom" }
@@ -45,8 +45,7 @@ androidxWorkRuntimeKtx = { module = "androidx.work:work-runtime-ktx", version.re
 materialComponents = { module = "com.google.android.material:material", version.ref = "materialComponents" }
 threeTenAbp = { module = "com.jakewharton.threetenabp:threetenabp", version.ref = "threeTenAbp" }
 
-coil = { module = "io.coil-kt:coil", version.ref = "coil" }
-coilCompose = { module = "io.coil-kt:coil-compose", version.ref = "coil" }
+coilCompose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil" }
 
 ktorClientCore = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
 ktorClientCio = { module = "io.ktor:ktor-client-cio", version.ref = "ktor" }

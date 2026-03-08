@@ -29,7 +29,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import coil.compose.AsyncImage
+import coil3.compose.AsyncImage
 import com.jawnnypoo.openmeh.R
 import com.jawnnypoo.openmeh.viewmodel.AboutUiState
 
@@ -126,13 +126,6 @@ fun AboutScreen(
                             }
                         }
                     }
-                    Text(
-                        text = "pssst... try tilting",
-                        style = MaterialTheme.typography.bodySmall,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 16.dp),
-                    )
                     Text(
                         text = stringResource(id = R.string.source),
                         style = MaterialTheme.typography.titleMedium,

@@ -87,6 +87,8 @@ hs_err_pid*
 
 *.DS_Store
 
+.kotlin
+
 # Custom
 app/gradle.properties
 app/google-services.json

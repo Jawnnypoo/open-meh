@@ -10,8 +10,9 @@ import android.graphics.drawable.BitmapDrawable
 import android.media.RingtoneManager
 import androidx.core.app.NotificationCompat
 import androidx.core.app.TaskStackBuilder
-import coil.Coil
-import coil.request.ImageRequest
+import coil3.SingletonImageLoader
+import coil3.asDrawable
+import coil3.request.ImageRequest
 import com.jawnnypoo.openmeh.App
 import com.jawnnypoo.openmeh.R
 import com.jawnnypoo.openmeh.activity.MehActivity
@@ -49,8 +50,10 @@ object MehNotificationManager {
                 .data(url)
                 .build()
             if (url != null) {
-                val result = Coil.imageLoader(context).execute(request)
-                icon = (result.drawable as? BitmapDrawable)?.bitmap
+                val result = SingletonImageLoader.get(context).execute(request).image
+                    ?.asDrawable(resources = context.resources)
+
+                icon = (result as? BitmapDrawable)?.bitmap
             }
         } catch (e: Exception) {
             Timber.e(e)

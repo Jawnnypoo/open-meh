@@ -4,7 +4,6 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.plugin.compose")
     id("org.jetbrains.kotlin.plugin.serialization")
-    id("kotlin-parcelize")
 }
 
 android {
@@ -104,7 +103,6 @@ dependencies {
     implementation(libs.materialComponents)
     implementation(libs.threeTenAbp)
 
-    implementation(libs.coil)
     implementation(libs.coilCompose)
 
     implementation(libs.ktorClientCore)

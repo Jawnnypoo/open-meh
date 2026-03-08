@@ -50,7 +50,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import coil.compose.AsyncImage
+import coil3.compose.AsyncImage
 import com.jawnnypoo.openmeh.BuildConfig
 import com.jawnnypoo.openmeh.R
 import com.jawnnypoo.openmeh.model.ParsedTheme
@@ -61,7 +61,7 @@ import com.jawnnypoo.openmeh.shared.model.Deal
 import com.jawnnypoo.openmeh.shared.response.MehResponse
 import com.jawnnypoo.openmeh.viewmodel.DealUiState
 import com.halilibo.richtext.markdown.Markdown
-import com.halilibo.richtext.ui.material3.Material3RichText
+import com.halilibo.richtext.ui.material3.RichText
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -346,7 +346,7 @@ private fun MarkdownBlock(
     modifier: Modifier = Modifier,
 ) {
     CompositionLocalProvider(LocalContentColor provides Color(foregroundColor)) {
-        Material3RichText(
+        RichText(
             modifier = modifier,
         ) {
             Markdown(content = markdown)

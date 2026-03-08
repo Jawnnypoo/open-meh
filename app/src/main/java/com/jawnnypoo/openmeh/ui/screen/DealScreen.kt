@@ -17,6 +17,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenu
@@ -409,7 +411,7 @@ private fun DealOverflowMenu(
 
     IconButton(onClick = { expanded = true }) {
         Icon(
-            painter = painterResource(id = R.drawable.ic_about_24dp),
+            imageVector = Icons.Filled.MoreVert,
             contentDescription = null,
         )
     }

@@ -91,6 +91,7 @@ dependencies {
     implementation(libs.androidxComposeUiToolingPreview)
     implementation(libs.androidxComposeFoundation)
     implementation(libs.androidxComposeMaterial3)
+    implementation(libs.androidxComposeMaterialIconsExtended)
     debugImplementation(libs.androidxComposeUiTooling)
 
     implementation(libs.androidxNavigation3Runtime)

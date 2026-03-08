@@ -1,7 +1,7 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="AppTheme" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/primary</item>
         <item name="colorSecondary">@color/secondary</item>
@@ -11,31 +11,9 @@
         <item name="android:timePickerDialogTheme">@style/DialogTheme</item>
     </style>
 
-    <style name="DialogTheme" parent="Theme.MaterialComponents.DayNight.Dialog">
+    <style name="DialogTheme" parent="Theme.Material3.DayNight.Dialog">
         <item name="colorPrimary">@color/secondary</item>
         <item name="colorSecondary">@color/secondary</item>
-    </style>
-
-    <style name="Activity" parent="AppTheme" />
-
-    <style name="Activity.Translucent">
-        <!-- using a semi-transparent window background for the drag-back gesture -->
-        <item name="android:windowBackground">@color/scrim</item>
-        <item name="android:colorBackgroundCacheHint">@null</item>
-        <item name="android:windowContentOverlay">@null</item>
-        <item name="android:windowIsFloating">false</item>
-        <item name="android:windowIsTranslucent">true</item>
-        <item name="android:windowNoTitle">true</item>
-        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
-    </style>
-
-    <style name="Activity.Translucent.FullScreenImageViewer" parent="Activity.Translucent" />
-
-
-    <style name="Text" parent="TextAppearance.MaterialComponents.Body1" />
-
-    <style name="Text.Huge">
-        <item name="android:textSize">@dimen/text_size_huge</item>
     </style>
 
 </resources>

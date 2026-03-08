@@ -1,11 +1,13 @@
 package com.jawnnypoo.openmeh.github
 
-import com.squareup.moshi.Json
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
 /**
  * GitHub contributor
  */
+@Serializable
 data class Contributor(
-    @Json(name = "avatar_url")
+    @SerialName("avatar_url")
     var avatarUrl: String? = null
 )

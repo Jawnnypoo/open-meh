@@ -1,12 +1,19 @@
 package com.jawnnypoo.openmeh.shared.api
 
 import com.jawnnypoo.openmeh.shared.response.MehResponse
-import com.squareup.moshi.Moshi
-import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
-import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
-import retrofit2.Retrofit
-import retrofit2.converter.moshi.MoshiConverterFactory
+import io.ktor.client.HttpClient
+import io.ktor.client.call.body
+import io.ktor.client.engine.cio.CIO
+import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.client.plugins.defaultRequest
+import io.ktor.client.plugins.logging.LogLevel
+import io.ktor.client.plugins.logging.Logger
+import io.ktor.client.plugins.logging.Logging
+import io.ktor.client.request.get
+import io.ktor.client.request.parameter
+import io.ktor.http.takeFrom
+import io.ktor.serialization.kotlinx.json.json
+import kotlinx.serialization.json.Json
 
 /**
  * meh.com client
@@ -20,44 +27,36 @@ class MehClient(
         private const val PARAM_API_KEY = "apikey"
     }
 
-    private val mehService: MehService
+    private val client: HttpClient
 
     init {
-        val clientBuilder = OkHttpClient.Builder()
-        if (debug) {
-            val httpLoggingInterceptor = HttpLoggingInterceptor()
-            clientBuilder.addInterceptor(httpLoggingInterceptor.apply {
-                httpLoggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
-            })
+        val json = Json {
+            ignoreUnknownKeys = true
+            explicitNulls = false
         }
-        clientBuilder.addInterceptor { chain ->
-            val url = chain.request()
-                .url
-                .newBuilder()
-                .addQueryParameter(PARAM_API_KEY, apiKey)
-                .build()
-            val request = chain.request().newBuilder()
-                .url(url)
-                .build()
-            chain.proceed(request)
+        client = HttpClient(CIO) {
+            install(ContentNegotiation) {
+                json(json)
+            }
+            if (debug) {
+                install(Logging) {
+                    logger = object : Logger {
+                        override fun log(message: String) = println("MehClient: $message")
+                    }
+                    level = LogLevel.BODY
+                }
+            }
+            defaultRequest {
+                url.takeFrom(API_URL)
+                url.parameters.append(PARAM_API_KEY, apiKey)
+            }
         }
-
-        val moshi = Moshi.Builder()
-            .addLast(KotlinJsonAdapterFactory())
-            .build()
-
-        val restAdapter = Retrofit.Builder()
-            .baseUrl(API_URL)
-            .addConverterFactory(MoshiConverterFactory.create(moshi))
-            .client(clientBuilder.build())
-            .build()
-        mehService = restAdapter.create(MehService::class.java)
     }
 
     /**
      * The meh deal of the day!
      */
     suspend fun meh(): MehResponse {
-        return mehService.meh()
+        return client.get("1/current.json").body()
     }
 }

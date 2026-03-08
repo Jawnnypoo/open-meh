@@ -1,8 +1,11 @@
 package com.jawnnypoo.openmeh.shared.model
 
+import kotlinx.serialization.Serializable
+
 /**
  * The entire deal!
  */
+@Serializable
 data class Deal(
     val features: String,
     val id: String,

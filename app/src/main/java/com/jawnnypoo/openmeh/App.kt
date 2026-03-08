@@ -6,6 +6,8 @@ import android.app.NotificationManager
 import android.content.Context
 import android.os.Build
 import com.jakewharton.threetenabp.AndroidThreeTen
+import com.jawnnypoo.openmeh.data.GitHubRepository
+import com.jawnnypoo.openmeh.data.MehRepository
 import com.jawnnypoo.openmeh.github.GitHubClient
 import com.jawnnypoo.openmeh.shared.api.MehClient
 import com.jawnnypoo.openmeh.util.Prefs
@@ -25,6 +27,8 @@ class App : Application() {
     }
 
     lateinit var meh: MehClient
+    lateinit var mehRepository: MehRepository
+    lateinit var gitHubRepository: GitHubRepository
 
     override fun onCreate() {
         super.onCreate()
@@ -36,7 +40,9 @@ class App : Application() {
         Prefs.init(this)
         AndroidThreeTen.init(this)
         meh = MehClient(BuildConfig.MEH_API_KEY, BuildConfig.DEBUG)
-        GitHubClient.init()
+        val gitHubClient = GitHubClient(BuildConfig.DEBUG)
+        mehRepository = MehRepository(meh)
+        gitHubRepository = GitHubRepository(gitHubClient)
 
         setupNotificationChannelsIfNeeded(this)
     }

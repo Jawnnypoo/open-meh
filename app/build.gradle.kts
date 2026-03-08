@@ -2,6 +2,8 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     id("com.android.application")
+    id("org.jetbrains.kotlin.plugin.compose")
+    id("org.jetbrains.kotlin.plugin.serialization")
     id("kotlin-parcelize")
 }
 
@@ -20,7 +22,7 @@ android {
 
     buildFeatures {
         buildConfig = true
-        viewBinding = true
+        compose = true
     }
 
     compileOptions {
@@ -73,49 +75,48 @@ kotlin {
 }
 
 dependencies {
-    val addendumVersion = "2.1.2"
-    val workManagerVersion = "2.10.5"
-    val coroutinesVersion = "1.10.2"
+    implementation(platform(libs.composeBom))
 
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion")
+    implementation(libs.kotlinxCoroutinesCore)
+    implementation(libs.kotlinxCoroutinesAndroid)
+    implementation(libs.kotlinxSerializationJson)
 
-    implementation("androidx.core:core-ktx:1.17.0")
-    implementation("androidx.appcompat:appcompat:1.7.1")
-    implementation("androidx.recyclerview:recyclerview:1.4.0")
-    implementation("androidx.browser:browser:1.9.0")
-    implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
-    implementation("androidx.work:work-runtime:$workManagerVersion")
-    implementation("androidx.work:work-runtime-ktx:$workManagerVersion")
+    implementation(libs.androidxCoreKtx)
+    implementation(libs.androidxActivityCompose)
+    implementation(libs.androidxLifecycleRuntimeKtx)
+    implementation(libs.androidxLifecycleRuntimeCompose)
+    implementation(libs.androidxLifecycleViewmodelCompose)
 
-    implementation("com.google.android.material:material:1.13.0")
+    implementation(libs.androidxComposeUi)
+    implementation(libs.androidxComposeUiToolingPreview)
+    implementation(libs.androidxComposeFoundation)
+    implementation(libs.androidxComposeMaterial3)
+    implementation(libs.androidxComposeMaterialIconsExtended)
+    debugImplementation(libs.androidxComposeUiTooling)
 
-    implementation("com.jakewharton.threetenabp:threetenabp:1.4.9")
+    implementation(libs.androidxNavigation3Runtime)
+    implementation(libs.androidxNavigation3Ui)
 
-    implementation("io.coil-kt:coil:2.7.0")
+    implementation(libs.androidxBrowser)
+    implementation(libs.androidxWorkRuntime)
+    implementation(libs.androidxWorkRuntimeKtx)
 
+    implementation(libs.materialComponents)
+    implementation(libs.threeTenAbp)
 
-    implementation("com.atlassian.commonmark:commonmark:0.17.0")
+    implementation(libs.coil)
+    implementation(libs.coilCompose)
 
-    implementation("de.hdodenhof:circleimageview:3.1.0")
+    implementation(libs.ktorClientCore)
+    implementation(libs.ktorClientCio)
+    implementation(libs.ktorClientContentNegotiation)
+    implementation(libs.ktorSerializationKotlinxJson)
+    implementation(libs.ktorClientLogging)
 
-    implementation("com.jawnnypoo:physicslayout:3.0.2")
-    implementation("me.relex:circleindicator:2.1.6")
+    implementation(libs.timber)
 
-    implementation("com.jakewharton.timber:timber:5.0.1")
-
-    implementation("com.commit451:easel:3.1.1")
-    implementation("com.commit451:addendum:$addendumVersion")
-    implementation("com.commit451:addendum-design:$addendumVersion")
-    implementation("com.commit451:addendum-recyclerview:$addendumVersion")
-    implementation("com.commit451:gimbal:3.1.0")
-    implementation("com.commit451:alakazam:2.1.1")
-
-    // https://github.com/blazsolar/FlowLayout/issues/31
-    implementation("com.wefika:flowlayout:0.4.1") {
-        exclude(group = "com.intellij", module = "annotations")
-    }
-
+    implementation(libs.richtextUiMaterial3)
+    implementation(libs.richtextCommonmark)
 
     implementation(project(":api"))
 }

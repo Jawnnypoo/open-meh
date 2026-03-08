@@ -13,12 +13,10 @@ kotlin {
 }
 
 dependencies {
-    val ktorVersion = "3.1.1"
-
-    api("io.ktor:ktor-client-core:$ktorVersion")
-    api("io.ktor:ktor-client-cio:$ktorVersion")
-    api("io.ktor:ktor-client-content-negotiation:$ktorVersion")
-    api("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
-    api("io.ktor:ktor-client-logging:$ktorVersion")
-    api("org.jetbrains.kotlinx:kotlinx-serialization-json:1.9.0")
+    api(libs.ktorClientCore)
+    api(libs.ktorClientCio)
+    api(libs.ktorClientContentNegotiation)
+    api(libs.ktorSerializationKotlinxJson)
+    api(libs.ktorClientLogging)
+    api(libs.kotlinxSerializationJson)
 }

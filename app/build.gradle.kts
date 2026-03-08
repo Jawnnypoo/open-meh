@@ -75,52 +75,44 @@ kotlin {
 }
 
 dependencies {
-    val composeBom = platform("androidx.compose:compose-bom:2026.01.01")
-    val activityComposeVersion = "1.12.4"
-    val lifecycleVersion = "2.10.0"
-    val navigation3Version = "1.0.1"
-    val workManagerVersion = "2.10.5"
-    val coroutinesVersion = "1.10.2"
-    val ktorVersion = "3.1.1"
+    implementation(platform(libs.composeBom))
 
-    implementation(composeBom)
+    implementation(libs.kotlinxCoroutinesCore)
+    implementation(libs.kotlinxCoroutinesAndroid)
+    implementation(libs.kotlinxSerializationJson)
 
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.9.0")
+    implementation(libs.androidxCoreKtx)
+    implementation(libs.androidxActivityCompose)
+    implementation(libs.androidxLifecycleRuntimeKtx)
+    implementation(libs.androidxLifecycleRuntimeCompose)
+    implementation(libs.androidxLifecycleViewmodelCompose)
 
-    implementation("androidx.core:core-ktx:1.17.0")
-    implementation("androidx.activity:activity-compose:$activityComposeVersion")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:$lifecycleVersion")
-    implementation("androidx.lifecycle:lifecycle-runtime-compose:$lifecycleVersion")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:$lifecycleVersion")
+    implementation(libs.androidxComposeUi)
+    implementation(libs.androidxComposeUiToolingPreview)
+    implementation(libs.androidxComposeFoundation)
+    implementation(libs.androidxComposeMaterial3)
+    debugImplementation(libs.androidxComposeUiTooling)
 
-    implementation("androidx.compose.ui:ui")
-    implementation("androidx.compose.ui:ui-tooling-preview")
-    implementation("androidx.compose.foundation:foundation")
-    implementation("androidx.compose.material3:material3")
-    debugImplementation("androidx.compose.ui:ui-tooling")
+    implementation(libs.androidxNavigation3Runtime)
+    implementation(libs.androidxNavigation3Ui)
 
-    implementation("androidx.navigation3:navigation3-runtime:$navigation3Version")
-    implementation("androidx.navigation3:navigation3-ui:$navigation3Version")
+    implementation(libs.androidxBrowser)
+    implementation(libs.androidxWorkRuntime)
+    implementation(libs.androidxWorkRuntimeKtx)
 
-    implementation("androidx.browser:browser:1.9.0")
-    implementation("androidx.work:work-runtime:$workManagerVersion")
-    implementation("androidx.work:work-runtime-ktx:$workManagerVersion")
+    implementation(libs.materialComponents)
+    implementation(libs.threeTenAbp)
 
-    implementation("com.google.android.material:material:1.13.0")
-    implementation("com.jakewharton.threetenabp:threetenabp:1.4.9")
+    implementation(libs.coil)
+    implementation(libs.coilCompose)
 
-    implementation("io.coil-kt:coil:2.7.0")
-    implementation("io.coil-kt:coil-compose:2.7.0")
+    implementation(libs.ktorClientCore)
+    implementation(libs.ktorClientCio)
+    implementation(libs.ktorClientContentNegotiation)
+    implementation(libs.ktorSerializationKotlinxJson)
+    implementation(libs.ktorClientLogging)
 
-    implementation("io.ktor:ktor-client-core:$ktorVersion")
-    implementation("io.ktor:ktor-client-cio:$ktorVersion")
-    implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
-    implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
-    implementation("io.ktor:ktor-client-logging:$ktorVersion")
-
-    implementation("com.jakewharton.timber:timber:5.0.1")
+    implementation(libs.timber)
 
     implementation(project(":api"))
 }

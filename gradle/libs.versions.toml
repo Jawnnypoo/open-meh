@@ -1,0 +1,55 @@
+[versions]
+composeBom = "2026.01.01"
+activityCompose = "1.12.4"
+lifecycle = "2.10.0"
+navigation3 = "1.0.1"
+workManager = "2.10.5"
+coroutines = "1.10.2"
+serializationJson = "1.9.0"
+androidxCore = "1.17.0"
+androidxBrowser = "1.9.0"
+materialComponents = "1.13.0"
+threeTenAbp = "1.4.9"
+coil = "2.7.0"
+ktor = "3.1.1"
+timber = "5.0.1"
+
+[libraries]
+composeBom = { module = "androidx.compose:compose-bom", version.ref = "composeBom" }
+
+kotlinxCoroutinesCore = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
+kotlinxCoroutinesAndroid = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
+kotlinxSerializationJson = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serializationJson" }
+
+androidxCoreKtx = { module = "androidx.core:core-ktx", version.ref = "androidxCore" }
+androidxActivityCompose = { module = "androidx.activity:activity-compose", version.ref = "activityCompose" }
+androidxLifecycleRuntimeKtx = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "lifecycle" }
+androidxLifecycleRuntimeCompose = { module = "androidx.lifecycle:lifecycle-runtime-compose", version.ref = "lifecycle" }
+androidxLifecycleViewmodelCompose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycle" }
+
+androidxComposeUi = { module = "androidx.compose.ui:ui" }
+androidxComposeUiToolingPreview = { module = "androidx.compose.ui:ui-tooling-preview" }
+androidxComposeFoundation = { module = "androidx.compose.foundation:foundation" }
+androidxComposeMaterial3 = { module = "androidx.compose.material3:material3" }
+androidxComposeUiTooling = { module = "androidx.compose.ui:ui-tooling" }
+
+androidxNavigation3Runtime = { module = "androidx.navigation3:navigation3-runtime", version.ref = "navigation3" }
+androidxNavigation3Ui = { module = "androidx.navigation3:navigation3-ui", version.ref = "navigation3" }
+
+androidxBrowser = { module = "androidx.browser:browser", version.ref = "androidxBrowser" }
+androidxWorkRuntime = { module = "androidx.work:work-runtime", version.ref = "workManager" }
+androidxWorkRuntimeKtx = { module = "androidx.work:work-runtime-ktx", version.ref = "workManager" }
+
+materialComponents = { module = "com.google.android.material:material", version.ref = "materialComponents" }
+threeTenAbp = { module = "com.jakewharton.threetenabp:threetenabp", version.ref = "threeTenAbp" }
+
+coil = { module = "io.coil-kt:coil", version.ref = "coil" }
+coilCompose = { module = "io.coil-kt:coil-compose", version.ref = "coil" }
+
+ktorClientCore = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
+ktorClientCio = { module = "io.ktor:ktor-client-cio", version.ref = "ktor" }
+ktorClientContentNegotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor" }
+ktorSerializationKotlinxJson = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }
+ktorClientLogging = { module = "io.ktor:ktor-client-logging", version.ref = "ktor" }
+
+timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }

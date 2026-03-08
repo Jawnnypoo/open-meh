@@ -5,6 +5,9 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
 import android.os.Build
+import coil3.ImageLoader
+import coil3.SingletonImageLoader
+import coil3.network.ktor3.KtorNetworkFetcherFactory
 import com.jakewharton.threetenabp.AndroidThreeTen
 import com.jawnnypoo.openmeh.data.GitHubRepository
 import com.jawnnypoo.openmeh.data.MehRepository
@@ -37,6 +40,7 @@ class App : Application() {
         if (BuildConfig.DEBUG) {
             Timber.plant(Timber.DebugTree())
         }
+        setupImageLoader()
         Prefs.init(this)
         AndroidThreeTen.init(this)
         meh = MehClient(BuildConfig.MEH_API_KEY, BuildConfig.DEBUG)
@@ -45,6 +49,16 @@ class App : Application() {
         gitHubRepository = GitHubRepository(gitHubClient)
 
         setupNotificationChannelsIfNeeded(this)
+    }
+
+    private fun setupImageLoader() {
+        SingletonImageLoader.setSafe {
+            ImageLoader.Builder(this)
+                .components {
+                    add(KtorNetworkFetcherFactory())
+                }
+                .build()
+        }
     }
 
     private fun setupNotificationChannelsIfNeeded(context: Context) {

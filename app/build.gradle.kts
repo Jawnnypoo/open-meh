@@ -104,6 +104,7 @@ dependencies {
     implementation(libs.threeTenAbp)
 
     implementation(libs.coilCompose)
+    implementation(libs.coilNetworkKtor3)
 
     implementation(libs.ktorClientCore)
     implementation(libs.ktorClientCio)

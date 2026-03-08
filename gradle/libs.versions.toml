@@ -46,6 +46,7 @@ materialComponents = { module = "com.google.android.material:material", version.
 threeTenAbp = { module = "com.jakewharton.threetenabp:threetenabp", version.ref = "threeTenAbp" }
 
 coilCompose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil" }
+coilNetworkKtor3 = { module = "io.coil-kt.coil3:coil-network-ktor3", version.ref = "coil" }
 
 ktorClientCore = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
 ktorClientCio = { module = "io.ktor:ktor-client-cio", version.ref = "ktor" }

@@ -115,5 +115,8 @@ dependencies {
 
     implementation(libs.timber)
 
+    implementation(libs.richtextUiMaterial3)
+    implementation(libs.richtextCommonmark)
+
     implementation(project(":api"))
 }

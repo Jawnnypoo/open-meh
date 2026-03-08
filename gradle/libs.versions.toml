@@ -13,6 +13,7 @@ threeTenAbp = "1.4.9"
 coil = "2.7.0"
 ktor = "3.1.1"
 timber = "5.0.1"
+richText = "0.17.0"
 
 [libraries]
 composeBom = { module = "androidx.compose:compose-bom", version.ref = "composeBom" }
@@ -54,3 +55,6 @@ ktorSerializationKotlinxJson = { module = "io.ktor:ktor-serialization-kotlinx-js
 ktorClientLogging = { module = "io.ktor:ktor-client-logging", version.ref = "ktor" }
 
 timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
+
+richtextUiMaterial3 = { module = "com.halilibo.compose-richtext:richtext-ui-material3", version.ref = "richText" }
+richtextCommonmark = { module = "com.halilibo.compose-richtext:richtext-commonmark", version.ref = "richText" }

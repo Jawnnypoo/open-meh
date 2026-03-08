@@ -27,12 +27,14 @@ import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
@@ -57,8 +59,9 @@ import com.jawnnypoo.openmeh.shared.extension.getPriceRange
 import com.jawnnypoo.openmeh.shared.extension.isSoldOut
 import com.jawnnypoo.openmeh.shared.model.Deal
 import com.jawnnypoo.openmeh.shared.response.MehResponse
-import com.jawnnypoo.openmeh.ui.util.markdownToPlainText
 import com.jawnnypoo.openmeh.viewmodel.DealUiState
+import com.halilibo.richtext.markdown.Markdown
+import com.halilibo.richtext.ui.material3.Material3RichText
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -261,10 +264,9 @@ private fun DealContent(
         }
 
         item {
-            Text(
-                text = markdownToPlainText(deal.features),
-                color = Color(foregroundColor),
-                style = MaterialTheme.typography.bodyLarge,
+            MarkdownBlock(
+                markdown = deal.features,
+                foregroundColor = foregroundColor,
                 modifier = Modifier.padding(horizontal = 16.dp),
             )
         }
@@ -294,10 +296,9 @@ private fun DealContent(
         }
 
         item {
-            Text(
-                text = markdownToPlainText(deal.story.body),
-                color = Color(foregroundColor),
-                style = MaterialTheme.typography.bodyLarge,
+            MarkdownBlock(
+                markdown = deal.story.body,
+                foregroundColor = foregroundColor,
                 modifier = Modifier.padding(horizontal = 16.dp),
             )
         }
@@ -334,6 +335,21 @@ private fun DealContent(
 
         item {
             Spacer(modifier = Modifier.height(24.dp))
+        }
+    }
+}
+
+@Composable
+private fun MarkdownBlock(
+    markdown: String,
+    foregroundColor: Int,
+    modifier: Modifier = Modifier,
+) {
+    CompositionLocalProvider(LocalContentColor provides Color(foregroundColor)) {
+        Material3RichText(
+            modifier = modifier,
+        ) {
+            Markdown(content = markdown)
         }
     }
 }

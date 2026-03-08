@@ -28,8 +28,8 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
@@ -82,12 +82,6 @@ fun DealScreen(
             TopAppBar(
                 title = { Text(stringResource(id = R.string.app_name)) },
                 actions = {
-                    TextButton(
-                        onClick = onRefresh,
-                        enabled = !state.isLoading,
-                    ) {
-                        Text(text = stringResource(id = R.string.action_refresh))
-                    }
                     IconButton(onClick = onOpenNotifications) {
                         Icon(
                             painter = painterResource(id = R.drawable.ic_notifications_24dp),
@@ -123,37 +117,39 @@ fun DealScreen(
             )
         },
     ) { paddingValues ->
-        when {
-            state.isLoading && deal == null -> {
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(paddingValues),
-                    contentAlignment = Alignment.Center,
-                ) {
-                    CircularProgressIndicator()
+        PullToRefreshBox(
+            isRefreshing = state.isLoading,
+            onRefresh = onRefresh,
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValues),
+        ) {
+            when {
+                state.isLoading && deal == null -> {
+                    Box(
+                        modifier = Modifier.fillMaxSize(),
+                        contentAlignment = Alignment.Center,
+                    ) {
+                        CircularProgressIndicator()
+                    }
                 }
-            }
 
-            deal == null -> {
-                ErrorState(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(paddingValues),
-                    onRefresh = onRefresh,
-                )
-            }
+                deal == null -> {
+                    ErrorState(
+                        modifier = Modifier.fillMaxSize(),
+                        onRefresh = onRefresh,
+                    )
+                }
 
-            else -> {
-                DealContent(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(paddingValues),
-                    response = requireNotNull(response),
-                    parsedTheme = parsedTheme,
-                    onOpenImageViewer = onOpenImageViewer,
-                    onOpenExternalUrl = onOpenExternalUrl,
-                )
+                else -> {
+                    DealContent(
+                        modifier = Modifier.fillMaxSize(),
+                        response = requireNotNull(response),
+                        parsedTheme = parsedTheme,
+                        onOpenImageViewer = onOpenImageViewer,
+                        onOpenExternalUrl = onOpenExternalUrl,
+                    )
+                }
             }
         }
     }

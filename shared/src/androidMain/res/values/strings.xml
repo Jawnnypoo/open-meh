@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Strings used by the merged Android manifest (e.g. the launcher label).
+         All in-app strings live in commonMain/composeResources/values/strings.xml. -->
+    <string name="app_name">open meh</string>
+</resources>

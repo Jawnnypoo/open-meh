@@ -1,49 +1,55 @@
 [versions]
-composeBom = "2026.02.01"
+#noinspection UnusedVersionCatalogEntry
+androidCompileSdk = "36"
+#noinspection UnusedVersionCatalogEntry
+androidMinSdk = "23"
+#noinspection UnusedVersionCatalogEntry
+androidTargetSdk = "36"
+
+agp = "9.1.0"
+kotlin = "2.3.10"
+composeMultiplatform = "1.10.3"
+
 activityCompose = "1.12.4"
-lifecycle = "2.10.0"
-navigation3 = "1.0.1"
+androidxCore = "1.17.0"
+androidxBrowser = "1.9.0"
+androidxLifecycle = "2.10.0"
+androidxNavigation3 = "1.1.0"
+
 workManager = "2.11.1"
 coroutines = "1.10.2"
 serializationJson = "1.10.0"
-androidxCore = "1.17.0"
-androidxBrowser = "1.9.0"
+kotlinxDatetime = "0.7.1"
 materialComponents = "1.13.0"
-threeTenAbp = "1.4.9"
+multiplatformSettings = "1.3.0"
+
 coil = "3.4.0"
 ktor = "3.4.1"
-timber = "5.0.1"
+kermit = "2.1.0"
 richText = "0.20.0"
 
 [libraries]
-composeBom = { module = "androidx.compose:compose-bom", version.ref = "composeBom" }
-
 kotlinxCoroutinesCore = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
 kotlinxCoroutinesAndroid = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
 kotlinxSerializationJson = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serializationJson" }
+kotlinxDatetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinxDatetime" }
 
 androidxCoreKtx = { module = "androidx.core:core-ktx", version.ref = "androidxCore" }
 androidxActivityCompose = { module = "androidx.activity:activity-compose", version.ref = "activityCompose" }
-androidxLifecycleRuntimeKtx = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "lifecycle" }
-androidxLifecycleRuntimeCompose = { module = "androidx.lifecycle:lifecycle-runtime-compose", version.ref = "lifecycle" }
-androidxLifecycleViewmodelCompose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycle" }
+androidxLifecycleRuntimeKtx = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "androidxLifecycle" }
+androidxLifecycleRuntimeCompose = { module = "org.jetbrains.androidx.lifecycle:lifecycle-runtime-compose", version.ref = "androidxLifecycle" }
+androidxLifecycleViewmodelCompose = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "androidxLifecycle" }
+androidxLifecycleViewmodelNavigation3 = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-navigation3", version.ref = "androidxLifecycle" }
 
-androidxComposeUi = { module = "androidx.compose.ui:ui" }
-androidxComposeUiToolingPreview = { module = "androidx.compose.ui:ui-tooling-preview" }
-androidxComposeFoundation = { module = "androidx.compose.foundation:foundation" }
-androidxComposeMaterial3 = { module = "androidx.compose.material3:material3" }
-androidxComposeMaterialIconsExtended = { module = "androidx.compose.material:material-icons-extended" }
-androidxComposeUiTooling = { module = "androidx.compose.ui:ui-tooling" }
-
-androidxNavigation3Runtime = { module = "androidx.navigation3:navigation3-runtime", version.ref = "navigation3" }
-androidxNavigation3Ui = { module = "androidx.navigation3:navigation3-ui", version.ref = "navigation3" }
+androidxNavigation3Ui = { module = "org.jetbrains.androidx.navigation3:navigation3-ui", version.ref = "androidxNavigation3" }
 
 androidxBrowser = { module = "androidx.browser:browser", version.ref = "androidxBrowser" }
 androidxWorkRuntime = { module = "androidx.work:work-runtime", version.ref = "workManager" }
 androidxWorkRuntimeKtx = { module = "androidx.work:work-runtime-ktx", version.ref = "workManager" }
 
 materialComponents = { module = "com.google.android.material:material", version.ref = "materialComponents" }
-threeTenAbp = { module = "com.jakewharton.threetenabp:threetenabp", version.ref = "threeTenAbp" }
+
+multiplatformSettings = { module = "com.russhwolf:multiplatform-settings-no-arg", version.ref = "multiplatformSettings" }
 
 coilCompose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil" }
 coilNetworkKtor3 = { module = "io.coil-kt.coil3:coil-network-ktor3", version.ref = "coil" }
@@ -54,7 +60,16 @@ ktorClientContentNegotiation = { module = "io.ktor:ktor-client-content-negotiati
 ktorSerializationKotlinxJson = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }
 ktorClientLogging = { module = "io.ktor:ktor-client-logging", version.ref = "ktor" }
 
-timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
+kermit = { module = "co.touchlab:kermit", version.ref = "kermit" }
 
 richtextUiMaterial3 = { module = "com.halilibo.compose-richtext:richtext-ui-material3", version.ref = "richText" }
 richtextCommonmark = { module = "com.halilibo.compose-richtext:richtext-commonmark", version.ref = "richText" }
+
+[plugins]
+androidApplication = { id = "com.android.application", version.ref = "agp" }
+androidMultiplatformLibrary = { id = "com.android.kotlin.multiplatform.library", version.ref = "agp" }
+composeMultiplatform = { id = "org.jetbrains.compose", version.ref = "composeMultiplatform" }
+composeCompiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
+kotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+kotlinSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }

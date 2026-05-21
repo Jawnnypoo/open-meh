@@ -1,6 +1,6 @@
 # open meh
 
-meh.com Android app using Kotlin, Retrofit, Moshi, Coroutines, Coil, WorkManager, and more!
+meh.com Compose Multiplatform app
 
 ![screenshot](assets/screenshot-1.png)
 

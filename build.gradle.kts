@@ -1,7 +1,9 @@
 plugins {
-    id("com.android.application") version "9.1.0" apply false
-    id("org.jetbrains.kotlin.jvm") version "2.3.10" apply false
-    id("org.jetbrains.kotlin.android") version "2.3.10" apply false
-    id("org.jetbrains.kotlin.plugin.compose") version "2.3.10" apply false
-    id("org.jetbrains.kotlin.plugin.serialization") version "2.3.10" apply false
+    alias(libs.plugins.androidApplication) apply false
+    alias(libs.plugins.androidMultiplatformLibrary) apply false
+    alias(libs.plugins.composeMultiplatform) apply false
+    alias(libs.plugins.composeCompiler) apply false
+    alias(libs.plugins.kotlinMultiplatform) apply false
+    alias(libs.plugins.kotlinAndroid) apply false
+    alias(libs.plugins.kotlinSerialization) apply false
 }

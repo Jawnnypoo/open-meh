@@ -9,6 +9,10 @@ import com.jawnnypoo.openmeh.resources.notification_canceled
 import com.jawnnypoo.openmeh.resources.notification_scheduled
 import com.jawnnypoo.openmeh.util.Prefs
 import com.jawnnypoo.openmeh.util.ReminderScheduler
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.ContributesIntoMap
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metrox.viewmodel.ViewModelKey
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -32,17 +36,22 @@ sealed interface NotificationsEvent {
     data object PermissionDenied : NotificationsEvent
 }
 
-class NotificationsViewModel : ViewModel() {
+@Inject
+@ContributesIntoMap(AppScope::class)
+@ViewModelKey
+class NotificationsViewModel(
+    private val prefs: Prefs,
+) : ViewModel() {
 
     private val log = Logger.withTag("NotificationsViewModel")
 
     private val _uiState = MutableStateFlow(
         NotificationsUiState(
-            notificationsEnabled = Prefs.areNotificationsEnabled,
-            soundEnabled = Prefs.isNotificationSound,
-            vibrateEnabled = Prefs.isNotificationVibrate,
-            hour = Prefs.notificationHour,
-            minute = Prefs.notificationMinute,
+            notificationsEnabled = prefs.areNotificationsEnabled,
+            soundEnabled = prefs.isNotificationSound,
+            vibrateEnabled = prefs.isNotificationVibrate,
+            hour = prefs.notificationHour,
+            minute = prefs.notificationMinute,
         )
     )
     val uiState: StateFlow<NotificationsUiState> = _uiState.asStateFlow()
@@ -51,7 +60,7 @@ class NotificationsViewModel : ViewModel() {
     val events: SharedFlow<NotificationsEvent> = _events.asSharedFlow()
 
     fun setNotificationsEnabled(enabled: Boolean) {
-        Prefs.areNotificationsEnabled = enabled
+        prefs.areNotificationsEnabled = enabled
         _uiState.update { it.copy(notificationsEnabled = enabled) }
         if (enabled) {
             scheduleReminder()
@@ -61,8 +70,8 @@ class NotificationsViewModel : ViewModel() {
     }
 
     fun setNotificationTime(hour: Int, minute: Int) {
-        Prefs.notificationHour = hour
-        Prefs.notificationMinute = minute
+        prefs.notificationHour = hour
+        prefs.notificationMinute = minute
         _uiState.update {
             it.copy(
                 hour = hour,
@@ -77,12 +86,12 @@ class NotificationsViewModel : ViewModel() {
     }
 
     fun setSoundEnabled(enabled: Boolean) {
-        Prefs.isNotificationSound = enabled
+        prefs.isNotificationSound = enabled
         _uiState.update { it.copy(soundEnabled = enabled) }
     }
 
     fun setVibrateEnabled(enabled: Boolean) {
-        Prefs.isNotificationVibrate = enabled
+        prefs.isNotificationVibrate = enabled
         _uiState.update { it.copy(vibrateEnabled = enabled) }
     }
 
@@ -96,8 +105,8 @@ class NotificationsViewModel : ViewModel() {
         viewModelScope.launch {
             try {
                 ReminderScheduler.schedule(
-                    hour = Prefs.notificationHour,
-                    minute = Prefs.notificationMinute,
+                    hour = prefs.notificationHour,
+                    minute = prefs.notificationMinute,
                 )
                 _events.emit(NotificationsEvent.Message(Res.string.notification_scheduled))
             } catch (e: Exception) {

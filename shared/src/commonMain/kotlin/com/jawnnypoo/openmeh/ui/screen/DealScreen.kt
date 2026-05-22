@@ -47,8 +47,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
-import com.jawnnypoo.openmeh.Container
 import com.jawnnypoo.openmeh.model.ParsedTheme
+import com.jawnnypoo.openmeh.ui.LocalIsDebug
 import com.jawnnypoo.openmeh.resources.Res
 import com.jawnnypoo.openmeh.resources.about
 import com.jawnnypoo.openmeh.resources.action_account
@@ -128,6 +128,7 @@ fun DealScreen(
                         )
                     }
                     DealOverflowMenu(
+                        isDebug = LocalIsDebug.current,
                         onOpenAbout = onOpenAbout,
                         onOpenAccount = { openUrl(accountUrl, accentColor) },
                         onOpenOrders = { openUrl(ordersUrl, accentColor) },
@@ -414,6 +415,7 @@ private fun DotIndicator(
 
 @Composable
 private fun DealOverflowMenu(
+    isDebug: Boolean,
     onOpenAccount: () -> Unit,
     onOpenOrders: () -> Unit,
     onOpenForum: () -> Unit,
@@ -460,7 +462,7 @@ private fun DealOverflowMenu(
                 onOpenAbout()
             },
         )
-        if (Container.debug) {
+        if (isDebug) {
             DropdownMenuItem(
                 text = { Text(text = stringResource(Res.string.post_notification)) },
                 onClick = {

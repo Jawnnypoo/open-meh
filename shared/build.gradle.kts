@@ -1,3 +1,4 @@
+import java.util.Properties
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
@@ -6,13 +7,25 @@ plugins {
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.kotlinSerialization)
+    alias(libs.plugins.metro)
 }
 
 val generateBuildKonfig by tasks.registering {
     description = "Generates a BuildKonfig.kt file with build-time constants accessible from commonMain."
     val outputDir = layout.buildDirectory.dir("generated/source/buildKonfig/commonMain")
     outputs.dir(outputDir)
-    val mehApiKey = providers.gradleProperty("MEH_API_KEY").orElse("")
+    // Prefer -P / env / root gradle.properties; fall back to local.properties (gitignored).
+    val mehApiKey = providers.gradleProperty("MEH_API_KEY")
+        .orElse(
+            providers.fileContents(rootProject.layout.projectDirectory.file("local.properties"))
+                .asText
+                .map { text ->
+                    val props = Properties()
+                    props.load(text.reader())
+                    props.getProperty("MEH_API_KEY", "")
+                }
+        )
+        .orElse("")
     inputs.property("MEH_API_KEY", mehApiKey)
     doLast {
         val pkgDir = outputDir.get().asFile.resolve("com/jawnnypoo/openmeh")
@@ -94,6 +107,8 @@ kotlin {
 
                 implementation(libs.multiplatformSettings)
                 implementation(libs.kermit)
+
+                implementation(libs.metroxViewmodelCompose)
             }
         }
 

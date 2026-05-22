@@ -7,8 +7,8 @@ import androidx.work.WorkManager
 import androidx.work.WorkerParameters
 import androidx.work.await
 import co.touchlab.kermit.Logger
+import com.jawnnypoo.openmeh.OpenMehApplication
 import com.jawnnypoo.openmeh.notification.MehNotificationManager
-import com.jawnnypoo.openmeh.util.Prefs
 import java.util.concurrent.TimeUnit
 import kotlin.time.Clock
 import kotlin.time.Duration.Companion.days
@@ -73,13 +73,23 @@ class ReminderWorker(
     }
 
     override suspend fun doWork(): Result {
+        // WorkManager constructs Workers itself, so we pull dependencies from the graph via the
+        // Application cast. Switching to a WorkManager Configuration with a Metro-backed
+        // WorkerFactory would let us @Inject this directly — future cleanup.
+        val graph = (applicationContext as OpenMehApplication).graph
+        val prefs = graph.prefs
+
         withContext(Dispatchers.IO) {
             log.d { "Now reminding..." }
-            MehNotificationManager.postDailyNotification(context)
+            MehNotificationManager.postDailyNotification(
+                context = context,
+                mehRepository = graph.mehRepository,
+                prefs = prefs,
+            )
             schedule(
                 context = context,
-                hour = Prefs.notificationHour,
-                minute = Prefs.notificationMinute,
+                hour = prefs.notificationHour,
+                minute = prefs.notificationMinute,
                 isRepeatSchedule = true,
             )
         }

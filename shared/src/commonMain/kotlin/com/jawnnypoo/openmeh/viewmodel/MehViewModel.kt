@@ -3,9 +3,13 @@ package com.jawnnypoo.openmeh.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import co.touchlab.kermit.Logger
-import com.jawnnypoo.openmeh.Container
+import com.jawnnypoo.openmeh.data.MehRepository
 import com.jawnnypoo.openmeh.shared.response.MehResponse
 import com.jawnnypoo.openmeh.util.ReminderScheduler
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.ContributesIntoMap
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metrox.viewmodel.ViewModelKey
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -23,10 +27,14 @@ data class DealUiState(
     val hasError: Boolean = false,
 )
 
-class MehViewModel : ViewModel() {
+@Inject
+@ContributesIntoMap(AppScope::class)
+@ViewModelKey
+class MehViewModel(
+    private val repository: MehRepository,
+) : ViewModel() {
 
     private val log = Logger.withTag("MehViewModel")
-    private val repository = Container.mehRepository
 
     private val _uiState = MutableStateFlow(DealUiState(isLoading = true))
     val uiState: StateFlow<DealUiState> = _uiState.asStateFlow()

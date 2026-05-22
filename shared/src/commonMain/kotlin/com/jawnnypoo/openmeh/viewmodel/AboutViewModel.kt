@@ -3,8 +3,12 @@ package com.jawnnypoo.openmeh.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import co.touchlab.kermit.Logger
-import com.jawnnypoo.openmeh.Container
+import com.jawnnypoo.openmeh.data.GitHubRepository
 import com.jawnnypoo.openmeh.github.Contributor
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.ContributesIntoMap
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metrox.viewmodel.ViewModelKey
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -18,7 +22,12 @@ data class AboutUiState(
     val hasError: Boolean = false,
 )
 
-class AboutViewModel : ViewModel() {
+@Inject
+@ContributesIntoMap(AppScope::class)
+@ViewModelKey
+class AboutViewModel(
+    private val repository: GitHubRepository,
+) : ViewModel() {
 
     companion object {
         private const val REPO_USER = "Jawnnypoo"
@@ -26,7 +35,6 @@ class AboutViewModel : ViewModel() {
     }
 
     private val log = Logger.withTag("AboutViewModel")
-    private val repository = Container.gitHubRepository
 
     private val _uiState = MutableStateFlow(AboutUiState(isLoading = true))
     val uiState: StateFlow<AboutUiState> = _uiState.asStateFlow()

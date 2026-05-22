@@ -1,6 +1,10 @@
 package com.jawnnypoo.openmeh.shared.api
 
+import com.jawnnypoo.openmeh.di.ApiKey
 import com.jawnnypoo.openmeh.shared.response.MehResponse
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.SingleIn
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
@@ -17,9 +21,11 @@ import kotlinx.serialization.json.Json
 /**
  * meh.com client
  */
+@Inject
+@SingleIn(AppScope::class)
 class MehClient(
-    apiKey: String,
-    debug: Boolean = false
+    apiKey: ApiKey,
+    debug: Boolean,
 ) {
     companion object {
         private const val API_URL = "https://meh.com/api/"
@@ -34,6 +40,9 @@ class MehClient(
             explicitNulls = false
         }
         client = HttpClient {
+            // Throw ClientRequestException / ServerResponseException on non-2xx instead of
+            // letting body<T>() blow up with NoTransformationFoundException on the error body.
+            expectSuccess = true
             install(ContentNegotiation) {
                 json(json)
             }
@@ -47,7 +56,7 @@ class MehClient(
             }
             defaultRequest {
                 url.takeFrom(API_URL)
-                url.parameters.append(PARAM_API_KEY, apiKey)
+                url.parameters.append(PARAM_API_KEY, apiKey.value)
             }
         }
     }

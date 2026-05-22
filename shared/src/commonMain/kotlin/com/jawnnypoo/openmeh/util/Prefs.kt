@@ -1,25 +1,17 @@
 package com.jawnnypoo.openmeh.util
 
 import com.russhwolf.settings.Settings
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.SingleIn
 
 /**
- * App-wide notification preferences. Initialized once by the platform entry point with a
- * platform-specific [Settings] (Android: `SharedPreferencesSettings`; iOS would use
- * `NSUserDefaultsSettings`).
+ * App-wide notification preferences, backed by a platform-specific [Settings] passed in via the DI
+ * graph factory (Android: `SharedPreferencesSettings`; iOS would use `NSUserDefaultsSettings`).
  */
-object Prefs {
-
-    private const val KEY_VIBRATE = "notification_vibrate"
-    private const val KEY_SOUND = "notification_sound"
-    private const val KEY_ENABLED = "notification_enabled"
-    private const val KEY_HOUR = "notification_hour"
-    private const val KEY_MINUTE = "notification_minute"
-
-    private lateinit var settings: Settings
-
-    fun initialize(settings: Settings) {
-        this.settings = settings
-    }
+@Inject
+@SingleIn(AppScope::class)
+class Prefs(private val settings: Settings) {
 
     var isNotificationSound: Boolean
         get() = settings.getBoolean(KEY_SOUND, false)
@@ -50,4 +42,12 @@ object Prefs {
         set(value) {
             settings.putBoolean(KEY_ENABLED, value)
         }
+
+    companion object {
+        private const val KEY_VIBRATE = "notification_vibrate"
+        private const val KEY_SOUND = "notification_sound"
+        private const val KEY_ENABLED = "notification_enabled"
+        private const val KEY_HOUR = "notification_hour"
+        private const val KEY_MINUTE = "notification_minute"
+    }
 }

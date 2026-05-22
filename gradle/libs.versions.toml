@@ -6,7 +6,7 @@ androidMinSdk = "23"
 #noinspection UnusedVersionCatalogEntry
 androidTargetSdk = "36"
 
-agp = "9.1.0"
+agp = "9.2.1"
 kotlin = "2.3.10"
 composeMultiplatform = "1.10.3"
 
@@ -27,6 +27,7 @@ coil = "3.4.0"
 ktor = "3.4.1"
 kermit = "2.1.0"
 richText = "0.20.0"
+metro = "1.1.1"
 
 [libraries]
 kotlinxCoroutinesCore = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
@@ -62,6 +63,8 @@ ktorClientLogging = { module = "io.ktor:ktor-client-logging", version.ref = "kto
 
 kermit = { module = "co.touchlab:kermit", version.ref = "kermit" }
 
+metroxViewmodelCompose = { module = "dev.zacsweers.metro:metrox-viewmodel-compose", version.ref = "metro" }
+
 richtextUiMaterial3 = { module = "com.halilibo.compose-richtext:richtext-ui-material3", version.ref = "richText" }
 richtextCommonmark = { module = "com.halilibo.compose-richtext:richtext-commonmark", version.ref = "richText" }
 
@@ -73,3 +76,4 @@ composeCompiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "k
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 kotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlinSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+metro = { id = "dev.zacsweers.metro", version.ref = "metro" }

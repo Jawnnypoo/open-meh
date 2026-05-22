@@ -14,14 +14,14 @@ import co.touchlab.kermit.Logger
 import coil3.SingletonImageLoader
 import coil3.asDrawable
 import coil3.request.ImageRequest
-import com.jawnnypoo.openmeh.Container
 import com.jawnnypoo.openmeh.activity.MehActivity
-import com.jawnnypoo.openmeh.shared.R
+import com.jawnnypoo.openmeh.data.MehRepository
 import com.jawnnypoo.openmeh.model.ParsedTheme
 import com.jawnnypoo.openmeh.resources.Res
 import com.jawnnypoo.openmeh.resources.sold_out
 import com.jawnnypoo.openmeh.resources.tap_to_load_again
 import com.jawnnypoo.openmeh.resources.unable_to_load_deal
+import com.jawnnypoo.openmeh.shared.R
 import com.jawnnypoo.openmeh.shared.extension.getPriceRange
 import com.jawnnypoo.openmeh.shared.extension.isSoldOut
 import com.jawnnypoo.openmeh.shared.model.Theme
@@ -37,11 +37,19 @@ object MehNotificationManager {
     /**
      * Fetches the daily deal and posts a notification about it. If it fails to load the deal, it
      * will post a notification prompting the user to try again.
+     *
+     * Repositories/prefs are passed in (instead of read from a global) because Workers aren't
+     * Metro-injected — see [com.jawnnypoo.openmeh.worker.ReminderWorker] which pulls them from
+     * the [com.jawnnypoo.openmeh.di.AppGraph] via the Application cast.
      */
-    suspend fun postDailyNotification(context: Context) {
+    suspend fun postDailyNotification(
+        context: Context,
+        mehRepository: MehRepository,
+        prefs: Prefs,
+    ) {
         var response: MehResponse? = null
         try {
-            response = Container.mehRepository.currentDeal()
+            response = mehRepository.currentDeal()
         } catch (e: Exception) {
             log.e(e) { "Failed to load deal" }
         }
@@ -62,10 +70,15 @@ object MehNotificationManager {
             log.e(e) { "Failed to load notification icon" }
         }
         log.d { "Posting notification" }
-        postIt(context, response, icon)
+        postIt(context, response, icon, prefs)
     }
 
-    private suspend fun postIt(context: Context, response: MehResponse?, icon: Bitmap?) {
+    private suspend fun postIt(
+        context: Context,
+        response: MehResponse?,
+        icon: Bitmap?,
+        prefs: Prefs,
+    ) {
         val deal = response?.deal
         val theme = ParsedTheme.fromTheme(deal?.theme)
         val color = theme?.safeBackgroundColor() ?: Color.WHITE
@@ -93,10 +106,10 @@ object MehNotificationManager {
             )
         }
 
-        if (Prefs.isNotificationSound) {
+        if (prefs.isNotificationSound) {
             notificationBuilder.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
         }
-        if (Prefs.isNotificationVibrate) {
+        if (prefs.isNotificationVibrate) {
             notificationBuilder.setVibrate(longArrayOf(100, 200, 100, 200))
         }
 

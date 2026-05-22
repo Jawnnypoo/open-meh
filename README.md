@@ -12,16 +12,20 @@ meh.com Compose Multiplatform app
 [meh.com](https://meh.com/) is a deal of the day shopping experience filled with humorous writing and great personality. Once they opened up support for an API, an Android app was born.
 
 ## Building
-You will need to generate your own API key from [meh](https://meh.com/forum/topics/meh-api) and add it to your `app/gradle.properties` file. If you want Firebase to work, you need to add the `google-service.json` file from Firebase to the `app` folder. You can also add a configuration for the keystore for a release build. All in all, your `gradle.properties` will look something like this:
-```Gradle
-MEH_API_KEY=api_key_here
-KEYSTORE_NAME=file_name_of_keystore_if_you_care.jks
-KEYSTORE_PASSWORD=keystorepasswordifyoucare
-KEY_PASSWORD=keypasswordifyoucare
+Generate your own API key from [meh](https://meh.com/forum/topics/meh-api) and add it to a `local.properties` file at the project root (already gitignored):
+```properties
+MEH_API_KEY=your_api_key_here
 ```
-You can then generate a release build via:
+
+For a signed release build, also add the keystore properties to the root `gradle.properties` (or pass them as `-P` flags / `ORG_GRADLE_PROJECT_*` env vars on CI):
+```properties
+KEYSTORE_NAME=your_keystore.jks
+KEYSTORE_PASSWORD=...
+KEY_PASSWORD=...
 ```
-./gradlew app:bundleRelease
+The keystore file itself lives in `androidApp/`. Then build with:
+```
+./gradlew androidApp:bundleRelease
 ```
 
 ## Contribution

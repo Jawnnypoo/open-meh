@@ -3,8 +3,8 @@ package com.jawnnypoo.openmeh.ui.navigation
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation3.runtime.NavKey
+import dev.zacsweers.metrox.viewmodel.metroViewModel
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.ui.NavDisplay
@@ -54,7 +54,7 @@ fun OpenMehNavHost(
         },
         entryProvider = entryProvider {
             entry<DealDestination> {
-                val viewModel: MehViewModel = viewModel()
+                val viewModel = metroViewModel<MehViewModel>()
                 val state by viewModel.uiState.collectAsStateWithLifecycle()
                 DealScreen(
                     state = state,
@@ -68,7 +68,7 @@ fun OpenMehNavHost(
                 )
             }
             entry<NotificationsDestination> {
-                val viewModel: NotificationsViewModel = viewModel()
+                val viewModel = metroViewModel<NotificationsViewModel>()
                 val state by viewModel.uiState.collectAsStateWithLifecycle()
                 NotificationsScreen(
                     state = state,
@@ -83,7 +83,7 @@ fun OpenMehNavHost(
             }
             entry<AboutDestination> {
                 val sourceUrl = stringResource(Res.string.source_url)
-                val viewModel: AboutViewModel = viewModel()
+                val viewModel = metroViewModel<AboutViewModel>()
                 val state by viewModel.uiState.collectAsStateWithLifecycle()
                 AboutScreen(
                     state = state,

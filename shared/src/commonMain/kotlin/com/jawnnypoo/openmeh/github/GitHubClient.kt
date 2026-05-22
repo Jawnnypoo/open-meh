@@ -1,5 +1,8 @@
 package com.jawnnypoo.openmeh.github
 
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.SingleIn
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
@@ -15,7 +18,9 @@ import kotlinx.serialization.json.Json
 /**
  * GitHub!
  */
-class GitHubClient(debug: Boolean = false) {
+@Inject
+@SingleIn(AppScope::class)
+class GitHubClient(debug: Boolean) {
 
     companion object {
         private const val API_URL = "https://api.github.com/"

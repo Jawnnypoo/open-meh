@@ -90,6 +90,5 @@ hs_err_pid*
 .kotlin
 
 # Custom
-shared/gradle.properties
 androidApp/google-services.json
 *.jks

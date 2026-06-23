@@ -54,7 +54,7 @@ kotlin {
         }
 
         compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_17)
+            jvmTarget.set(JvmTarget.JVM_21)
         }
     }
 
@@ -88,9 +88,6 @@ kotlin {
                 implementation(compose.components.resources)
                 implementation(compose.components.uiToolingPreview)
 
-                implementation(libs.androidxLifecycleRuntimeCompose)
-                implementation(libs.androidxLifecycleViewmodelCompose)
-                implementation(libs.androidxLifecycleViewmodelNavigation3)
                 implementation(libs.androidxNavigation3Ui)
 
                 implementation(libs.kotlinxCoroutinesCore)
@@ -115,7 +112,6 @@ kotlin {
         androidMain.dependencies {
             implementation(libs.androidxActivityCompose)
             implementation(libs.androidxCoreKtx)
-            implementation(libs.androidxLifecycleRuntimeKtx)
 
             implementation(libs.kotlinxCoroutinesAndroid)
 
@@ -130,10 +126,6 @@ kotlin {
             implementation(libs.richtextUiMaterial3)
             implementation(libs.richtextCommonmark)
         }
-
-        // iosMain.dependencies {
-        //     implementation(libs.ktorClientDarwin)
-        // }
     }
 }
 
